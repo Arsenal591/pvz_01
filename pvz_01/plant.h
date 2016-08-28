@@ -1,5 +1,6 @@
 #pragma once
-class Plant
+#include<qobject>
+class Plant:public QObject 
 {
 	Q_OBJECT
 public:

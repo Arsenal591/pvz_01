@@ -56,6 +56,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_plant.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="welcome_interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pvz_01.h">
@@ -97,6 +100,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="peashooter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="welcome_interface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

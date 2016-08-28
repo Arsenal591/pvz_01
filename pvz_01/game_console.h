@@ -15,12 +15,12 @@ public:
 private:
 	enum GAME_STATUS { Begin, Playing, About, Thanks, Setting }status;
 	QTimer *normalTimer, *specialTimer;
-	QVector<Zombie>zombies;
-	QVector<Zombie>unbornZombies;
-	QVector<Plant>plants;
-	QVector<Sunshine>sunshines;
-	QVector<Bullet>bullets;
-	QVector<Card>cards;
+	QVector<Zombie*>zombies;
+	QVector<Zombie*>unbornZombies;
+	QVector<Plant*>plants;
+	QVector<Sunshine*>sunshines;
+	QVector<Bullet*>bullets;
+	QVector<Card*>cards;
 	Card* cardChosen;
 private:
 	void dealAttackOfBullets();

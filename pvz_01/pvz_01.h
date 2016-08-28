@@ -4,6 +4,7 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_pvz_01.h"
 #include "game_console.h"
+#include "welcome_interface.h"
 
 class MainWindow :public QWidget
 {
@@ -14,7 +15,7 @@ public slots:
 signals:
 
 private:
-	GameConsole _Console;
+	//GameConsole _Console;
 	QWidget* _currentWidget;
 };
 
