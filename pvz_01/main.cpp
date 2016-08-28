@@ -7,6 +7,5 @@ int main(int argc, char *argv[])
 	pvz_01 w;
 	w.show();
 	int a = 10;
-	int b = 11;
 	return a.exec();
 }
