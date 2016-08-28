@@ -4,16 +4,11 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_pvz_01.h"
 
-class pvz_01 : public QMainWindow
+class MainWindow :public QWidget
 {
 	Q_OBJECT
-
 public:
-	pvz_01(QWidget *parent = 0);
-	~pvz_01();
-
-private:
-	Ui::pvz_01Class ui;
+	MainWindow(QWidget* parent = nullptr);
 };
 
-#endif // PVZ_01_H
+#endif
