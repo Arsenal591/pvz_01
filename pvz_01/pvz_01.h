@@ -12,11 +12,13 @@ class MainWindow :public QWidget
 public:
 	MainWindow(QWidget* parent = nullptr);
 public slots:
+	void close();
 signals:
 
 private:
 	//GameConsole _Console;
-	QWidget* _currentWidget;
+	QWidget* currentWidget;
+	void connect();
 };
 
 #endif

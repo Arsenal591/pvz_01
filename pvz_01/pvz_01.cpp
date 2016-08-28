@@ -6,12 +6,23 @@
 
 MainWindow::MainWindow(QWidget* parent)
 {
-	_currentWidget = new WelcomeInterface;
-	_currentWidget->show();
-	//QSound music("../pvz-material/audio/2.75.mp3");
-	//music.play();
-	QMediaPlayer* player = new QMediaPlayer;
+	currentWidget = new WelcomeInterface;
+	currentWidget->show();
+	//currentWidget->setParent(this);
+	QMediaPlayer* player = new QMediaPlayer(this);
 	player->setMedia(QUrl::fromLocalFile("../pvz-material/audio/2.75.mp3"));
 	player->setVolume(100);
 	player->play();
+
+	connect();
+}
+
+void MainWindow::connect()
+{
+	QObject::connect(currentWidget, SIGNAL(switchToEnd()), this, SLOT(close()));
+}
+
+void MainWindow::close()
+{
+	currentWidget->close();
 }
