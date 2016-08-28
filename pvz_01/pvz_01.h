@@ -6,7 +6,9 @@
 #include "game_console.h"
 #include "welcome_interface.h"
 #include "playing_interface.h"
+#include "qmediaplayer.h"
 
+class QMediaPlayer;
 class MainWindow :public QWidget
 {
 	Q_OBJECT
@@ -20,6 +22,9 @@ signals:
 private:
 	//GameConsole _Console;
 	QWidget* currentWidget;
+	QMediaPlayer* player;
+
+	void playMusic();
 	void connect();
 };
 
