@@ -65,6 +65,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_welcome_interface.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="playing_interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_playing_interface.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_playing_interface.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pvz_01.h">
@@ -80,6 +89,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="welcome_interface.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="playing_interface.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

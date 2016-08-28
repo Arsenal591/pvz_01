@@ -5,6 +5,7 @@
 #include "ui_pvz_01.h"
 #include "game_console.h"
 #include "welcome_interface.h"
+#include "playing_interface.h"
 
 class MainWindow :public QWidget
 {
@@ -13,6 +14,7 @@ public:
 	MainWindow(QWidget* parent = nullptr);
 public slots:
 	void close();
+	void startPlaying();
 signals:
 
 private:

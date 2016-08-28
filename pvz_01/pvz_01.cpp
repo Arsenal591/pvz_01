@@ -20,9 +20,17 @@ MainWindow::MainWindow(QWidget* parent)
 void MainWindow::connect()
 {
 	QObject::connect(currentWidget, SIGNAL(switchToEnd()), this, SLOT(close()));
+	QObject::connect(currentWidget, SIGNAL(switchToPlay()), this, SLOT(startPlaying()));
 }
 
 void MainWindow::close()
 {
 	currentWidget->close();
+}
+
+void MainWindow::startPlaying()
+{
+	delete currentWidget;
+	currentWidget = new PlayingInterface;
+	currentWidget->show();
 }

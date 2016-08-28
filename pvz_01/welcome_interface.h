@@ -14,6 +14,7 @@ public:
 	WelcomeInterface(QWidget* parent = nullptr);
 signals:
 	void switchToOptions();
+	void switchToPlay();
 	void switchToHelp();
 	void switchToAbout();
 	void switchToThanks();
