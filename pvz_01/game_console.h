@@ -5,15 +5,23 @@
 #include "sunshine.h"
 #include "bullet.h"
 #include "card.h"
-//class QTimer;
-class GameConsole
+#include "qvector"
+#include "qwidget"
+
+class QTimer;
+
+class GameConsole:public QWidget
 {
+	Q_OBJECT
+
+	friend class PlayingInterface;
 public:
 	GameConsole(QWidget* parent = nullptr);
 	void dealNormalLoop();
 	void dealSpecialLoop();
 private:
-	enum GAME_STATUS { Begin, Playing, About, Thanks, Setting }status;
+	int duration;
+	int sunshine;
 	QTimer *normalTimer, *specialTimer;
 	QVector<Zombie*>zombies;
 	QVector<Zombie*>unbornZombies;

@@ -20,7 +20,8 @@ public slots:
 signals:
 
 private:
-	//GameConsole _Console;
+	enum GAME_STATUS { Begin, Playing, About, Thanks, Setting }status;
+	//GameConsole console;
 	QWidget* currentWidget;
 	QMediaPlayer* player;
 
