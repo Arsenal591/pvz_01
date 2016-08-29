@@ -5,6 +5,7 @@
 const QString WelcomeInterface::path = "../pvz-material/images/interface/surface.jpg";
 WelcomeInterface::WelcomeInterface(QWidget* parent)
 {
+	this->setParent(parent);
 	this->setFixedWidth(1200);
 	this->setFixedHeight(800);
 	drawBackground();

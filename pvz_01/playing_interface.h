@@ -5,7 +5,7 @@ class PlayingInterface :public QWidget
 {
 	Q_OBJECT
 public:
-	PlayingInterface();
+	PlayingInterface(QWidget* parent = nullptr);
 public slots:
 	void leadInAnimation();
 	void cardAnimation();

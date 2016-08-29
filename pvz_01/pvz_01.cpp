@@ -7,23 +7,24 @@
 
 MainWindow::MainWindow(QWidget* parent)
 {
-	currentWidget = new WelcomeInterface;
-	currentWidget->show();
+	currentWidget = new WelcomeInterface(this);
+	//currentWidget->show();
 	connect();
 	playMusic();
 }
 
 void MainWindow::playMusic()
 {
-	player = new QMediaPlayer;
+	player = new QMediaPlayer(this);
 	player->setAudioRole(QAudio::MusicRole);
 	player->setMedia(QUrl("../pvz-material/audio/awooga.mp3"));
 	player->setVolume(100);
+	QObject::connect(player, SIGNAL(stateChanged(QMediaPlayer::State)), player, SLOT(play()));
 	player->play();
 }
 void MainWindow::connect()
 {
-	QObject::connect(player, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(playMusic()));
+	//QObject::connect(player, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(playMusic()));
 	QObject::connect(currentWidget, SIGNAL(switchToEnd()), this, SLOT(close()));
 	QObject::connect(currentWidget, SIGNAL(switchToPlay()), this, SLOT(startPlaying()));
 }
@@ -36,6 +37,6 @@ void MainWindow::close()
 void MainWindow::startPlaying()
 {
 	delete currentWidget;
-	currentWidget = new PlayingInterface;
+	currentWidget = new PlayingInterface(this);
 	currentWidget->show();
 }

@@ -13,14 +13,15 @@ class QTimer;
 class GameConsole:public QWidget
 {
 	Q_OBJECT
-
 	friend class PlayingInterface;
 public:
 	GameConsole(QWidget* parent = nullptr);
+public slots:
+	void gameStart();
 	void dealNormalLoop();
 	void dealSpecialLoop();
 private:
-	int duration;
+	int duration;//how long does this game lasts
 	int sunshine;
 	QTimer *normalTimer, *specialTimer;
 	QVector<Zombie*>zombies;
@@ -31,6 +32,7 @@ private:
 	QVector<Card*>cards;
 	Card* cardChosen;
 private:
+	void connect();
 	void dealAttackOfBullets();
 	void dealAttackOfZombies();
 	void dealHpOfFlowers();

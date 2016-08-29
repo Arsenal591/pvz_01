@@ -6,12 +6,12 @@
 
 const QString PlayingInterface::backgroundPath = "../pvz-material/images/interface/background1.jpg";
 const QString PlayingInterface::cardBoxPath = "../pvz-material/cardbox.png";
-PlayingInterface::PlayingInterface()
+PlayingInterface::PlayingInterface(QWidget* parent)
 {
+	this->setParent(parent);
 	this->setFixedWidth(1200);
 	this->setFixedHeight(800);
 	leadInAnimation();
-	//cardAnimation();
 }
 
 void PlayingInterface::leadInAnimation()
@@ -31,7 +31,6 @@ void PlayingInterface::leadInAnimation()
 	animation->setEndValue(QRect(-200, 0, 1200, 800));
 	animation->start();
 	QObject::connect(animation, SIGNAL(finished()), this, SLOT(cardAnimation()));
-	//QObject::connect(animation, SIGNAL(finished()), this, SLOT(debug()));
 }
 
 void PlayingInterface::cardAnimation()
