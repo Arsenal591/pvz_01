@@ -1,6 +1,7 @@
 #include "game_console.h"
 #include "qtimer"
 //#include "qvector.h"
+#include "qdebug.h"
 
 GameConsole::GameConsole(QWidget* parent)
 {
@@ -36,7 +37,8 @@ void GameConsole::gameStart()
 
 void GameConsole::dealNormalLoop()
 {
-
+	duration++;
+	qDebug() << duration << '\n';
 }
 void GameConsole::dealSpecialLoop()
 {

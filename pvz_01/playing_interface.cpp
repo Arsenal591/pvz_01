@@ -16,7 +16,6 @@ PlayingInterface::PlayingInterface(QWidget* parent)
 
 void PlayingInterface::leadInAnimation()
 {
-	//debug();
 	backgroundImage = QPixmap(backgroundPath);
 	backgroundImage = backgroundImage.scaled(QSize(1867,800));
 	QLabel* label = new QLabel(this);
@@ -44,13 +43,6 @@ void PlayingInterface::cardAnimation()
 	animation->setDuration(1000);
 	animation->setStartValue(QRect(165, -84, 165, 84));
 	animation->setEndValue(QRect(165, 0, 165, 84));
+	QObject::connect(animation, SIGNAL(finished()), this->parentWidget(), SLOT(gameStart()));
 	animation->start();
-}
-
-void PlayingInterface::debug()
-{
-	QString message = "signal got";
-	QMessageBox info(QMessageBox::Information, QString(""), message, QMessageBox::Ok);
-	info.show();
-	info.exec();
 }

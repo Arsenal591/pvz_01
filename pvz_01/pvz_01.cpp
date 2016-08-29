@@ -7,6 +7,7 @@
 
 MainWindow::MainWindow(QWidget* parent)
 {
+	status = Begin;
 	currentWidget = new WelcomeInterface(this);
 	//currentWidget->show();
 	connect();
@@ -24,7 +25,6 @@ void MainWindow::playMusic()
 }
 void MainWindow::connect()
 {
-	//QObject::connect(player, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(playMusic()));
 	QObject::connect(currentWidget, SIGNAL(switchToEnd()), this, SLOT(close()));
 	QObject::connect(currentWidget, SIGNAL(switchToPlay()), this, SLOT(startPlaying()));
 }
@@ -39,4 +39,10 @@ void MainWindow::startPlaying()
 	delete currentWidget;
 	currentWidget = new PlayingInterface(this);
 	currentWidget->show();
+	status = Playing;
+}
+
+void MainWindow::gameStart()
+{
+	console.gameStart();
 }

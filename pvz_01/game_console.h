@@ -33,12 +33,12 @@ private:
 	Card* cardChosen;
 private:
 	void connect();
-	void dealAttackOfBullets();
-	void dealAttackOfZombies();
-	void dealHpOfFlowers();
-	void dealHpOfZombies();
-	void dealBulletsMove();
-	void dealFlowersMove();
-	void sunshinesProduce();
-	void zombiesProduce();
+	//void dealAttackOfBullets();
+	//void dealAttackOfZombies();
+	//void dealHpOfFlowers();
+	//void dealHpOfZombies();
+	//void dealBulletsMove();
+	//void dealFlowersMove();
+	//void sunshinesProduce();
+	//void zombiesProduce();
 };

@@ -17,11 +17,12 @@ public:
 public slots:
 	void close();
 	void startPlaying();
+	void gameStart();
 signals:
 
 private:
 	enum GAME_STATUS { Begin, Playing, About, Thanks, Setting }status;
-	//GameConsole console;
+	GameConsole console;
 	QWidget* currentWidget;
 	QMediaPlayer* player;
 
