@@ -1,16 +1,9 @@
 #include "pvz_01.h"
 #include <qdialog>
-#include <qsound.h>
-#include <qurl.h>
+#include <qurl>
 #include <qmediaplayer>
-#include <qmediaplaylist.h>
+#include <qmediaplaylist>
 #include <qsound>
-#include <Windows.h>
-#include <iostream>
-#include <fstream>
-
-using std::cout;
-using std::endl;
 
 MainWindow::MainWindow(QWidget* parent)
 {
@@ -30,7 +23,7 @@ void MainWindow::playMusic()
 }
 void MainWindow::connect()
 {
-	QObject::connect(player, SIGNAL(stateChanged(QMediaPlayer::State state)), this, SLOT(playMusic()));
+	QObject::connect(player, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(playMusic()));
 	QObject::connect(currentWidget, SIGNAL(switchToEnd()), this, SLOT(close()));
 	QObject::connect(currentWidget, SIGNAL(switchToPlay()), this, SLOT(startPlaying()));
 }
