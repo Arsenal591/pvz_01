@@ -14,6 +14,25 @@ GameConsole::GameConsole(QWidget* parent)
 	normalTimer->setInterval(1);
 	specialTimer->setInterval(1000);
 
+	int xLinePos = 110, yLinePos = 135;
+	for (int i = 0; i < 5; i++)
+	{
+		yLinePos = 135;
+		for (int j = 0; j < 10; j++)
+		{
+			int width;
+			if (j <= 8)
+				width = (j % 2) ? 105 : 110;
+			else
+				width = 95;
+			cellRect[i][j] = QRect(yLinePos, xLinePos, width, 130);
+			//qDebug() << yLinePos << ' ' << xLinePos << ' ' << width << ' ' << 130<<'\n';
+			yLinePos += width;
+		}
+		//qDebug() << "\n";
+		xLinePos += 130;
+	}
+
 	cards.push_back(new Card(Peashooter));
 	cards.push_back(new Card(Sunflower));
 	cards.push_back(new Card(Wallnut));

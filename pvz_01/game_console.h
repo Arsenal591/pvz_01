@@ -23,6 +23,8 @@ public slots:
 private:
 	int duration;//how long does this game lasts
 	int sunshine;
+	QRect cellRect[5][10];
+	QRect cardRect[6];
 	QTimer *normalTimer, *specialTimer;
 	QVector<Zombie*>zombies;
 	QVector<Zombie*>unbornZombies;

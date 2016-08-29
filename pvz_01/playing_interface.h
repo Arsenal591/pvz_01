@@ -9,7 +9,7 @@ public:
 public slots:
 	void leadInAnimation();
 	void cardAnimation();
-	void debug();
+	//void debug();
 private:
 	QPixmap backgroundImage, cardBoxImage;
 	static const QString backgroundPath, cardBoxPath;
