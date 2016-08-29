@@ -35,6 +35,8 @@ private:
 	Card* cardChosen;
 private:
 	void connect();
+	void setCellRect();
+	void setCardRect();
 	//void dealAttackOfBullets();
 	//void dealAttackOfZombies();
 	//void dealHpOfFlowers();

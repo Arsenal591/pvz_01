@@ -14,6 +14,20 @@ GameConsole::GameConsole(QWidget* parent)
 	normalTimer->setInterval(1);
 	specialTimer->setInterval(1000);
 
+	setCellRect();
+	setCardRect();
+
+	cards.push_back(new Card(Peashooter));
+	cards.push_back(new Card(Sunflower));
+	cards.push_back(new Card(Wallnut));
+
+	cardChosen = nullptr;
+
+	connect();
+}
+
+void GameConsole::setCellRect()
+{
 	int xLinePos = 110, yLinePos = 135;
 	for (int i = 0; i < 5; i++)
 	{
@@ -32,16 +46,17 @@ GameConsole::GameConsole(QWidget* parent)
 		//qDebug() << "\n";
 		xLinePos += 130;
 	}
-
-	cards.push_back(new Card(Peashooter));
-	cards.push_back(new Card(Sunflower));
-	cards.push_back(new Card(Wallnut));
-
-	cardChosen = nullptr;
-
-	connect();
 }
 
+void GameConsole::setCardRect()
+{
+	int yLinePos = 250;
+	for (int i = 0; i < 6; i++)
+	{
+		cardRect[i] = QRect(yLinePos, 10, 45, 63);
+		yLinePos += 57;
+	}
+}
 void GameConsole::connect()
 {
 	QObject::connect(normalTimer, SIGNAL(timeout()), this, SLOT(dealNormalLoop()));
