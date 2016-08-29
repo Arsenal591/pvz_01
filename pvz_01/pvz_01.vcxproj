@@ -451,6 +451,12 @@
     <Library Include="C:\Qt\Qt5.7.0\5.7\msvc2015_64\lib\qtmain.lib" />
     <Library Include="C:\Qt\Qt5.7.0\5.7\msvc2015_64\lib\qtmaind.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
