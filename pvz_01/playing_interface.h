@@ -14,14 +14,20 @@ public:
 public slots:
 	void leadInAnimation();
 	void cardAnimation();
+	//void drawCard();
 	void refresh();
 	//void debug();
 private:
 	QPixmap backgroundImage, cardBoxImage;
 	static const QString backgroundPath, cardBoxPath;
+	static const QString cardPathName[3];
 	QRect cardRect[6];
 	QRect cellRect[5][10];
 	QLabel* sunshineDisplay;
+
+	QVector<QLabel*>plantsShown;
+	QVector<QLabel*>zombiesShown;
+	QVector<QLabel*>cardsShown;
 
 	void setCardRect();
 	void setCellRect();

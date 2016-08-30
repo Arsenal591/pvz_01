@@ -1,7 +1,7 @@
 #include "card.h"
 #include "qstring.h"
 //class QString;
-Card::Card(CARD_TYPE type):cardType(type)
+Card::Card(CARD_TYPE type):cardType(type),lastUsed(-9999)
 {
 	switch (type)
 	{

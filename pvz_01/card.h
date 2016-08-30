@@ -10,4 +10,9 @@ private:
 	int lastUsed;
 public:
 	Card(CARD_TYPE);
+	int getType() { return cardType; }
+	void setLastUsed(int t) { lastUsed = t; }
+	int getLastUsed() { return lastUsed; }
+	int getCd() { return cd; }
+	int getCost() { return cost; }
 };

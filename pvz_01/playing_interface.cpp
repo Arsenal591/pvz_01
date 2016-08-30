@@ -8,20 +8,33 @@
 
 const QString PlayingInterface::backgroundPath = "../pvz-material/images/interface/background1.jpg";
 const QString PlayingInterface::cardBoxPath = "../pvz-material/cardbox.png";
+const QString PlayingInterface::cardPathName[] = { "../pvz-material/peashooter", "../pvz-material/sunflower", "../pvz-material/wallnut" };
 PlayingInterface::PlayingInterface(QWidget* parent)
 {
 	this->setParent(parent);
 	this->setFixedWidth(1200);
 	this->setFixedHeight(800);
 
+	setCardRect();
+	setCellRect();
+
 	sunshineDisplay = new QLabel(parent);
 	sunshineDisplay->setGeometry(QRect(185, 60, 30, 15));
+	sunshineDisplay->setAlignment(Qt::AlignCenter);
 	QPalette pal;
 	pal.setColor(QPalette::Background, QColor(0xff, 0xff, 0xff, 0xff));
 	sunshineDisplay->setPalette(pal);
 	//sunshineDisplay->
-	sunshineDisplay->setFont(QFont("consolas", 8));
+	sunshineDisplay->setFont(QFont("consolas", 9));
 	sunshineDisplay->show();
+
+	for (int i = 0; i < 3; i++)
+	{
+		cardsShown.push_back(new QLabel(parent));
+		cardsShown[i]->setGeometry(cardRect[i]);
+		//cardsShown[i]->setPalette(pal);
+		cardsShown[i]->show();
+	}
 
 	leadInAnimation();
 }
@@ -92,8 +105,20 @@ void PlayingInterface::refresh()
 	MainWindow* temp = static_cast<MainWindow*>(this->parentWidget());
 	const GameConsole& currentConsole = temp->getConsole();
 
+	//display  sunshine
 	QString str;
 	str.setNum(currentConsole.sunshineLeft);
 	sunshineDisplay->setText(str);
-	qDebug() << str;
+
+	//display  card
+	for (int i = 0; i < currentConsole.cards.size(); i++)
+	{
+		Card* chosen = currentConsole.cards[i];
+		str = cardPathName[chosen->getType()];
+		if (currentConsole.duration - chosen->getLastUsed() >= chosen->getCd())
+			str += "_1.jpg";
+		else str += "_2.jpg";
+		qDebug() << str << '\n';
+		cardsShown[i]->setPixmap(str);
+	}
 }
