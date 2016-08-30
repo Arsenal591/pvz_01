@@ -40,6 +40,7 @@ void MainWindow::startPlaying()
 	currentWidget = new PlayingInterface(this);
 	currentWidget->show();
 	status = Playing;
+	QObject::connect(&console, SIGNAL(timeToShow()), currentWidget, SLOT(refresh()));
 }
 
 void MainWindow::gameStart()

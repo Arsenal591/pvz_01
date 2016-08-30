@@ -7,7 +7,7 @@ GameConsole::GameConsole(QWidget* parent)
 {
 	this->setParent(parent);
 	duration = 0;
-	sunshine = 100;
+	sunshineLeft = 100;
 
 	normalTimer = new QTimer(this);
 	specialTimer = new QTimer(this);
@@ -39,6 +39,7 @@ void GameConsole::dealNormalLoop()
 {
 	duration++;
 	qDebug() << duration << '\n';
+	emit timeToShow();
 }
 void GameConsole::dealSpecialLoop()
 {

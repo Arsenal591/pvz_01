@@ -3,6 +3,8 @@
 #include "qlabel.h"
 #include "qmessagebox.h"
 #include "qpalette.h"
+#include "pvz_01.h"
+#include "qdebug.h"
 
 const QString PlayingInterface::backgroundPath = "../pvz-material/images/interface/background1.jpg";
 const QString PlayingInterface::cardBoxPath = "../pvz-material/cardbox.png";
@@ -12,6 +14,14 @@ PlayingInterface::PlayingInterface(QWidget* parent)
 	this->setFixedWidth(1200);
 	this->setFixedHeight(800);
 
+	sunshineDisplay = new QLabel(parent);
+	sunshineDisplay->setGeometry(QRect(185, 60, 30, 15));
+	QPalette pal;
+	pal.setColor(QPalette::Background, QColor(0xff, 0xff, 0xff, 0xff));
+	sunshineDisplay->setPalette(pal);
+	//sunshineDisplay->
+	sunshineDisplay->setFont(QFont("consolas", 10));
+	sunshineDisplay->show();
 
 	leadInAnimation();
 }
@@ -54,7 +64,7 @@ void PlayingInterface::leadInAnimation()
 	label->setPixmap(backgroundImage);
 	label->show();
 	QPropertyAnimation* animation = new QPropertyAnimation(label, "geometry");
-	animation->setDuration(10000);
+	animation->setDuration(1000);
 	animation->setStartValue(QRect(0, 0, 1200, 800));
 	animation->setKeyValueAt(0.50, QRect(-667, 0, 1200, 800));
 	animation->setKeyValueAt(0.60, QRect(-667, 0, 1200, 800));
@@ -62,7 +72,6 @@ void PlayingInterface::leadInAnimation()
 	animation->start();
 	QObject::connect(animation, SIGNAL(finished()), this, SLOT(cardAnimation()));
 }
-
 void PlayingInterface::cardAnimation()
 {
 	cardBoxImage = QPixmap(cardBoxPath);
@@ -76,4 +85,15 @@ void PlayingInterface::cardAnimation()
 	animation->setEndValue(QRect(165, 0, 165, 84));
 	QObject::connect(animation, SIGNAL(finished()), this->parentWidget(), SLOT(gameStart()));
 	animation->start();
+}
+void PlayingInterface::refresh()
+{
+	qDebug() << "signal reached!\n";
+	MainWindow* temp = static_cast<MainWindow*>(this->parentWidget());
+	const GameConsole& currentConsole = temp->getConsole();
+
+	QString str;
+	str.setNum(currentConsole.sunshineLeft);
+	sunshineDisplay->setText(str);
+	qDebug() << str;
 }

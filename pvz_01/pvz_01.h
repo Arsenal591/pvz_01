@@ -14,6 +14,7 @@ class MainWindow :public QWidget
 	Q_OBJECT
 public:
 	explicit MainWindow(QWidget* parent = nullptr);
+	const GameConsole& getConsole() { return console; }
 public slots:
 	void close();
 	void startPlaying();
