@@ -37,14 +37,16 @@ void MainWindow::close()
 void MainWindow::startPlaying()
 {
 	delete currentWidget;
-	currentWidget = new PlayingInterface(this);
+	currentWidget = new PlayingInterface(this, &console);
 	currentWidget->show();
 	status = Playing;
 	QObject::connect(&console, SIGNAL(timeToShow()), currentWidget, SLOT(refresh()));
 
 	PlayingInterface* f = static_cast<PlayingInterface*>(currentWidget);
 	for (int i = 0; i < f->getCardSum(); i++)
+	{
 		QObject::connect(f->getCardShown(i), SIGNAL(cardClicked(int)), f, SLOT(dealCardClicked(int)));
+	}
 
 	QObject::connect(currentWidget, SIGNAL(doneCardClicked(int)), &console, SLOT(dealCardClicked(int)));
 	QObject::connect(currentWidget, SIGNAL(doneSunshineClicked()), &console, SLOT(dealSunshineClicked()));

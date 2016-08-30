@@ -10,8 +10,10 @@
 const QString PlayingInterface::backgroundPath = "../pvz-material/images/interface/background1.jpg";
 const QString PlayingInterface::cardBoxPath = "../pvz-material/cardbox.png";
 const QString PlayingInterface::cardPathName[] = { "../pvz-material/card_peashooter", "../pvz-material/card_sunflower", "../pvz-material/card_wallnut" };
-PlayingInterface::PlayingInterface(QWidget* parent)
+PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 {
+	this->info = t;
+
 	this->setParent(parent);
 	this->setFixedWidth(1200);
 	this->setFixedHeight(800);
@@ -43,11 +45,14 @@ PlayingInterface::PlayingInterface(QWidget* parent)
 
 void PlayingInterface::mousePressEvent(QMouseEvent* ev)
 {
-	//pay attention: 此时只需处理点地板（放置植物），其他鼠标事件均已被MyLabel捕获
+	//pay attention: 此时只需处理点地板（放置植物），其他有效鼠标事件均已被MyLabel捕获
 	if (ev->x() >= 135 && ev->x() <= 1105 && ev->y() >= 110 && ev->y() <= 760)
 	{
 		//do some stuff
+		this->info->dealPutPlant(ev->x(), ev->y());
+		return;
 	}
+	QWidget::mousePressEvent(ev);
 	//delete cardsShown[0];
 }
 

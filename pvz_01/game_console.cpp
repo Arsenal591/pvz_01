@@ -46,3 +46,11 @@ void GameConsole::dealSpecialLoop()
 {
 
 }
+
+void GameConsole::dealCardClicked(int n)
+{
+	if (cards[n]->getCost() >= sunshineLeft)
+		cardChosen = cards[n];
+	else
+		cardChosen = nullptr;
+}

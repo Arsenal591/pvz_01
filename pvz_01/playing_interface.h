@@ -13,7 +13,7 @@ class PlayingInterface :public QWidget
 protected:
 	void mousePressEvent(QMouseEvent*);
 public:
-	explicit PlayingInterface(QWidget* parent = nullptr);
+	explicit PlayingInterface(QWidget* parent = nullptr, GameConsole* = nullptr);
 	const QRect getCellRect(int x, int y) { return cellRect[x][y]; }
 	int getCardSum() { return cardsShown.size(); }
 	const MyLabel* getCardShown(int i) { return cardsShown[i]; }
@@ -30,6 +30,7 @@ signals:
 	void doneSunshineClicked();
 	//void debug();
 private:
+	GameConsole* info;
 	QPixmap backgroundImage, cardBoxImage;
 	static const QString backgroundPath, cardBoxPath;
 	static const QString cardPathName[3];
@@ -38,8 +39,8 @@ private:
 	bool ifPlantExist[5][9];
 	QLabel* sunshineDisplay;
 
-	QVector<QLabel*>plantsShown;
-	QVector<QLabel*>zombiesShown;
+	QVector<MyLabel*>plantsShown;
+	QVector<MyLabel*>zombiesShown;
 	QVector<MyLabel*>cardsShown;
 	QVector<MyLabel*>sunshineShown;
 

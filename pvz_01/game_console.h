@@ -23,7 +23,8 @@ public slots:
 	void dealNormalLoop();
 	void dealSpecialLoop();
 	void dealSunshineClicked() { sunshineLeft += 25; }
-	void dealCardClicked(int) { qDebug() << "signal reached\n"; }
+	void dealCardClicked(int);
+	void dealPutPlant(int, int);
 private:
 	int duration;//how long does this game lasts
 	int sunshineLeft;
