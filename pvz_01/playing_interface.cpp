@@ -116,6 +116,11 @@ void PlayingInterface::cardAnimation()
 void PlayingInterface::dealCardClicked(int n)
 {
 	qDebug() << "card " << n << "is picked\n";
+	emit doneCardClicked(n);
+}
+void PlayingInterface::dealSunshineClicked()
+{
+	emit doneSunshineClicked();
 }
 void PlayingInterface::refresh()
 {

@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget* parent)
 {
 	status = Begin;
 	currentWidget = new WelcomeInterface(this);
-	//currentWidget->show();
+	currentWidget->show();
 	connect();
 	playMusic();
 }
@@ -45,6 +45,9 @@ void MainWindow::startPlaying()
 	PlayingInterface* f = static_cast<PlayingInterface*>(currentWidget);
 	for (int i = 0; i < f->getCardSum(); i++)
 		QObject::connect(f->getCardShown(i), SIGNAL(cardClicked(int)), f, SLOT(dealCardClicked(int)));
+
+	QObject::connect(currentWidget, SIGNAL(doneCardClicked(int)), &console, SLOT(dealCardClicked(int)));
+	QObject::connect(currentWidget, SIGNAL(doneSunshineClicked()), &console, SLOT(dealSunshineClicked()));
 }
 
 void MainWindow::gameStart()

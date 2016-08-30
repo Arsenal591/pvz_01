@@ -23,8 +23,11 @@ public slots:
 	void refresh();
 
 	void dealCardClicked(int);
-	//void dealSunshineClicked();
+	void dealSunshineClicked();
 
+signals:
+	void doneCardClicked(int);
+	void doneSunshineClicked();
 	//void debug();
 private:
 	QPixmap backgroundImage, cardBoxImage;
