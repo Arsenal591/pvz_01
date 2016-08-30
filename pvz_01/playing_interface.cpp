@@ -20,7 +20,7 @@ PlayingInterface::PlayingInterface(QWidget* parent)
 	pal.setColor(QPalette::Background, QColor(0xff, 0xff, 0xff, 0xff));
 	sunshineDisplay->setPalette(pal);
 	//sunshineDisplay->
-	sunshineDisplay->setFont(QFont("consolas", 10));
+	sunshineDisplay->setFont(QFont("consolas", 8));
 	sunshineDisplay->show();
 
 	leadInAnimation();
