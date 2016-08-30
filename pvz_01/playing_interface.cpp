@@ -11,9 +11,40 @@ PlayingInterface::PlayingInterface(QWidget* parent)
 	this->setParent(parent);
 	this->setFixedWidth(1200);
 	this->setFixedHeight(800);
+
+
 	leadInAnimation();
 }
-
+void PlayingInterface::setCardRect()
+{
+	int yLinePos = 250;
+	for (int i = 0; i < 6; i++)
+	{
+		cardRect[i] = QRect(yLinePos, 10, 45, 63);
+		yLinePos += 57;
+	}
+}
+void PlayingInterface::setCellRect()
+{
+	int xLinePos = 110, yLinePos = 135;
+	for (int i = 0; i < 5; i++)
+	{
+		yLinePos = 135;
+		for (int j = 0; j < 10; j++)
+		{
+			int width;
+			if (j <= 8)
+				width = (j % 2) ? 105 : 110;
+			else
+				width = 95;
+			cellRect[i][j] = QRect(yLinePos, xLinePos, width, 130);
+			//qDebug() << yLinePos << ' ' << xLinePos << ' ' << width << ' ' << 130<<'\n';
+			yLinePos += width;
+		}
+		//qDebug() << "\n";
+		xLinePos += 130;
+	}
+}
 void PlayingInterface::leadInAnimation()
 {
 	backgroundImage = QPixmap(backgroundPath);
