@@ -115,7 +115,8 @@ void PlayingInterface::refresh()
 	{
 		Card* chosen = currentConsole.cards[i];
 		str = cardPathName[chosen->getType()];
-		if (currentConsole.duration - chosen->getLastUsed() >= chosen->getCd())
+		if (currentConsole.duration - chosen->getLastUsed() >= chosen->getCd()
+			&& currentConsole.sunshineLeft >= chosen->getCost())
 			str += "_1.jpg";
 		else str += "_2.jpg";
 		qDebug() << str << '\n';
