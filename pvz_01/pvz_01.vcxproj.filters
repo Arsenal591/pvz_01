@@ -126,15 +126,6 @@
     <ClInclude Include="card.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sunflower.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="wallnut.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="peashooter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="C:\Qt\Qt5.7.0\5.7\msvc2015_64\lib\libEGL.lib" />

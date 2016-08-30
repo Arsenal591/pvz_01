@@ -122,4 +122,13 @@ void PlayingInterface::refresh()
 		qDebug() << str << '\n';
 		cardsShown[i]->setPixmap(str);
 	}
+
+	//display   plants
+	//display   zombies
+	for (int i = 0; i < currentConsole.zombies.size(); i++)
+	{
+		Zombie* chosen = currentConsole.zombies[i];
+		//. . .
+		//redraw the zombies
+	}
 }
