@@ -7,6 +7,7 @@
 #include "card.h"
 #include "qvector"
 #include "qwidget"
+#include "mylabel.h"
 
 class QTimer;
 

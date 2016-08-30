@@ -41,6 +41,10 @@ void MainWindow::startPlaying()
 	currentWidget->show();
 	status = Playing;
 	QObject::connect(&console, SIGNAL(timeToShow()), currentWidget, SLOT(refresh()));
+
+	PlayingInterface* f = static_cast<PlayingInterface*>(currentWidget);
+	for (int i = 0; i < f->getCardSum(); i++)
+		QObject::connect(f->getCardShown(i), SIGNAL(cardClicked(int)), f, SLOT(dealCardClicked(int)));
 }
 
 void MainWindow::gameStart()

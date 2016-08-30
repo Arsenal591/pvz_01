@@ -5,10 +5,11 @@
 #include "qpalette.h"
 #include "pvz_01.h"
 #include "qdebug.h"
+#include "qevent.h"
 
 const QString PlayingInterface::backgroundPath = "../pvz-material/images/interface/background1.jpg";
 const QString PlayingInterface::cardBoxPath = "../pvz-material/cardbox.png";
-const QString PlayingInterface::cardPathName[] = { "../pvz-material/peashooter", "../pvz-material/sunflower", "../pvz-material/wallnut" };
+const QString PlayingInterface::cardPathName[] = { "../pvz-material/card_peashooter", "../pvz-material/card_sunflower", "../pvz-material/card_wallnut" };
 PlayingInterface::PlayingInterface(QWidget* parent)
 {
 	this->setParent(parent);
@@ -17,6 +18,8 @@ PlayingInterface::PlayingInterface(QWidget* parent)
 
 	setCardRect();
 	setCellRect();
+
+	memset(ifPlantExist, 0, sizeof(ifPlantExist));
 
 	sunshineDisplay = new QLabel(parent);
 	sunshineDisplay->setGeometry(QRect(185, 60, 30, 15));
@@ -30,14 +33,24 @@ PlayingInterface::PlayingInterface(QWidget* parent)
 
 	for (int i = 0; i < 3; i++)
 	{
-		cardsShown.push_back(new QLabel(parent));
+		cardsShown.push_back(new MyLabel(parent, card, i));
 		cardsShown[i]->setGeometry(cardRect[i]);
 		//cardsShown[i]->setPalette(pal);
 		cardsShown[i]->show();
 	}
-
 	leadInAnimation();
 }
+
+void PlayingInterface::mousePressEvent(QMouseEvent* ev)
+{
+	//pay attention: 此时只需处理点地板（放置植物），其他鼠标事件均已被MyLabel捕获
+	if (ev->x() >= 135 && ev->x() <= 1105 && ev->y() >= 110 && ev->y() <= 760)
+	{
+		//do some stuff
+	}
+	//delete cardsShown[0];
+}
+
 void PlayingInterface::setCardRect()
 {
 	int yLinePos = 250;
@@ -99,9 +112,14 @@ void PlayingInterface::cardAnimation()
 	QObject::connect(animation, SIGNAL(finished()), this->parentWidget(), SLOT(gameStart()));
 	animation->start();
 }
+
+void PlayingInterface::dealCardClicked(int n)
+{
+	qDebug() << "card " << n << "is picked\n";
+}
 void PlayingInterface::refresh()
 {
-	qDebug() << "signal reached!\n";
+	//qDebug() << "signal reached!\n";
 	MainWindow* temp = static_cast<MainWindow*>(this->parentWidget());
 	const GameConsole& currentConsole = temp->getConsole();
 
@@ -119,16 +137,27 @@ void PlayingInterface::refresh()
 			&& currentConsole.sunshineLeft >= chosen->getCost())
 			str += "_1.jpg";
 		else str += "_2.jpg";
-		qDebug() << str << '\n';
+		//qDebug() << str << '\n';
 		cardsShown[i]->setPixmap(str);
 	}
 
 	//display   plants
+	for (int i = 0; i < currentConsole.plants.size(); i++)
+	{
+		Plant* chosen = currentConsole.plants[i];
+		//redraw the plants
+	}
 	//display   zombies
 	for (int i = 0; i < currentConsole.zombies.size(); i++)
 	{
 		Zombie* chosen = currentConsole.zombies[i];
 		//. . .
 		//redraw the zombies
+	}
+
+	for (int i = 0; i < currentConsole.sunshines.size(); i++)
+	{
+		Sunshine* chosen = currentConsole.sunshines[i];
+		//redraw the sunshines
 	}
 }

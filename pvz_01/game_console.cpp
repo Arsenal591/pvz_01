@@ -38,7 +38,7 @@ void GameConsole::gameStart()
 void GameConsole::dealNormalLoop()
 {
 	duration++;
-	qDebug() << duration << '\n';
+	//qDebug() << duration << '\n';
 	//sunshineLeft += 50;
 	emit timeToShow();
 }
