@@ -31,11 +31,10 @@ public slots:
 
 	//void addZombie(int, int);
 	void addPlant(enum PLANT_TYPE,int, int);
-	//void addSunshine(int, int);
+	void addSunshine(int, int);
 
 signals:
 	void doneCardClicked(int);
-	//
 	void doneSunshineClicked(QLabel*);
 	//void debug();
 private:

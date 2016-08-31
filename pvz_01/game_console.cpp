@@ -67,11 +67,24 @@ void GameConsole::dealNormalLoop()
 	duration++;
 	//qDebug() << duration << '\n';
 	//sunshineLeft += 50;
+
+	//for()
 	emit timeToShow();
 }
 void GameConsole::dealSpecialLoop()
 {
-
+	for (int i = 0; i < plants.size(); i++)
+	{
+		if (plants[i]->type == sunshine && duration - plants[i]->lastAttack >= plants[i]->recharge 
+				&& plants[i]->ifPicked)
+		{
+			Sunshine* newSunshine = new Sunshine(plants[i]->cellx, plants[i]->celly);
+			sunshines.push_back(newSunshine);
+			plants[i]->lastAttack = duration;
+			plants[i]->ifPicked = false;
+			emit addSunshine(plants[i]->cellx, plants[i]->celly);
+		}
+	}
 }
 
 void GameConsole::dealCardClicked(int n)
@@ -80,7 +93,6 @@ void GameConsole::dealCardClicked(int n)
 		cardChosen = cards[n];
 	else
 		cardChosen = nullptr;
-	//if (cardChosen == nullptr)qDebug() << "a null card\n";
 }
 
 void GameConsole::dealSunshineClicked(MyLabel* label)
@@ -92,11 +104,8 @@ void GameConsole::dealSunshineClicked(MyLabel* label)
 
 void GameConsole::dealPutPlant(int posx, int posy)
 {
-	//检查cardchosen
 	if (cardChosen == nullptr)
 		return;
-
-	//计算对应的格子
 	int x, y;
 	bool isFound = false;
 	for (int i = 0; i < 5; i++)
@@ -111,10 +120,9 @@ void GameConsole::dealPutPlant(int posx, int posy)
 			}
 	}
 
-	//plants.insert()
 	Plant* newPlant = new Plant(cardChosen->getType(), x, y);
 	plants.push_back(newPlant);
-	//sunshine -=
+
 	sunshineLeft -= cardChosen->getCost();
 
 	//card属性修改
@@ -125,5 +133,4 @@ void GameConsole::dealPutPlant(int posx, int posy)
 	emit addPlant(oldType, x, y);
 
 	cardChosen = nullptr;
-	//qDebug() << "success\n";
 }

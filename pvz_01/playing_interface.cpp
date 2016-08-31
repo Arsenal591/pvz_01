@@ -136,14 +136,28 @@ void PlayingInterface::dealSunshineClicked(MyLabel* label)
 void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
 {
 	MyLabel* newLabel = new MyLabel(this->parentWidget(), plant);
-	//qDebug() << x << ' ' << y << '\n';
 	newLabel->QLabel::setGeometry(cellRect[x][y]);
 	plantsShown.push_back(newLabel);
-	QMovie* movie = new QMovie(plantPathName[tp] + "/1.gif");
+	newLabel->setPath(plantPathName[tp]);
+	QMovie* movie = new QMovie(newLabel->getPath() + "/1.gif");
 	newLabel->setMovie(movie);
 	movie->start();
-	//newLabel->setPixmap(QPixmap(plantPathName[tp] + "/0.gif"));
 	newLabel->show();
+}
+
+void PlayingInterface::addSunshine(int x, int y)
+{
+	MyLabel* newLabel = new MyLabel(this->parentWidget(), sunshine);
+	QRect rect = cellRect[x][y];
+	newLabel->setGeometry(QRect(rect.x() + 0.5*rect.width(), rect.y() + 0.5*rect.height(), 0.5*rect.width(), 0.5*rect.height()));
+	sunshineShown.push_back(newLabel);
+	newLabel->setPath("../pvz-material/images/interface/Sun.gif");
+	QMovie* movie = new QMovie(newLabel->getPath());
+	movie->setScaledSize(QSize(0.5*rect.width(), 0.5*rect.height()));
+	newLabel->setMovie(movie);
+	movie->start();
+	newLabel->show();
+	qDebug() << "a new sunshine born at" << x << ' ' << y << '\n';
 }
 void PlayingInterface::refresh()
 {

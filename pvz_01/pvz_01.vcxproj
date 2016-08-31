@@ -203,6 +203,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mylabel.cpp" />
+    <ClCompile Include="plant.cpp" />
     <ClCompile Include="playing_interface.cpp" />
     <ClCompile Include="pvz_01.cpp" />
     <ClCompile Include="welcome_interface.cpp" />
