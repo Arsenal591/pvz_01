@@ -79,10 +79,10 @@ void PlayingInterface::setCellRect()
 		for (int j = 0; j < 10; j++)
 		{
 			int width;
-			if (j <= 8)
+			//if (j <= 8)
 				width = (j % 2) ? 105 : 110;
-			else
-				width = 95;
+			//else
+			//	width = 95;
 			cellRect[i][j] = QRect(yLinePos, xLinePos, width, 130);
 			//qDebug() << yLinePos << ' ' << xLinePos << ' ' << width << ' ' << 130<<'\n';
 			yLinePos += width;
@@ -165,6 +165,42 @@ void PlayingInterface::addSunshine(int x, int y)
 	newLabel->show();
 }
 
+void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
+{
+	//qDebug() << "PlayingInterface::addZombie\n";
+	MyLabel* newLabel = new MyLabel(this->parentWidget(), zombie);
+	newLabel->cellx = x, newLabel->celly = y;
+	newLabel->rect = cellRect[x][y];
+	newLabel->setGeometry(cellRect[x][y]);
+
+	QString str = "../pvz-material/images/Zombies/";
+	switch (tp)
+	{
+	case normal:
+		str += "Zombie/";
+		break;
+	case bucket:
+		str += "BucketheadZombie/";
+		break;
+	case pole:
+		str += "PoleVaultingZombie/";
+		break;
+	default:
+		break;
+	}
+	str += "1.gif";
+	newLabel->setPath(str);
+	//qDebug() << str << '\n';
+
+	QMovie* newMovie = new QMovie(newLabel->getPath());
+	//newMovie->setScaledSize(QSize(cellRect[x][y].width(), cellRect[x][y].height()));
+	newLabel->setMovie(newMovie);
+	newMovie->start();
+
+	zombiesShown.push_back(newLabel);
+	newLabel->show();
+	//newLabel->setPath("../pvz-material/images/Zombies")
+}
 void PlayingInterface::deleteSunshine(MyLabel* label)
 {
 	for(int i = 0; i < sunshineShown.size(); i++)
@@ -176,11 +212,22 @@ void PlayingInterface::deleteSunshine(MyLabel* label)
 		}
 }
 
-void PlayingInterface::zombieMove(MyLabel*, int, int)
+void PlayingInterface::zombieMove(QRect ori, int tx, int ty)
 {
-
+	for (int i = 0; i < zombiesShown.size(); i++)
+	{
+		//qDebug() << "this zombie posx is" << zombiesShown[i]->rect.x() << '\n';
+		if (zombiesShown[i]->rect == ori)
+		{
+			zombiesShown[i]->rect = QRect(ori.x() - 1, ori.y(), ori.width(), ori.height());
+			zombiesShown[i]->cellx = tx;
+			zombiesShown[i]->celly = ty;
+			return;
+		}
+	}
+	//qDebug() << "sorry but find zombie failed\n";
 }
-void PlayingInterface::bulletMove(MyLabel*, int, int)
+void PlayingInterface::bulletMove(QRect, int, int)
 {
 
 }
@@ -218,9 +265,8 @@ void PlayingInterface::refresh()
 	}
 
 	//display   zombies
-	for (int i = 0; i < currentConsole.zombies.size(); i++)
+	for (int i = 0; i < zombiesShown.size(); i++)
 	{
-		Zombie* chosen = currentConsole.zombies[i];
-		//do sth
+		zombiesShown[i]->setGeometry(zombiesShown[i]->rect);
 	}
 }

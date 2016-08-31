@@ -215,6 +215,7 @@
     <ClCompile Include="playing_interface.cpp" />
     <ClCompile Include="pvz_01.cpp" />
     <ClCompile Include="welcome_interface.cpp" />
+    <ClCompile Include="zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pvz_01.h">

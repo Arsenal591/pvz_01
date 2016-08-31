@@ -10,9 +10,18 @@ bool inRect(int x, int y, QRect rect)
 
 GameConsole::GameConsole(QWidget* parent)
 {
+	srand(time(NULL));
 	this->setParent(parent);
 	duration = 0;
 	sunshineLeft = 1000;
+	level = 0;
+	zombieSum = 1;
+	memset(zombieProduceList, 0, sizeof(zombieProduceList));
+	zombieProduceList[1] = 1;
+	round = 1;
+	roundSum = 1;
+	zombieProduced = 0;
+	lastRoundFinish = -999999;
 
 	normalTimer = new QTimer(this);
 	specialTimer = new QTimer(this);
@@ -38,10 +47,10 @@ void GameConsole::setCellRect()
 		for (int j = 0; j < 10; j++)
 		{
 			int width;
-			if (j <= 8)
+			//if (j <= 8)
 				width = (j % 2) ? 105 : 110;
-			else
-				width = 95;
+			//else
+				//width = 95;
 			cellRect[i][j] = QRect(yLinePos, xLinePos, width, 130);
 			//qDebug() << yLinePos << ' ' << xLinePos << ' ' << width << ' ' << 130<<'\n';
 			yLinePos += width;
@@ -55,16 +64,51 @@ void GameConsole::connect()
 	QObject::connect(normalTimer, SIGNAL(timeout()), this, SLOT(dealNormalLoop()));
 	QObject::connect(specialTimer, SIGNAL(timeout()), this, SLOT(dealSpecialLoop()));
 }
-
 void GameConsole::gameStart()
 {
 	normalTimer->start();
 	specialTimer->start();
 }
 
+
+void GameConsole::zombiesProduce()
+{
+	if (duration < 1000)return;//还没到第一回合
+	if (round > roundSum)return;//最后一回合已经结束
+	if (duration - lastRoundFinish < 10000)//回合间的休息时间不足10s
+		return;
+	if (zombieProduced == zombieProduceList[round])//该回合已经结束
+	{
+		lastRoundFinish = duration;
+		return;
+	}
+	if (duration == 1000 || duration - lastRoundFinish == 10000)//进入下一回合
+	{
+		zombieProduced = 0;
+		round++;
+	}
+	zombieProduced++;
+	//qDebug() << "hey i am going to produce a zombie!\n";
+	int producePos = rand() % 5;//随机在第10列的某一行生产
+	
+	//此处随机挑选僵尸种类
+	int randNum = rand() % 10;
+	ZOMBIE_TYPE produceType;
+	if (randNum <= 10)
+		produceType = normal;
+	else
+	{
+
+	}
+	//qDebug() << "in " << randNum << ' ' << 9 << endl;
+	Zombie* newZombie = new Zombie(produceType, producePos, 9, cellRect[producePos][9], duration);
+	zombies.push_back(newZombie);
+	emit addZombie(produceType, producePos, 9);
+}
 void GameConsole::dealNormalLoop()
 {
-	duration+=10;
+	duration += 10;
+	dealZombiesMove();
 	//qDebug() << duration << '\n';
 	//sunshineLeft += 50;
 
@@ -73,6 +117,7 @@ void GameConsole::dealNormalLoop()
 }
 void GameConsole::dealSpecialLoop()
 {
+	zombiesProduce();
 	for (int i = 0; i < plants.size(); i++)
 	{
 		if (plants[i]->type == sunshine && duration - plants[i]->lastAttack >= plants[i]->recharge 
@@ -118,8 +163,6 @@ void GameConsole::dealSunshineClicked(MyLabel* label)
 		}
 	}
 	emit deleteSunshine(label);
-	//从QVector<Sunshine*>sunshines列表中删除对应项
-	//发出信号，使得对应的label被删除
 }
 
 void GameConsole::dealPutPlant(int posx, int posy)
@@ -155,3 +198,26 @@ void GameConsole::dealPutPlant(int posx, int posy)
 	cardChosen = nullptr;
 }
 
+void GameConsole::dealZombiesMove()
+{
+	for (int i = 0; i < zombies.size(); i++)
+	{
+		if ((duration - zombies[i]->bornTime) % zombies[i]->moveInterval)
+			continue;
+		if (zombies[i]->ifAttacking)continue;
+		if (zombies[i]->status > 1)continue;
+
+		QRect rect = zombies[i]->rect;
+		zombies[i]->rect = QRect(rect.x() - 1, rect.y(), rect.width(), rect.height());
+
+		//qDebug() << "now is " << duration << '\n';
+		//qDebug() << "my pos x is " << zombies[i]->rect.x() << '\n';
+
+		if (rect.x() + 40 < cellRect[zombies[i]->cellx][zombies[i]->celly].x())
+		{
+			zombies[i]->celly--;
+			qDebug() << "i move to cell " << zombies[i]->cellx << ' ' << zombies[i]->celly << '\n';
+		}
+		emit zombieMove(rect, zombies[i]->cellx, zombies[i]->celly);
+	}
+}

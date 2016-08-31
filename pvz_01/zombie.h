@@ -1,11 +1,27 @@
 #pragma once
-#include<qobject>
+#include <qobject>
+#include <qrect>
 
+enum ZOMBIE_TYPE{normal, bucket, pole};
 class Zombie:public QObject
 {
 	Q_OBJECT
 public:
-	//attention: 僵尸为匀速攻击
-	int hp, speed, atk;
+	Zombie(ZOMBIE_TYPE, int, int, QRect, int);
+	ZOMBIE_TYPE type;
 
+	//attention: 僵尸为匀速攻击，atk为每10毫秒的攻击力
+	int hp, atk;
+	int moveInterval;//多长时间移动一个像素
+	int status;//0 初始，1 掉脑袋, 2 死亡, 3 消失
+	bool ifAttacking;
+
+	int step;//连环动画进行到哪一步
+	int lastStepTime;//上一步的结束时间
+
+	int deadTime;//死亡时间
+
+	int cellx, celly;
+	int bornTime;
+	QRect rect;
 };

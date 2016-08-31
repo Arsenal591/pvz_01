@@ -55,12 +55,12 @@ void MainWindow::startPlaying()
 	QObject::connect(&console, SIGNAL(deletePlant(int, int)), currentWidget, SLOT(deletePlant(int, int)));
 	QObject::connect(&console, SIGNAL(deleteSunshine(MyLabel*)), currentWidget, SLOT(deleteSunshine(MyLabel*)));
 
-	QObject::connect(&console, SIGNAL(addZombie(int, int)), currentWidget, SLOT(addZombie(int, int)));
+	QObject::connect(&console, SIGNAL(addZombie(ZOMBIE_TYPE, int, int)), currentWidget, SLOT(addZombie(ZOMBIE_TYPE, int, int)));
 	QObject::connect(&console, SIGNAL(addPlant(PLANT_TYPE, int, int)), currentWidget, SLOT(addPlant(PLANT_TYPE, int, int)));
 	QObject::connect(&console, SIGNAL(addSunshine(int, int)), currentWidget, SLOT(addSunshine(int, int)));
 
-	QObject::connect(&console, SIGNAL(zombieMove(MyLabel*, int, int)), currentWidget, SLOT(zombieMove(MyLabel*, int, int)));
-	QObject::connect(&console, SIGNAL(bulletMove(MyLabel*, int, int)), currentWidget, SLOT(bulletMove(MyLabel*, int, int)));
+	QObject::connect(&console, SIGNAL(zombieMove(QRect, int, int)), currentWidget, SLOT(zombieMove(QRect, int, int)));
+	QObject::connect(&console, SIGNAL(bulletMove(QRect, int, int)), currentWidget, SLOT(bulletMove(QRect, int, int)));
 }
 
 void MainWindow::gameStart()

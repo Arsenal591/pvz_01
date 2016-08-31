@@ -29,12 +29,12 @@ public slots:
 	//void deletePlant(int, int);
 	void deleteSunshine(MyLabel*);
 
-	//void addZombie(int, int);
+	void addZombie(enum ZOMBIE_TYPE, int, int);
 	void addPlant(enum PLANT_TYPE,int, int);
 	void addSunshine(int, int);
 
-	void bulletMove(MyLabel*, int, int);
-	void zombieMove(MyLabel*, int, int);
+	void bulletMove(QRect, int, int);
+	void zombieMove(QRect, int, int);
 
 signals:
 	void doneCardClicked(int);

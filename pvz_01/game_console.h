@@ -9,6 +9,8 @@
 #include "qwidget"
 #include "mylabel.h"
 #include "qdebug.h"
+#include <cstdlib>
+#include <ctime>
 
 class QTimer;
 
@@ -26,6 +28,15 @@ public slots:
 	void dealCardClicked(int);
 	void dealPutPlant(int, int);
 private:
+	int level;//关卡
+	int zombieSum;//该关卡应当生产的僵尸总数
+	int roundSum;//该关卡的僵尸生产回合总数
+
+	int zombieProduced;//当前生产回合已经生产的僵尸总数
+	int zombieProduceList[100];
+	int round;//当前处在第几个僵尸生产回合中
+	int lastRoundFinish;//上一个生产回合结束的时间
+
 	int duration;//how long does this game lasts
 	int sunshineLeft;
 	QTimer *normalTimer, *specialTimer;
@@ -45,19 +56,19 @@ private:
 	//void dealHpOfFlowers();
 	//void dealHpOfZombies();
 	//void dealBulletsMove();
-	//void dealFlowersMove();
+	void dealZombiesMove();
 	//void sunshinesProduce();
-	//void zombiesProduce();
+	void zombiesProduce();
 signals:
 	void deleteSunshine(MyLabel*);
 	void deleteZombie(MyLabel*);
 	void deletePlant(MyLabel*);
 
 	void addSunshine(int, int);
-	void addZombie(int, int);
+	void addZombie(enum ZOMBIE_TYPE, int, int);
 	void addPlant(PLANT_TYPE,int, int);
 
-	void bulletMove(MyLabel*, int, int);
-	void zombieMove(MyLabel*, int, int);
+	void bulletMove(QRect, int, int);
+	void zombieMove(QRect, int, int);
 	void timeToShow();
 };
