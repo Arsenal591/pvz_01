@@ -151,21 +151,22 @@ void PlayingInterface::addSunshine(int x, int y)
 	MyLabel* newLabel = new MyLabel(this->parentWidget(), sunshine);
 	newLabel->cellx = x, newLabel->celly = y;
 	connect(newLabel, SIGNAL(sunshineClicked(MyLabel*)), this, SLOT(dealSunshineClicked(MyLabel*)));
+
 	QRect rect = cellRect[x][y];
 	newLabel->setGeometry(QRect(rect.x() + 0.5*rect.width(), rect.y() + 0.5*rect.height(), 0.5*rect.width(), 0.5*rect.height()));
-	sunshineShown.push_back(newLabel);
+	
 	newLabel->setPath("../pvz-material/images/interface/Sun.gif");
 	QMovie* movie = new QMovie(newLabel->getPath());
 	movie->setScaledSize(QSize(0.5*rect.width(), 0.5*rect.height()));
 	newLabel->setMovie(movie);
 	movie->start();
+
+	sunshineShown.push_back(newLabel);
 	newLabel->show();
-	//qDebug() << "a new sunshine born at" << x << ' ' << y << '\n';
 }
 
 void PlayingInterface::deleteSunshine(MyLabel* label)
 {
-	//qDebug() << "PlayingInterface::deleteSunshine\n";
 	for(int i = 0; i < sunshineShown.size(); i++)
 		if (label == sunshineShown[i])
 		{
@@ -176,7 +177,6 @@ void PlayingInterface::deleteSunshine(MyLabel* label)
 }
 void PlayingInterface::refresh()
 {
-	//qDebug() << "signal reached!\n";
 	MainWindow* temp = static_cast<MainWindow*>(this->parentWidget());
 	const GameConsole& currentConsole = temp->getConsole();
 
@@ -204,21 +204,14 @@ void PlayingInterface::refresh()
 		Plant* chosen = currentConsole.plants[i];
 		if (chosen->type == sunflower)
 		{
-
+			//do sth
 		}
-		//redraw the plants
 	}
+
 	//display   zombies
 	for (int i = 0; i < currentConsole.zombies.size(); i++)
 	{
 		Zombie* chosen = currentConsole.zombies[i];
-		//. . .
-		//redraw the zombies
-	}
-
-	for (int i = 0; i < currentConsole.sunshines.size(); i++)
-	{
-		Sunshine* chosen = currentConsole.sunshines[i];
-		//redraw the sunshines
+		//do sth
 	}
 }
