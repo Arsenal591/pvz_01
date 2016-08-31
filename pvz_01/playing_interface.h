@@ -35,6 +35,7 @@ public slots:
 
 signals:
 	void doneCardClicked(int);
+	//
 	void doneSunshineClicked(QLabel*);
 	//void debug();
 private:
