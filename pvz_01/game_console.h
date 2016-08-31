@@ -22,7 +22,7 @@ public slots:
 	void gameStart();
 	void dealNormalLoop();
 	void dealSpecialLoop();
-	void dealSunshineClicked() { sunshineLeft += 25; }
+	void dealSunshineClicked(MyLabel*);
 	void dealCardClicked(int);
 	void dealPutPlant(int, int);
 private:
@@ -37,7 +37,9 @@ private:
 	QVector<Card*>cards;
 	Card* cardChosen;
 private:
+	QRect cellRect[5][10];
 	void connect();
+	void setCellRect();
 	//void dealAttackOfBullets();
 	//void dealAttackOfZombies();
 	//void dealHpOfFlowers();
@@ -47,5 +49,12 @@ private:
 	//void sunshinesProduce();
 	//void zombiesProduce();
 signals:
+	void deleteSunshine(MyLabel*);
+	void deleteZombie(MyLabel*);
+	void deletePlant(MyLabel*);
+
+	void addSunshine(int, int);
+	void addZombie(int, int);
+	void addPlant(PLANT_TYPE,int, int);
 	void timeToShow();
 };

@@ -3,13 +3,16 @@
 #include "qlabel.h"
 #include "qmessagebox.h"
 #include "qpalette.h"
-#include "pvz_01.h"
-#include "qdebug.h"
-#include "qevent.h"
+#include "pvz_01"
+#include "qdebug"
+#include "qevent"
+#include "qmovie"
 
 const QString PlayingInterface::backgroundPath = "../pvz-material/images/interface/background1.jpg";
 const QString PlayingInterface::cardBoxPath = "../pvz-material/cardbox.png";
 const QString PlayingInterface::cardPathName[] = { "../pvz-material/card_peashooter", "../pvz-material/card_sunflower", "../pvz-material/card_wallnut" };
+const QString PlayingInterface::plantPathName[] = {"../pvz-material/images/Plants/Peashooter", "../pvz-material/images/Plants/SunFlower", "../pvz-material/images/Plants/Wallnut"};
+
 PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 {
 	this->info = t;
@@ -49,6 +52,7 @@ void PlayingInterface::mousePressEvent(QMouseEvent* ev)
 	if (ev->x() >= 135 && ev->x() <= 1105 && ev->y() >= 110 && ev->y() <= 760)
 	{
 		//do some stuff
+		qDebug() << ev->x() << ' ' << ev->y() << '\n';
 		this->info->dealPutPlant(ev->x(), ev->y());
 		return;
 	}
@@ -123,9 +127,20 @@ void PlayingInterface::dealCardClicked(int n)
 	qDebug() << "card " << n << "is picked\n";
 	emit doneCardClicked(n);
 }
-void PlayingInterface::dealSunshineClicked()
+void PlayingInterface::dealSunshineClicked(MyLabel* label)
 {
-	emit doneSunshineClicked();
+	emit doneSunshineClicked(label);
+}
+
+void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
+{
+	MyLabel* newLabel = new MyLabel(this->parentWidget(), plant);
+	//qDebug() << x << ' ' << y << '\n';
+	newLabel->QLabel::setGeometry(cellRect[x][y]);
+	plantsShown.push_back(newLabel);
+	QMovie* movie = new QMovie(plantPathName[tp] + "/0.gif");
+	//newLabel->setPixmap(QPixmap(plantPathName[tp] + "/0.gif"));
+	newLabel->show();
 }
 void PlayingInterface::refresh()
 {
