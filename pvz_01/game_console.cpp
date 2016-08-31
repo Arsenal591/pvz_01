@@ -16,7 +16,7 @@ GameConsole::GameConsole(QWidget* parent)
 
 	normalTimer = new QTimer(this);
 	specialTimer = new QTimer(this);
-	normalTimer->setInterval(1);
+	normalTimer->setInterval(10);
 	specialTimer->setInterval(1000);
 
 	cards.push_back(new Card(peashooter));
@@ -64,7 +64,7 @@ void GameConsole::gameStart()
 
 void GameConsole::dealNormalLoop()
 {
-	duration++;
+	duration+=10;
 	//qDebug() << duration << '\n';
 	//sunshineLeft += 50;
 
@@ -154,3 +154,4 @@ void GameConsole::dealPutPlant(int posx, int posy)
 
 	cardChosen = nullptr;
 }
+

@@ -56,5 +56,8 @@ signals:
 	void addSunshine(int, int);
 	void addZombie(int, int);
 	void addPlant(PLANT_TYPE,int, int);
+
+	void bulletMove(MyLabel*, int, int);
+	void zombieMove(MyLabel*, int, int);
 	void timeToShow();
 };

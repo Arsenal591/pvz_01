@@ -2,7 +2,7 @@
 #include <qevent.h>
 #include <qlabel.h>
 
-enum ELEM_TYPE{card, sunshine, plant, zombie};
+enum ELEM_TYPE{card, sunshine, plant, zombie, bullet};
 
 class MyLabel :public QLabel
 {

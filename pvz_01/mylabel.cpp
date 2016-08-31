@@ -18,6 +18,8 @@ MyLabel::MyLabel(QWidget* parent, ELEM_TYPE t, int n) :type(t), cardNum(n)
 		break;
 	case zombie:
 		QObject::connect(this, SIGNAL(mayPutPlant(int, int)), &(f->getConsole()), SLOT(dealPutPlant(int, int)));
+	case bullet:
+		QObject::connect(this, SIGNAL(mayPutPlant(int, int)), &(f->getConsole()), SLOT(dealPutPlant(int, int)));
 		break;
 	default:
 		break;
@@ -36,6 +38,9 @@ void MyLabel::mousePressEvent(QMouseEvent* ev)
 		emit sunshineClicked(this);
 		return;
 	case zombie:
+		emit mayPutPlant(ev->x() + rect.x(), ev->y() + rect.y());//坐标变换
+		return;
+	case bullet:
 		emit mayPutPlant(ev->x() + rect.x(), ev->y() + rect.y());//坐标变换
 		return;
 	default:

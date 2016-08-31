@@ -98,6 +98,12 @@
     <ClCompile Include="plant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_zombie.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_zombie.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pvz_01.h">
@@ -124,13 +130,13 @@
     <CustomBuild Include="mylabel.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="zombie.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_pvz_01.h">
       <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zombie.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sunshine.h">
       <Filter>Header Files</Filter>

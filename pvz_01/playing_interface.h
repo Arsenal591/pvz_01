@@ -33,6 +33,9 @@ public slots:
 	void addPlant(enum PLANT_TYPE,int, int);
 	void addSunshine(int, int);
 
+	void bulletMove(MyLabel*, int, int);
+	void zombieMove(MyLabel*, int, int);
+
 signals:
 	void doneCardClicked(int);
 	void doneSunshineClicked(MyLabel*);

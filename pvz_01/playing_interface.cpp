@@ -175,6 +175,15 @@ void PlayingInterface::deleteSunshine(MyLabel* label)
 			break;
 		}
 }
+
+void PlayingInterface::zombieMove(MyLabel*, int, int)
+{
+
+}
+void PlayingInterface::bulletMove(MyLabel*, int, int)
+{
+
+}
 void PlayingInterface::refresh()
 {
 	MainWindow* temp = static_cast<MainWindow*>(this->parentWidget());
