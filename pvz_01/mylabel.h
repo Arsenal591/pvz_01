@@ -7,7 +7,7 @@ enum ELEM_TYPE{card, sunshine, plant, zombie};
 class MyLabel :public QLabel
 {
 	Q_OBJECT
-private:
+public:
 	ELEM_TYPE type;
 	QString path;
 	int cardNum;//avalible if and only (type == card)
@@ -16,7 +16,7 @@ private:
 protected:
 	void mousePressEvent(QMouseEvent*);
 signals:
-	void sunshineClicked(QLabel*);
+	void sunshineClicked(MyLabel*);
 	void cardClicked(int);
 	//void resetCardChosen();
 	void mayPutPlant(int, int);

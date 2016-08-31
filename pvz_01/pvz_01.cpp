@@ -49,11 +49,11 @@ void MainWindow::startPlaying()
 	}
 
 	QObject::connect(currentWidget, SIGNAL(doneCardClicked(int)), &console, SLOT(dealCardClicked(int)));
-	QObject::connect(currentWidget, SIGNAL(doneSunshineClicked(int, int)), &console, SLOT(dealSunshineClicked(int, int)));
+	QObject::connect(currentWidget, SIGNAL(doneSunshineClicked(MyLabel*)), &console, SLOT(dealSunshineClicked(MyLabel*)));
 
 	QObject::connect(&console, SIGNAL(deleteZombie(int, int)), currentWidget, SLOT(deleteZombie(int, int)));
 	QObject::connect(&console, SIGNAL(deletePlant(int, int)), currentWidget, SLOT(deletePlant(int, int)));
-	QObject::connect(&console, SIGNAL(deleteSunshine(int, int)), currentWidget, SLOT(deleteSunshine(int, int)));
+	QObject::connect(&console, SIGNAL(deleteSunshine(MyLabel*)), currentWidget, SLOT(deleteSunshine(MyLabel*)));
 
 	QObject::connect(&console, SIGNAL(addZombie(int, int)), currentWidget, SLOT(addZombie(int, int)));
 	QObject::connect(&console, SIGNAL(addPlant(PLANT_TYPE, int, int)), currentWidget, SLOT(addPlant(PLANT_TYPE, int, int)));

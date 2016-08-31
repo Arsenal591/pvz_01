@@ -27,7 +27,7 @@ public slots:
 
 	//void deleteZombie(int, int);
 	//void deletePlant(int, int);
-	//void deleteSunshine(int, int);
+	void deleteSunshine(MyLabel*);
 
 	//void addZombie(int, int);
 	void addPlant(enum PLANT_TYPE,int, int);
@@ -35,7 +35,7 @@ public slots:
 
 signals:
 	void doneCardClicked(int);
-	void doneSunshineClicked(QLabel*);
+	void doneSunshineClicked(MyLabel*);
 	//void debug();
 private:
 	GameConsole* info;

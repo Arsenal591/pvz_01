@@ -136,6 +136,7 @@ void PlayingInterface::dealSunshineClicked(MyLabel* label)
 void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
 {
 	MyLabel* newLabel = new MyLabel(this->parentWidget(), plant);
+	newLabel->cellx = x, newLabel->celly = y;
 	newLabel->QLabel::setGeometry(cellRect[x][y]);
 	plantsShown.push_back(newLabel);
 	newLabel->setPath(plantPathName[tp]);
@@ -148,6 +149,8 @@ void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
 void PlayingInterface::addSunshine(int x, int y)
 {
 	MyLabel* newLabel = new MyLabel(this->parentWidget(), sunshine);
+	newLabel->cellx = x, newLabel->celly = y;
+	connect(newLabel, SIGNAL(sunshineClicked(MyLabel*)), this, SLOT(dealSunshineClicked(MyLabel*)));
 	QRect rect = cellRect[x][y];
 	newLabel->setGeometry(QRect(rect.x() + 0.5*rect.width(), rect.y() + 0.5*rect.height(), 0.5*rect.width(), 0.5*rect.height()));
 	sunshineShown.push_back(newLabel);
@@ -157,7 +160,19 @@ void PlayingInterface::addSunshine(int x, int y)
 	newLabel->setMovie(movie);
 	movie->start();
 	newLabel->show();
-	qDebug() << "a new sunshine born at" << x << ' ' << y << '\n';
+	//qDebug() << "a new sunshine born at" << x << ' ' << y << '\n';
+}
+
+void PlayingInterface::deleteSunshine(MyLabel* label)
+{
+	//qDebug() << "PlayingInterface::deleteSunshine\n";
+	for(int i = 0; i < sunshineShown.size(); i++)
+		if (label == sunshineShown[i])
+		{
+			delete sunshineShown[i];
+			sunshineShown.remove(i);
+			break;
+		}
 }
 void PlayingInterface::refresh()
 {
@@ -187,6 +202,10 @@ void PlayingInterface::refresh()
 	for (int i = 0; i < currentConsole.plants.size(); i++)
 	{
 		Plant* chosen = currentConsole.plants[i];
+		if (chosen->type == sunflower)
+		{
+
+		}
 		//redraw the plants
 	}
 	//display   zombies

@@ -97,7 +97,27 @@ void GameConsole::dealCardClicked(int n)
 
 void GameConsole::dealSunshineClicked(MyLabel* label)
 {
+	//qDebug() << "GameConsole::dealSunshineClicked\n";
 	sunshineLeft += 25;
+	for (int i = 0; i < sunshines.size(); i++)
+		if (sunshines[i]->cellx == label->cellx && sunshines[i]->celly == label->celly)
+		{
+			delete sunshines[i];
+			sunshines.remove(i);
+			break;
+		}
+	qDebug() << label->cellx << ' ' << label->celly << '\n';
+	for (int i = 0; i < plants.size(); i++)
+	{
+		qDebug()<<plants[i]->type<<' '<< plants[i]->cellx << ' ' << plants[i]->celly << '\n';
+		if (plants[i]->type == sunflower && plants[i]->cellx == label->cellx && plants[i]->celly == label->celly)
+		{
+			plants[i]->ifPicked = true;
+			qDebug() << "sunflower " << plants[i]->cellx << ' ' << plants[i]->celly << "is reset\n";
+			break;
+		}
+	}
+	emit deleteSunshine(label);
 	//从QVector<Sunshine*>sunshines列表中删除对应项
 	//发出信号，使得对应的label被删除
 }
