@@ -16,7 +16,7 @@ private:
 	bool ifPicked;//产生的阳光是否已经被拾起；若为false，则不能产生阳光
 	int lastPicked;//上一次被拾起的时间
 public:
-	Plant(PLANT_TYPE tp, int tx, int ty) :type(tp), lastAttack(-9999), cellx(tx), celly(ty), ifPicked(true), lastPicked(-9999) {}
+	Plant(PLANT_TYPE tp, int tx, int ty) :type(tp), lastAttack(-999999), cellx(tx), celly(ty), ifPicked(true), lastPicked(-999999) {}
 	QString getPath() { return path; }
 	//virtual void attack() = 0;
 	//virtual void draw() = 0;

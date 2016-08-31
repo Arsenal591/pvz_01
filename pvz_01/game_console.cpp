@@ -12,7 +12,7 @@ GameConsole::GameConsole(QWidget* parent)
 {
 	this->setParent(parent);
 	duration = 0;
-	sunshineLeft = 100;
+	sunshineLeft = 1000;
 
 	normalTimer = new QTimer(this);
 	specialTimer = new QTimer(this);
@@ -76,7 +76,7 @@ void GameConsole::dealSpecialLoop()
 
 void GameConsole::dealCardClicked(int n)
 {
-	if (cards[n]->getCost() >= sunshineLeft && duration - cards[n]->getLastUsed() >= cards[n]->getCd())
+	if (cards[n]->getCost() <= sunshineLeft && duration - cards[n]->getLastUsed() >= cards[n]->getCd())
 		cardChosen = cards[n];
 	else
 		cardChosen = nullptr;

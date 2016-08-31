@@ -3,10 +3,11 @@
 #include "qlabel.h"
 #include "qmessagebox.h"
 #include "qpalette.h"
-#include "pvz_01"
+#include "pvz_01.h"
 #include "qdebug"
 #include "qevent"
 #include "qmovie"
+#include "qmovie.h"
 
 const QString PlayingInterface::backgroundPath = "../pvz-material/images/interface/background1.jpg";
 const QString PlayingInterface::cardBoxPath = "../pvz-material/cardbox.png";
@@ -138,7 +139,9 @@ void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
 	//qDebug() << x << ' ' << y << '\n';
 	newLabel->QLabel::setGeometry(cellRect[x][y]);
 	plantsShown.push_back(newLabel);
-	QMovie* movie = new QMovie(plantPathName[tp] + "/0.gif");
+	QMovie* movie = new QMovie(plantPathName[tp] + "/1.gif");
+	newLabel->setMovie(movie);
+	movie->start();
 	//newLabel->setPixmap(QPixmap(plantPathName[tp] + "/0.gif"));
 	newLabel->show();
 }
