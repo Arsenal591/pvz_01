@@ -95,7 +95,7 @@ void GameConsole::zombiesProduce()
 	int randNum = rand() % 10;
 	ZOMBIE_TYPE produceType;
 	if (randNum <= 10)
-		produceType = bucket;
+		produceType = pole;
 	else
 	{
 
@@ -213,6 +213,19 @@ void GameConsole::dealZombiesMove()
 		if (zombies[i]->ifAttacking)continue;
 		if (zombies[i]->status > 1)continue;
 
+		if (zombies[i]->type == pole)
+		{
+			if ((zombies[i]->step == 1 || zombies[i]->step == 2) && duration - zombies[i]->lastStepTime >= 2500)
+			{
+				zombies[i]->step++;
+				zombies[i]->lastStepTime = duration;
+			}
+			else if (zombies[i]->step == 3)
+			{
+				zombies[i]->moveInterval = 50;
+			}
+		}
+
 		zombies[i]->rect.moveLeft(zombies[i]->rect.x() - 1);
 
 		//qDebug() << "now is " << duration << '\n';
@@ -223,7 +236,6 @@ void GameConsole::dealZombiesMove()
 			zombies[i]->celly--;
 			qDebug() << "i move to cell " << zombies[i]->cellx << ' ' << zombies[i]->celly << '\n';
 		}
-		//emit zombieMove(rect, zombies[i]->cellx, zombies[i]->celly);
 		emit zombieMove(i, zombies[i]->cellx, zombies[i]->celly);
 	}
 }
@@ -294,7 +306,7 @@ void GameConsole::dealAttackOfZombies()
 	for (int i = 0; i < zombies.size(); i++)
 	{
 		if (zombies[i]->status > 1)continue;
-		if (zombies[i]->type == pole && zombies[i]->status != 0 && zombies[i]->status != 3)//ÌøÔ¾½©Ê¬ÇÒÕıÔÚÌøÔ¾
+		if (zombies[i]->type == pole && zombies[i]->step != 0 && zombies[i]->step != 3)//ÌøÔ¾½©Ê¬ÇÒÕıÔÚÌøÔ¾
 			continue;
 		bool ifFound = false;
 		for (int j = 0; j < plants.size(); j++)
@@ -303,9 +315,18 @@ void GameConsole::dealAttackOfZombies()
 			{
 				//qDebug() << "i am attacking a plant!\n";
 				ifFound = true;
-				zombies[i]->ifAttacking = true;
-				plants[j]->hp -= zombies[i]->atk;
-				qDebug() << "i am attacked and my hp is now " << plants[j]->hp << '\n';
+				if (zombies[i]->type == pole && zombies[i]->step == 0)
+				{
+					qDebug() << "i am jumping\n";
+					zombies[i]->step = 1;
+					zombies[i]->lastStepTime = duration;
+				}
+				else
+				{
+					zombies[i]->ifAttacking = true;
+					plants[j]->hp -= zombies[i]->atk;
+					//qDebug() << "i am attacked and my hp is now " << plants[j]->hp << '\n';
+				}
 				break;
 			}
 		}

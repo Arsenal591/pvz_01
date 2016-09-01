@@ -171,7 +171,7 @@ void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 	MyLabel* newLabel = new MyLabel(this->parentWidget(), zombie);
 	newLabel->cellx = x, newLabel->celly = y;
 	newLabel->rect = cellRect[x][y];
-	newLabel->setGeometry(cellRect[x][y]);
+	//newLabel->setGeometry(cellRect[x][y]);
 
 	QString str = "../pvz-material/images/Zombies/";
 	switch (tp)
@@ -184,22 +184,20 @@ void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 		break;
 	case pole:
 		str += "PoleVaultingZombie/";
+		newLabel->rect.setWidth(newLabel->width() + 70);
 		break;
 	default:
 		break;
 	}
-	//str += "1.gif";
+	newLabel->setGeometry(newLabel->rect);
 	newLabel->setPath(str);
-	//qDebug() << str << '\n';
 
 	QMovie* newMovie = new QMovie(str+"1.gif");
-	//newMovie->setScaledSize(QSize(cellRect[x][y].width(), cellRect[x][y].height()));
 	newLabel->setMovie(newMovie);
 	newMovie->start();
 
 	zombiesShown.push_back(newLabel);
 	newLabel->show();
-	//newLabel->setPath("../pvz-material/images/Zombies")
 }
 
 void PlayingInterface::addBullet(enum BULLET_TYPE tp, int x, int y)
@@ -320,7 +318,8 @@ void PlayingInterface::refresh()
 				currentConsole.zombies[i]->type = normal;
 				zombiesShown[i]->path = "../pvz-material/images/Zombies/Zombie/";
 			}
-		}
+		}   
+
 		if (currentConsole.zombies[i]->status == 1)//µôÄÔ´ü
 		{
 			if (currentConsole.zombies[i]->ifAttacking)
@@ -333,17 +332,40 @@ void PlayingInterface::refresh()
 			if (currentConsole.zombies[i]->ifAttacking)
 				newMovie->setFileName(zombiesShown[i]->path + "2.gif");
 			else
-				newMovie->setFileName(zombiesShown[i]->path + "1.gif");
+			{
+				if(currentConsole.zombies[i]->type == pole && currentConsole.zombies[i]->step == 0)
+					newMovie->setFileName(zombiesShown[i]->path + "8.gif");
+				else
+					newMovie->setFileName(zombiesShown[i]->path + "1.gif");
+			}
 		}
 		else if (currentConsole.zombies[i]->status == 2)
 		{
 			newMovie->setFileName(zombiesShown[i]->path + "5.gif");
+		}
+
+		if (currentConsole.zombies[i]->type == pole && currentConsole.zombies[i]->step != 0)
+		{
+			if (currentConsole.zombies[i]->step == 1)
+				newMovie->setFileName(zombiesShown[i]->path + "6.gif");
+			else if (currentConsole.zombies[i]->step == 2)
+			{
+				newMovie->setFileName(zombiesShown[i]->path + "7.gif");
+				if(currentConsole.duration == currentConsole.zombies[i]->lastStepTime)
+					zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 50);
+			}
+			else 
+			{
+				if (currentConsole.duration == currentConsole.zombies[i]->lastStepTime)
+					zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 20);
+			}
 		}
 		if (oldMovie->fileName() != newMovie->fileName())
 		{
 			zombiesShown[i]->setMovie(newMovie);
 			newMovie->start();
 		}
+
 		if(currentConsole.zombies[i]->status != 2)
 			zombiesShown[i]->setGeometry(zombiesShown[i]->rect);
 		else
