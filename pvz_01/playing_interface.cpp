@@ -336,7 +336,13 @@ void PlayingInterface::refresh()
 			zombiesShown[i]->setMovie(newMovie);
 			newMovie->start();
 		}
-		zombiesShown[i]->setGeometry(zombiesShown[i]->rect);
+		if(currentConsole.zombies[i]->status != 2)
+			zombiesShown[i]->setGeometry(zombiesShown[i]->rect);
+		else
+		{
+			QRect rect = zombiesShown[i]->rect;
+			zombiesShown[i]->setGeometry(rect.x() - 60, rect.y(), rect.width() + 60, rect.height());
+		}
 	}
 
 	//display bullets
