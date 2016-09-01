@@ -313,6 +313,14 @@ void PlayingInterface::refresh()
 	{
 		QMovie* newMovie = new QMovie;
 		QMovie* oldMovie = zombiesShown[i]->movie();
+		if (currentConsole.zombies[i]->type == bucket)
+		{
+			if (currentConsole.zombies[i]->hp <= 270)
+			{
+				currentConsole.zombies[i]->type = normal;
+				zombiesShown[i]->path = "../pvz-material/images/Zombies/Zombie/";
+			}
+		}
 		if (currentConsole.zombies[i]->status == 1)//µôÄÔ´ü
 		{
 			if (currentConsole.zombies[i]->ifAttacking)

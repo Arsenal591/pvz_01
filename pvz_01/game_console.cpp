@@ -95,7 +95,7 @@ void GameConsole::zombiesProduce()
 	int randNum = rand() % 10;
 	ZOMBIE_TYPE produceType;
 	if (randNum <= 10)
-		produceType = normal;
+		produceType = bucket;
 	else
 	{
 
@@ -360,7 +360,7 @@ void GameConsole::dealHpOfZombies()
 		{
 			if (zombies[i]->type == ZOMBIE_TYPE::normal)
 			{
-				if (zombies[i]->hp <= 30)
+				if (zombies[i]->hp <= 70)
 					zombies[i]->status = 1;
 			}
 			if (zombies[i]->type == ZOMBIE_TYPE::bucket)
