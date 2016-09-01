@@ -28,6 +28,7 @@ public slots:
 	//void deleteZombie(int, int);
 	//void deletePlant(int, int);
 	void deleteSunshine(MyLabel*);
+	void deleteBullet(int);
 
 	void addZombie(enum ZOMBIE_TYPE, int, int);
 	void addPlant(enum PLANT_TYPE,int, int);

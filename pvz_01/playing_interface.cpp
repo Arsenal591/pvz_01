@@ -237,6 +237,11 @@ void PlayingInterface::deleteSunshine(MyLabel* label)
 			break;
 		}
 }
+void PlayingInterface::deleteBullet(int rank)
+{
+	delete bulletsShown[rank];
+	bulletsShown.remove(rank);
+}
 
 void PlayingInterface::zombieMove(int rank, int tx, int ty)
 {

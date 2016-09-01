@@ -52,10 +52,10 @@ private:
 	void connect();
 	void setCellRect();
 	void dealAttackOfPlants();
-	//void dealAttackOfBullets();
+	void dealAttackOfBullets();
 	//void dealAttackOfZombies();
 	//void dealHpOfFlowers();
-	//void dealHpOfZombies();
+	void dealHpOfZombies();
 	void dealBulletsMove();
 	void dealZombiesMove();
 	//void sunshinesProduce();
@@ -64,6 +64,7 @@ signals:
 	void deleteSunshine(MyLabel*);
 	void deleteZombie(MyLabel*);
 	void deletePlant(MyLabel*);
+	void deleteBullet(int);
 
 	void addSunshine(int, int);
 	void addZombie(enum ZOMBIE_TYPE, int, int);

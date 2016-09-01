@@ -11,4 +11,5 @@ public:
 	int atk;
 	BULLET_TYPE type;
 	int moveInterval;
+	int cellx;
 };

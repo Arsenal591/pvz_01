@@ -109,6 +109,7 @@ void GameConsole::dealNormalLoop()
 {
 	duration += 10;
 	dealAttackOfPlants();
+	dealAttackOfBullets();
 	dealBulletsMove();
 	dealZombiesMove();
 	//qDebug() << duration << '\n';
@@ -249,6 +250,7 @@ void GameConsole::dealAttackOfPlants()
 			if (duration - plants[i]->lastAttack < plants[i]->recharge)break;
 			Bullet* newBullet = new Bullet(green, QRect(rect.x() + 60, rect.y() + 30, 25, 25));
 			newBullet->bornTime = duration;
+			newBullet->cellx = plants[i]->cellx;
 			plants[i]->lastAttack = duration;
 			bullets.push_back(newBullet);
 			emit addBullet(green, plants[i]->cellx, plants[i]->celly);
@@ -257,5 +259,36 @@ void GameConsole::dealAttackOfPlants()
 		default:
 			break;
 		}
+	}
+}
+void GameConsole::dealAttackOfBullets()
+{
+	int i = 0;
+	while (i < bullets.size())
+	{
+		bool ifAttack = false;
+		//qDebug() << "this bullet posx is" << bullets[i]->rect.x() << '\n';
+		for (int j = 0; j < zombies.size(); j++)
+		{
+			//if (i >= bullets.size() || j >= zombies.size())
+			//{
+			//	qDebug() << "out of range\n";
+			//	break;
+			//}
+			//qDebug() << "this zombie posx is" << zombies[i]->rect.x() << '\n';
+			if ((bullets[i]->rect.x() + bullets[i]->rect.width() - 20 > zombies[j]->rect.x())
+				&& (bullets[i]->rect.x() < zombies[j]->rect.x() + zombies[j]->rect.width()) 
+				&& (bullets[i]->cellx == zombies[j]->cellx))
+			{
+				zombies[j]->hp -= bullets[i]->atk;
+				qDebug() << "i am attacked and my hp is now " << zombies[j]->hp << '\n';
+				delete bullets[i];
+				bullets.remove(i);
+				emit deleteBullet(i);
+				ifAttack = true;
+				break;
+			}
+		}
+		if (!ifAttack)i++;
 	}
 }
