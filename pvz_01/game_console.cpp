@@ -15,9 +15,9 @@ GameConsole::GameConsole(QWidget* parent)
 	duration = 0;
 	sunshineLeft = 2000;
 	level = 0;
-	zombieSum = 10;
+	zombieSum = 3;
 	memset(zombieProduceList, 0, sizeof(zombieProduceList));
-	zombieProduceList[1] = 10;
+	zombieProduceList[1] = 3;
 	round = 1;
 	roundSum = 1;
 	zombieProduced = 0;
@@ -93,6 +93,7 @@ void GameConsole::zombiesProduce()
 	
 	//此处随机挑选僵尸种类
 	int randNum = rand() % 10;
+	qDebug() << "randdom is " << randNum << '\n';
 	ZOMBIE_TYPE produceType;
 	if (randNum <= 5)
 		produceType = normal;
