@@ -111,6 +111,8 @@ void GameConsole::dealNormalLoop()
 	dealAttackOfPlants();
 	dealAttackOfBullets();
 	dealAttackOfZombies();
+	dealHpOfPlants();
+	dealHpOfZombies();
 	dealBulletsMove();
 	dealZombiesMove();
 	//qDebug() << duration << '\n';
@@ -276,7 +278,7 @@ void GameConsole::dealAttackOfBullets()
 				&& (bullets[i]->cellx == zombies[j]->cellx))
 			{
 				zombies[j]->hp -= bullets[i]->atk;
-				qDebug() << "i am attacked and my hp is now " << zombies[j]->hp << '\n';
+				//qDebug() << "i am attacked and my hp is now " << zombies[j]->hp << '\n';
 				delete bullets[i];
 				bullets.remove(i);
 				emit deleteBullet(i);
@@ -299,13 +301,73 @@ void GameConsole::dealAttackOfZombies()
 		{
 			if (zombies[i]->cellx == plants[j]->cellx && zombies[i]->celly == plants[j]->celly)
 			{
-				qDebug() << "i am attacking a plant!\n";
+				//qDebug() << "i am attacking a plant!\n";
 				ifFound = true;
 				zombies[i]->ifAttacking = true;
 				plants[j]->hp -= zombies[i]->atk;
+				qDebug() << "i am attacked and my hp is now " << plants[j]->hp << '\n';
 				break;
 			}
 		}
 		if (!ifFound)zombies[i]->ifAttacking = false;
+	}
+}
+
+void GameConsole::dealHpOfPlants()
+{
+	int i = 0;
+	while (i < plants.size())
+	{
+		bool ifDead = (plants[i]->hp <= 0);
+		if (ifDead)
+		{
+			delete plants[i];
+			plants.remove(i);
+			emit deletePlant(i);
+		}
+		else i++;
+	}
+}
+
+void GameConsole::dealHpOfZombies()
+{
+	int i = 0;
+	while (i < zombies.size())
+	{
+		if (zombies[i]->status == 3)
+		{
+			delete zombies[i];
+			zombies.remove(i);
+			emit deleteZombie(i);
+			continue;
+		}
+		bool ifDead = (zombies[i]->hp <= 0);
+		if (ifDead)
+		{
+			if (zombies[i]->status != 2)
+			{
+				zombies[i]->status = 2;
+				zombies[i]->deadTime = duration;
+			}
+			else
+			{
+				if (duration - zombies[i]->deadTime >= 2000)
+					zombies[i]->status = 3;
+			}
+
+		}
+		else 
+		{
+			if (zombies[i]->type == ZOMBIE_TYPE::normal)
+			{
+				if (zombies[i]->hp <= 30)
+					zombies[i]->status = 1;
+			}
+			if (zombies[i]->type == ZOMBIE_TYPE::bucket)
+			{
+
+			}
+		}
+		i++;
 	}
 }

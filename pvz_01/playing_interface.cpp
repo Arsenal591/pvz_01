@@ -242,6 +242,16 @@ void PlayingInterface::deleteBullet(int rank)
 	delete bulletsShown[rank];
 	bulletsShown.remove(rank);
 }
+void PlayingInterface::deleteZombie(int rank)
+{
+	delete zombiesShown[rank];
+	zombiesShown.remove(rank);
+}
+void PlayingInterface::deletePlant(int rank)
+{
+	delete plantsShown[rank];
+	plantsShown.remove(rank);
+}
 
 void PlayingInterface::zombieMove(int rank, int tx, int ty)
 {
@@ -317,7 +327,10 @@ void PlayingInterface::refresh()
 			else
 				newMovie->setFileName(zombiesShown[i]->path + "1.gif");
 		}
-
+		else if (currentConsole.zombies[i]->status == 2)
+		{
+			newMovie->setFileName(zombiesShown[i]->path + "5.gif");
+		}
 		if (oldMovie->fileName() != newMovie->fileName())
 		{
 			zombiesShown[i]->setMovie(newMovie);

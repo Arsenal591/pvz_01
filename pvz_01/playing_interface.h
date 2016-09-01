@@ -25,8 +25,8 @@ public slots:
 	void dealCardClicked(int);
 	void dealSunshineClicked(MyLabel*);
 
-	//void deleteZombie(int, int);
-	//void deletePlant(int, int);
+	void deleteZombie(int);
+	void deletePlant(int);
 	void deleteSunshine(MyLabel*);
 	void deleteBullet(int);
 

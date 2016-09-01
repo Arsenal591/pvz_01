@@ -54,7 +54,7 @@ private:
 	void dealAttackOfPlants();
 	void dealAttackOfBullets();
 	void dealAttackOfZombies();
-	//void dealHpOfFlowers();
+	void dealHpOfPlants();
 	void dealHpOfZombies();
 	void dealBulletsMove();
 	void dealZombiesMove();
@@ -62,8 +62,8 @@ private:
 	void zombiesProduce();
 signals:
 	void deleteSunshine(MyLabel*);
-	void deleteZombie(MyLabel*);
-	void deletePlant(MyLabel*);
+	void deleteZombie(int);
+	void deletePlant(int);
 	void deleteBullet(int);
 
 	void addSunshine(int, int);
