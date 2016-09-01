@@ -68,7 +68,8 @@ signals:
 	void addZombie(enum ZOMBIE_TYPE, int, int);
 	void addPlant(PLANT_TYPE,int, int);
 
-	void bulletMove(QRect, int, int);
-	void zombieMove(QRect, int, int);
+	//void bulletMove(QRect, int, int);
+	//void zombieMove(QRect, int, int);
+	void zombieMove(int, int, int);
 	void timeToShow();
 };

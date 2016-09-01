@@ -59,8 +59,8 @@ void MainWindow::startPlaying()
 	QObject::connect(&console, SIGNAL(addPlant(PLANT_TYPE, int, int)), currentWidget, SLOT(addPlant(PLANT_TYPE, int, int)));
 	QObject::connect(&console, SIGNAL(addSunshine(int, int)), currentWidget, SLOT(addSunshine(int, int)));
 
-	QObject::connect(&console, SIGNAL(zombieMove(QRect, int, int)), currentWidget, SLOT(zombieMove(QRect, int, int)));
-	QObject::connect(&console, SIGNAL(bulletMove(QRect, int, int)), currentWidget, SLOT(bulletMove(QRect, int, int)));
+	QObject::connect(&console, SIGNAL(zombieMove(int, int, int)), currentWidget, SLOT(zombieMove(int, int, int)));
+	QObject::connect(&console, SIGNAL(bulletMove(int, int, int)), currentWidget, SLOT(bulletMove(int, int, int)));
 }
 
 void MainWindow::gameStart()

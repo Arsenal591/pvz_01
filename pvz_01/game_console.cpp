@@ -207,17 +207,17 @@ void GameConsole::dealZombiesMove()
 		if (zombies[i]->ifAttacking)continue;
 		if (zombies[i]->status > 1)continue;
 
-		QRect rect = zombies[i]->rect;
-		zombies[i]->rect = QRect(rect.x() - 1, rect.y(), rect.width(), rect.height());
+		zombies[i]->rect.moveLeft(zombies[i]->rect.x() - 1);
 
 		//qDebug() << "now is " << duration << '\n';
 		//qDebug() << "my pos x is " << zombies[i]->rect.x() << '\n';
 
-		if (rect.x() + 40 < cellRect[zombies[i]->cellx][zombies[i]->celly].x())
+		if (zombies[i]->rect.x() + 40 < cellRect[zombies[i]->cellx][zombies[i]->celly].x())
 		{
 			zombies[i]->celly--;
 			qDebug() << "i move to cell " << zombies[i]->cellx << ' ' << zombies[i]->celly << '\n';
 		}
-		emit zombieMove(rect, zombies[i]->cellx, zombies[i]->celly);
+		//emit zombieMove(rect, zombies[i]->cellx, zombies[i]->celly);
+		emit zombieMove(i, zombies[i]->cellx, zombies[i]->celly);
 	}
 }

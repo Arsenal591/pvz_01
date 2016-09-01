@@ -212,22 +212,25 @@ void PlayingInterface::deleteSunshine(MyLabel* label)
 		}
 }
 
-void PlayingInterface::zombieMove(QRect ori, int tx, int ty)
+void PlayingInterface::zombieMove(int rank, int tx, int ty)
 {
-	for (int i = 0; i < zombiesShown.size(); i++)
-	{
+	zombiesShown[rank]->rect.moveLeft(zombiesShown[rank]->rect.x() - 1);
+	zombiesShown[rank]->cellx = tx;
+	zombiesShown[rank]->celly = ty;
+	//for (int i = 0; i < zombiesShown.size(); i++)
+	//{
 		//qDebug() << "this zombie posx is" << zombiesShown[i]->rect.x() << '\n';
-		if (zombiesShown[i]->rect == ori)
-		{
-			zombiesShown[i]->rect = QRect(ori.x() - 1, ori.y(), ori.width(), ori.height());
-			zombiesShown[i]->cellx = tx;
-			zombiesShown[i]->celly = ty;
-			return;
-		}
-	}
+		//if (zombiesShown[i]->rect == ori)
+		//{
+			//zombiesShown[i]->rect = QRect(ori.x() - 1, ori.y(), ori.width(), ori.height());
+			//zombiesShown[i]->cellx = tx;
+			//zombiesShown[i]->celly = ty;
+			//return;
+		//}
+	//}
 	//qDebug() << "sorry but find zombie failed\n";
 }
-void PlayingInterface::bulletMove(QRect, int, int)
+void PlayingInterface::bulletMove(int, int, int)
 {
 
 }
