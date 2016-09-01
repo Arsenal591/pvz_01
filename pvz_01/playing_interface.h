@@ -32,8 +32,9 @@ public slots:
 	void addZombie(enum ZOMBIE_TYPE, int, int);
 	void addPlant(enum PLANT_TYPE,int, int);
 	void addSunshine(int, int);
+	void addBullet(enum BULLET_TYPE, int, int);
 
-	void bulletMove(int, int, int);
+	void bulletMove(int);
 	void zombieMove(int, int, int);
 
 signals:
@@ -55,6 +56,7 @@ private:
 	QVector<MyLabel*>zombiesShown;
 	QVector<MyLabel*>cardsShown;
 	QVector<MyLabel*>sunshineShown;
+	QVector<MyLabel*>bulletsShown;
 
 	void setCardRect();
 	void setCellRect();

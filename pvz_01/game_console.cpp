@@ -108,6 +108,8 @@ void GameConsole::zombiesProduce()
 void GameConsole::dealNormalLoop()
 {
 	duration += 10;
+	dealAttackOfPlants();
+	dealBulletsMove();
 	dealZombiesMove();
 	//qDebug() << duration << '\n';
 	//sunshineLeft += 50;
@@ -219,5 +221,41 @@ void GameConsole::dealZombiesMove()
 		}
 		//emit zombieMove(rect, zombies[i]->cellx, zombies[i]->celly);
 		emit zombieMove(i, zombies[i]->cellx, zombies[i]->celly);
+	}
+}
+void GameConsole::dealBulletsMove()
+{
+	for (int i = 0; i < bullets.size(); i++)
+	{
+		if ((duration - bullets[i]->bornTime) % bullets[i]->moveInterval)
+			continue;
+		bullets[i]->rect.moveLeft(bullets[i]->rect.x() + 1);
+		emit bulletMove(i);
+	}
+}
+void GameConsole::dealAttackOfPlants()
+{
+	for (int i = 0; i < plants.size(); i++)
+	{
+		QRect rect = cellRect[plants[i]->cellx][plants[i]->celly];
+		switch (plants[i]->type)
+		{
+		case wallnut:
+			break;
+		case sunflower:
+			break;
+		case peashooter:
+		{
+			if (duration - plants[i]->lastAttack < plants[i]->recharge)break;
+			Bullet* newBullet = new Bullet(green, QRect(rect.x() + 60, rect.y() + 30, 25, 25));
+			newBullet->bornTime = duration;
+			plants[i]->lastAttack = duration;
+			bullets.push_back(newBullet);
+			emit addBullet(green, plants[i]->cellx, plants[i]->celly);
+			break; 
+		}
+		default:
+			break;
+		}
 	}
 }

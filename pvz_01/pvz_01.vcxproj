@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bullet.cpp" />
     <ClCompile Include="card.cpp" />
     <ClCompile Include="game_console.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_game_console.cpp">

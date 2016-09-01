@@ -51,11 +51,12 @@ private:
 	QRect cellRect[5][10];
 	void connect();
 	void setCellRect();
+	void dealAttackOfPlants();
 	//void dealAttackOfBullets();
 	//void dealAttackOfZombies();
 	//void dealHpOfFlowers();
 	//void dealHpOfZombies();
-	//void dealBulletsMove();
+	void dealBulletsMove();
 	void dealZombiesMove();
 	//void sunshinesProduce();
 	void zombiesProduce();
@@ -67,9 +68,11 @@ signals:
 	void addSunshine(int, int);
 	void addZombie(enum ZOMBIE_TYPE, int, int);
 	void addPlant(PLANT_TYPE,int, int);
+	void addBullet(enum BULLET_TYPE, int, int);
 
 	//void bulletMove(QRect, int, int);
 	//void zombieMove(QRect, int, int);
 	void zombieMove(int, int, int);
+	void bulletMove(int);
 	void timeToShow();
 };

@@ -201,6 +201,32 @@ void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 	newLabel->show();
 	//newLabel->setPath("../pvz-material/images/Zombies")
 }
+
+void PlayingInterface::addBullet(enum BULLET_TYPE tp, int x, int y)
+{
+	MyLabel* newLabel = new MyLabel(parentWidget(), bullet);
+	newLabel->rect = QRect(cellRect[x][y].x() + 60, cellRect[x][y].y() + 30, 25, 25);
+	newLabel->setGeometry(newLabel->rect);
+	QString str;
+	switch (tp)
+	{
+	case normal:
+		str = "../pvz-material/images/Plants/PB00.gif";
+		break;
+	case fire:
+		break;
+	case ice:
+		break;
+	default:
+		break;
+	}
+	newLabel->setPath(str);
+	QMovie* newMovie = new QMovie(newLabel->getPath());
+	newLabel->setMovie(newMovie);
+	newMovie->start();
+	bulletsShown.push_back(newLabel);
+	newLabel->show();
+}
 void PlayingInterface::deleteSunshine(MyLabel* label)
 {
 	for(int i = 0; i < sunshineShown.size(); i++)
@@ -230,9 +256,9 @@ void PlayingInterface::zombieMove(int rank, int tx, int ty)
 	//}
 	//qDebug() << "sorry but find zombie failed\n";
 }
-void PlayingInterface::bulletMove(int, int, int)
+void PlayingInterface::bulletMove(int rank)
 {
-
+	bulletsShown[rank]->rect.moveLeft(bulletsShown[rank]->x() + 1);
 }
 void PlayingInterface::refresh()
 {
@@ -268,8 +294,14 @@ void PlayingInterface::refresh()
 	}
 
 	//display   zombies
-	for (int i = 0; i < zombiesShown.size(); i++)
+	for (int i = 0; i < currentConsole.zombies.size(); i++)
 	{
 		zombiesShown[i]->setGeometry(zombiesShown[i]->rect);
+	}
+
+	//display bullets
+	for (int i = 0; i < currentConsole.bullets.size(); i++)
+	{
+		bulletsShown[i]->setGeometry(bulletsShown[i]->rect);
 	}
 }
