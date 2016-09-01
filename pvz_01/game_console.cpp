@@ -110,6 +110,7 @@ void GameConsole::dealNormalLoop()
 	duration += 10;
 	dealAttackOfPlants();
 	dealAttackOfBullets();
+	dealAttackOfZombies();
 	dealBulletsMove();
 	dealZombiesMove();
 	//qDebug() << duration << '\n';
@@ -270,14 +271,8 @@ void GameConsole::dealAttackOfBullets()
 		//qDebug() << "this bullet posx is" << bullets[i]->rect.x() << '\n';
 		for (int j = 0; j < zombies.size(); j++)
 		{
-			//if (i >= bullets.size() || j >= zombies.size())
-			//{
-			//	qDebug() << "out of range\n";
-			//	break;
-			//}
-			//qDebug() << "this zombie posx is" << zombies[i]->rect.x() << '\n';
-			if ((bullets[i]->rect.x() + bullets[i]->rect.width() - 20 > zombies[j]->rect.x())
-				&& (bullets[i]->rect.x() < zombies[j]->rect.x() + zombies[j]->rect.width()) 
+			if ((bullets[i]->rect.x() + bullets[i]->rect.width() - 25 > zombies[j]->rect.x())
+				&& (bullets[i]->rect.x() < zombies[j]->rect.x() + zombies[j]->rect.width() - 25) 
 				&& (bullets[i]->cellx == zombies[j]->cellx))
 			{
 				zombies[j]->hp -= bullets[i]->atk;
@@ -290,5 +285,27 @@ void GameConsole::dealAttackOfBullets()
 			}
 		}
 		if (!ifAttack)i++;
+	}
+}
+void GameConsole::dealAttackOfZombies()
+{
+	for (int i = 0; i < zombies.size(); i++)
+	{
+		if (zombies[i]->status > 1)continue;
+		if (zombies[i]->type == pole && zombies[i]->status != 0 && zombies[i]->status != 3)//ÌøÔ¾½©Ê¬ÇÒÕýÔÚÌøÔ¾
+			continue;
+		bool ifFound = false;
+		for (int j = 0; j < plants.size(); j++)
+		{
+			if (zombies[i]->cellx == plants[j]->cellx && zombies[i]->celly == plants[j]->celly)
+			{
+				qDebug() << "i am attacking a plant!\n";
+				ifFound = true;
+				zombies[i]->ifAttacking = true;
+				plants[j]->hp -= zombies[i]->atk;
+				break;
+			}
+		}
+		if (!ifFound)zombies[i]->ifAttacking = false;
 	}
 }

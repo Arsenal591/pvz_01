@@ -188,11 +188,11 @@ void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 	default:
 		break;
 	}
-	str += "1.gif";
+	//str += "1.gif";
 	newLabel->setPath(str);
 	//qDebug() << str << '\n';
 
-	QMovie* newMovie = new QMovie(newLabel->getPath());
+	QMovie* newMovie = new QMovie(str+"1.gif");
 	//newMovie->setScaledSize(QSize(cellRect[x][y].width(), cellRect[x][y].height()));
 	newLabel->setMovie(newMovie);
 	newMovie->start();
@@ -301,6 +301,28 @@ void PlayingInterface::refresh()
 	//display   zombies
 	for (int i = 0; i < currentConsole.zombies.size(); i++)
 	{
+		QMovie* newMovie = new QMovie;
+		QMovie* oldMovie = zombiesShown[i]->movie();
+		if (currentConsole.zombies[i]->status == 1)//µôÄÔ´ü
+		{
+			if (currentConsole.zombies[i]->ifAttacking)
+				newMovie->setFileName(zombiesShown[i]->path + "4.gif");
+			else
+				newMovie->setFileName(zombiesShown[i]->path + "3.gif");
+		}
+		else if (currentConsole.zombies[i]->status == 0)
+		{
+			if (currentConsole.zombies[i]->ifAttacking)
+				newMovie->setFileName(zombiesShown[i]->path + "2.gif");
+			else
+				newMovie->setFileName(zombiesShown[i]->path + "1.gif");
+		}
+
+		if (oldMovie->fileName() != newMovie->fileName())
+		{
+			zombiesShown[i]->setMovie(newMovie);
+			newMovie->start();
+		}
 		zombiesShown[i]->setGeometry(zombiesShown[i]->rect);
 	}
 

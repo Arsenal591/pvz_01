@@ -16,7 +16,7 @@ public:
 	int status;//0 初始，1 掉脑袋, 2 死亡, 3 消失
 	bool ifAttacking;
 
-	int step;//连环动画进行到哪一步
+	int step;//跳跃动画进行到哪一步 0 未开始 1 第一步 2 第二步 3 已经结束
 	int lastStepTime;//上一步的结束时间
 
 	int deadTime;//死亡时间

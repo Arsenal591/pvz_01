@@ -53,7 +53,7 @@ private:
 	void setCellRect();
 	void dealAttackOfPlants();
 	void dealAttackOfBullets();
-	//void dealAttackOfZombies();
+	void dealAttackOfZombies();
 	//void dealHpOfFlowers();
 	void dealHpOfZombies();
 	void dealBulletsMove();
