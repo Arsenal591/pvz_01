@@ -13,11 +13,11 @@ GameConsole::GameConsole(QWidget* parent)
 	srand(time(NULL));
 	this->setParent(parent);
 	duration = 0;
-	sunshineLeft = 1000;
+	sunshineLeft = 2000;
 	level = 0;
-	zombieSum = 1;
+	zombieSum = 10;
 	memset(zombieProduceList, 0, sizeof(zombieProduceList));
-	zombieProduceList[1] = 1;
+	zombieProduceList[1] = 10;
 	round = 1;
 	roundSum = 1;
 	zombieProduced = 0;
@@ -94,12 +94,11 @@ void GameConsole::zombiesProduce()
 	//此处随机挑选僵尸种类
 	int randNum = rand() % 10;
 	ZOMBIE_TYPE produceType;
-	if (randNum <= 10)
-		produceType = pole;
-	else
-	{
-
-	}
+	if (randNum <= 5)
+		produceType = normal;
+	else if (randNum <= 7)
+		produceType = bucket;
+	else produceType = pole;
 	//qDebug() << "in " << randNum << ' ' << 9 << endl;
 	Zombie* newZombie = new Zombie(produceType, producePos, 9, cellRect[producePos][9], duration);
 	zombies.push_back(newZombie);
@@ -215,7 +214,7 @@ void GameConsole::dealZombiesMove()
 
 		if (zombies[i]->type == pole)
 		{
-			if ((zombies[i]->step == 1 || zombies[i]->step == 2) && duration - zombies[i]->lastStepTime >= 2000)
+			if ((zombies[i]->step == 1 || zombies[i]->step == 2) && duration - zombies[i]->lastStepTime >= 2500)
 			{
 				zombies[i]->step++;
 				zombies[i]->lastStepTime = duration;
