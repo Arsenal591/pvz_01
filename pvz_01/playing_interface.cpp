@@ -130,11 +130,13 @@ void PlayingInterface::cardAnimation()
 }
 void PlayingInterface::gameOver(bool check)
 {
-	QString str = "The winner is ";
-	check ? str += "human " : str += "zombies ";
-	str += "\n";
-	QMessageBox box(QMessageBox::NoIcon, "result", str);
-	box.exec();
+	QString str;
+	if (check == true)
+		str = QStringLiteral("恭喜你通过本关！");
+	else str = QStringLiteral("僵尸吃掉了你的脑子");
+	QMessageBox box(QMessageBox::Information, QStringLiteral("提示"), str, QMessageBox::Yes);
+	if (box.exec() == QMessageBox::Yes)
+		emit gameReturn();
 }
 
 void PlayingInterface::dealCardClicked(int n)

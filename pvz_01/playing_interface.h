@@ -43,6 +43,7 @@ public slots:
 signals:
 	void doneCardClicked(int);
 	void doneSunshineClicked(MyLabel*);
+	void gameReturn();
 	//void debug();
 private:
 	GameConsole* info;

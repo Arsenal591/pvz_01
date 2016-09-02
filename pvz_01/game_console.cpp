@@ -85,6 +85,7 @@ bool GameConsole::ifGameOver()
 	if (zombies.size() == 0 && round == roundSum && zombieProduced == zombieProduceList[round])
 	{
 		ifHumanWin = true;
+		level++;
 		return true;
 	}
 	return false;

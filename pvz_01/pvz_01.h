@@ -20,12 +20,14 @@ public slots:
 	void close();
 	void startPlaying();
 	void gameStart();
+	void gameReturn();
+	void gameContinue();
 signals:
-
 private:
 	enum GAME_STATUS { Begin, Playing, About, Thanks, Setting }status;
 	GameConsole console;
 	QWidget* currentWidget;
+	QWidget* historyWidget;
 	QMediaPlayer* player;
 
 	void playMusic();

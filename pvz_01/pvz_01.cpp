@@ -4,12 +4,14 @@
 #include <qmediaplayer>
 #include <qmediaplaylist>
 #include <qsound>
+#include <qmessagebox>
 
 MainWindow::MainWindow(QWidget* parent)
 {
 	status = Begin;
 	currentWidget = new WelcomeInterface(this);
 	currentWidget->show();
+	historyWidget = nullptr;
 	connect();
 	playMusic();
 }
@@ -36,11 +38,26 @@ void MainWindow::close()
 
 void MainWindow::startPlaying()
 {
+	status = Playing;
+
+	if (historyWidget != nullptr)
+	{
+		QMessageBox box(QMessageBox::Question, QStringLiteral("提示"), QStringLiteral("是否想要继续从前的回合？\n"), QMessageBox::Ok| QMessageBox::No);
+		if (box.exec() == QMessageBox::Ok)
+		{
+			gameContinue();
+			return;
+		}
+		else
+		{
+			//reset the console and the interface
+		}
+	}
 	delete currentWidget;
 	currentWidget = new PlayingInterface(this, &console);
 	currentWidget->show();
-	status = Playing;
 	QObject::connect(&console, SIGNAL(gameOver(bool)), currentWidget, SLOT(gameOver(bool)));
+	QObject::connect(currentWidget, SIGNAL(gameReturn()), this, SLOT(gameReturn()));
 	QObject::connect(&console, SIGNAL(timeToShow()), currentWidget, SLOT(refresh()));
 
 	PlayingInterface* f = static_cast<PlayingInterface*>(currentWidget);
@@ -68,5 +85,24 @@ void MainWindow::startPlaying()
 
 void MainWindow::gameStart()
 {
+	console.gameStart();
+}
+
+void MainWindow::gameReturn()
+{
+	status = Begin;
+	currentWidget->hide();
+	historyWidget = currentWidget;
+	currentWidget = new WelcomeInterface(this);
+	currentWidget->show();
+	connect();
+}
+
+void MainWindow::gameContinue()
+{
+	if (historyWidget == nullptr)return;
+	delete currentWidget;
+	currentWidget = historyWidget;
+	currentWidget->show();
 	console.gameStart();
 }
