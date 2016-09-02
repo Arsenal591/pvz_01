@@ -2,7 +2,7 @@
 #include <qobject>
 #include <qrect>
 
-enum ZOMBIE_TYPE{normal, bucket, pole};
+enum ZOMBIE_TYPE{normal, bucket, pole, cone, newspaper};
 class Zombie:public QObject
 {
 	Q_OBJECT

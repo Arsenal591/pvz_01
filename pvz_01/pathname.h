@@ -7,19 +7,33 @@ const QString CARD_PATH[] =
 {
 	"../pvz-material/card_peashooter_",
 	"../pvz-material/card_sunflower_",
-	"../pvz-material/card_wallnut_"
+	"../pvz-material/card_wallnut_",
+	"../pvz-material/card_cherrybomb_",
+	"../pvz-material/card_snowpea_",
+	"../pvz-material/card_repeater_",
+	"../pvz-material/card_torchwood_",
+	"../pvz-material/card_potatomine_",
+	"../pvz-material/card_chomper_",
 };
 const QString PLANT_FOLDER[] =
 {
 	"../pvz-material/images/Plants/Peashooter/",
 	"../pvz-material/images/Plants/SunFlower/",
-	"../pvz-material/images/Plants/Wallnut/"
+	"../pvz-material/images/Plants/Wallnut/",
+	"../pvz-material/images/Plants/CherryBomb/",
+	"../pvz-material/images/Plants/SnowPea/",
+	"../pvz-material/images/Plants/Repeater/",
+	"../pvz-material/images/Plants/TorchWood/",
+	"../pvz-material/images/Plants/PotatoMine/",
+	"../pvz-material/images/Plants/Chomper/"
 };
 const QString ZOMBIE_FOLDER[] =
 {
 	"../pvz-material/images/Zombies/Zombie/",
 	"../pvz-material/images/Zombies/BucketheadZombie/",
-	"../pvz-material/images/Zombies/PoleVaultingZombie/"
+	"../pvz-material/images/Zombies/PoleVaultingZombie/",
+	"../pvz-material/images/Zombies/ConeheadZombie",
+	"../pvz-material/images/Zombies/NewspaperZombie"
 };
 const QString BULLET_FOLDER[] =
 {

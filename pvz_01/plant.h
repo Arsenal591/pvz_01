@@ -1,7 +1,7 @@
 #pragma once
 #include<qobject>
 
-enum PLANT_TYPE{peashooter, sunflower, wallnut, cherrybomb, snowpea, repeater, threepeater, torchwood};
+enum PLANT_TYPE{peashooter, sunflower, wallnut, cherrybomb, snowpea, repeater, torchwood ,potatomine, chomper};
 class Plant:public QObject 
 {
 	Q_OBJECT
