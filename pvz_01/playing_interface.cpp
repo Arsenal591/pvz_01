@@ -10,11 +10,6 @@
 #include "qmovie"
 #include "qmovie.h"
 
-//const QString PlayingInterface::backgroundPath = "../pvz-material/images/interface/background1.jpg";
-//const QString PlayingInterface::cardBoxPath = "../pvz-material/cardbox.png";
-//const QString PlayingInterface::cardPathName[] = { "../pvz-material/card_peashooter", "../pvz-material/card_sunflower", "../pvz-material/card_wallnut" };
-//const QString PlayingInterface::plantPathName[] = {"../pvz-material/images/Plants/Peashooter", "../pvz-material/images/Plants/SunFlower", "../pvz-material/images/Plants/Wallnut"};
-
 PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 {
 	this->info = t;
@@ -39,7 +34,6 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 	QPalette pal;
 	pal.setColor(QPalette::Background, QColor(0xff, 0xff, 0xff, 0xff));
 	sunshineDisplay->setPalette(pal);
-	//sunshineDisplay->
 	sunshineDisplay->setFont(QFont("consolas", 9));
 	sunshineDisplay->show();
 

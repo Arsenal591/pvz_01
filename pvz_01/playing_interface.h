@@ -47,13 +47,9 @@ signals:
 	void doneCardClicked(int);
 	void doneSunshineClicked(MyLabel*);
 	void gameReturn();
-	//void debug();
 private:
 	GameConsole* info;
 	QPixmap backgroundImage, cardBoxImage;
-	//static const QString backgroundPath, cardBoxPath;
-	//static const QString cardPathName[3];
-	//static const QString plantPathName[3];
 	QRect cardRect[6];
 	QRect cellRect[5][10];
 	bool ifPlantExist[5][9];
