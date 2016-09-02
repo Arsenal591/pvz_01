@@ -21,6 +21,7 @@ public slots:
 	void leadInAnimation();
 	void cardAnimation();
 	void refresh();
+	void gameOver(bool);
 
 	void dealCardClicked(int);
 	void dealSunshineClicked(MyLabel*);

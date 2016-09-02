@@ -28,6 +28,8 @@ public slots:
 	void dealCardClicked(int);
 	void dealPutPlant(int, int);
 private:
+	bool ifHumanWin;
+
 	int level;//关卡
 	int zombieSum;//该关卡应当生产的僵尸总数
 	int roundSum;//该关卡的僵尸生产回合总数
@@ -51,6 +53,8 @@ private:
 	QRect cellRect[5][10];
 	void connect();
 	void setCellRect();
+
+	bool ifGameOver();
 	void dealAttackOfPlants();
 	void dealAttackOfBullets();
 	void dealAttackOfZombies();
@@ -61,6 +65,8 @@ private:
 	//void sunshinesProduce();
 	void zombiesProduce();
 signals:
+	void gameOver(bool);
+
 	void deleteSunshine(MyLabel*);
 	void deleteZombie(int);
 	void deletePlant(int);

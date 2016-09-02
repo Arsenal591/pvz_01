@@ -40,6 +40,7 @@ void MainWindow::startPlaying()
 	currentWidget = new PlayingInterface(this, &console);
 	currentWidget->show();
 	status = Playing;
+	QObject::connect(&console, SIGNAL(gameOver(bool)), currentWidget, SLOT(gameOver(bool)));
 	QObject::connect(&console, SIGNAL(timeToShow()), currentWidget, SLOT(refresh()));
 
 	PlayingInterface* f = static_cast<PlayingInterface*>(currentWidget);

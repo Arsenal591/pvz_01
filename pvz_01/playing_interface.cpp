@@ -122,6 +122,14 @@ void PlayingInterface::cardAnimation()
 	QObject::connect(animation, SIGNAL(finished()), this->parentWidget(), SLOT(gameStart()));
 	animation->start();
 }
+void PlayingInterface::gameOver(bool check)
+{
+	QString str = "The winner is ";
+	check ? str += "human " : str += "zombies ";
+	str += "\n";
+	QMessageBox box(QMessageBox::NoIcon, "result", str);
+	box.exec();
+}
 
 void PlayingInterface::dealCardClicked(int n)
 {
@@ -185,6 +193,7 @@ void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 	case pole:
 		str += "PoleVaultingZombie/";
 		newLabel->rect.setWidth(newLabel->width() + 70);
+		newLabel->rect.moveLeft(newLabel->rect.x() - 30);
 		break;
 	default:
 		break;
@@ -256,18 +265,6 @@ void PlayingInterface::zombieMove(int rank, int tx, int ty)
 	zombiesShown[rank]->rect.moveLeft(zombiesShown[rank]->rect.x() - 1);
 	zombiesShown[rank]->cellx = tx;
 	zombiesShown[rank]->celly = ty;
-	//for (int i = 0; i < zombiesShown.size(); i++)
-	//{
-		//qDebug() << "this zombie posx is" << zombiesShown[i]->rect.x() << '\n';
-		//if (zombiesShown[i]->rect == ori)
-		//{
-			//zombiesShown[i]->rect = QRect(ori.x() - 1, ori.y(), ori.width(), ori.height());
-			//zombiesShown[i]->cellx = tx;
-			//zombiesShown[i]->celly = ty;
-			//return;
-		//}
-	//}
-	//qDebug() << "sorry but find zombie failed\n";
 }
 void PlayingInterface::bulletMove(int rank)
 {

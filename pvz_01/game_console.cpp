@@ -14,10 +14,13 @@ GameConsole::GameConsole(QWidget* parent)
 	this->setParent(parent);
 	duration = 0;
 	sunshineLeft = 2000;
+	ifHumanWin = false;
+
+	//下面决定僵尸生产方式
 	level = 0;
-	zombieSum = 3;
+	zombieSum = 1;
 	memset(zombieProduceList, 0, sizeof(zombieProduceList));
-	zombieProduceList[1] = 3;
+	zombieProduceList[1] = 1;
 	round = 1;
 	roundSum = 1;
 	zombieProduced = 0;
@@ -35,7 +38,6 @@ GameConsole::GameConsole(QWidget* parent)
 	cardChosen = nullptr;
 
 	setCellRect();
-
 	connect();
 }
 void GameConsole::setCellRect()
@@ -70,6 +72,23 @@ void GameConsole::gameStart()
 	specialTimer->start();
 }
 
+bool GameConsole::ifGameOver()
+{
+	for (int i = 0; i < zombies.size(); i++)
+	{
+		if (zombies[i]->rect.x() <= 100)
+		{
+			ifHumanWin = false;
+			return true;
+		}
+	}
+	if (zombies.size() == 0 && round == roundSum && zombieProduced == zombieProduceList[round])
+	{
+		ifHumanWin = true;
+		return true;
+	}
+	return false;
+}
 
 void GameConsole::zombiesProduce()
 {
@@ -95,8 +114,8 @@ void GameConsole::zombiesProduce()
 	int randNum = rand() % 10;
 	qDebug() << "randdom is " << randNum << '\n';
 	ZOMBIE_TYPE produceType;
-	if (randNum <= 5)
-		produceType = normal;
+	if (randNum <= 10)
+		produceType = pole;
 	else if (randNum <= 7)
 		produceType = bucket;
 	else produceType = pole;
@@ -107,6 +126,13 @@ void GameConsole::zombiesProduce()
 }
 void GameConsole::dealNormalLoop()
 {
+	if (ifGameOver())
+	{
+		normalTimer->stop();
+		specialTimer->stop();
+		emit gameOver(ifHumanWin);
+		return;
+	}
 	duration += 10;
 	dealAttackOfPlants();
 	dealAttackOfBullets();
