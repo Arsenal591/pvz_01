@@ -4,7 +4,7 @@
 #include <mylabel.h>
 #include "mybutton.h"
 #include "pathname.h"
-#include "pickcard.h"
+#include "selectcard.h"
 
 class QMouseEvent;
 class GameConsole;
@@ -26,7 +26,7 @@ public slots:
 	void refresh();
 	void gameOver(bool);
 
-	//void setCards(int choice[]);
+	void setCards(QVector<int>);
 
 	void dealCardClicked(int);
 	void dealSunshineClicked(MyLabel*);

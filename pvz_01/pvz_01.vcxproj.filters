@@ -119,13 +119,13 @@
     <ClCompile Include="GeneratedFiles\Release\moc_mybutton.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_pickcard.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_selectcard.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_pickcard.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_selectcard.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="pickcard.cpp">
+    <ClCompile Include="selectcard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -160,7 +160,7 @@
     <CustomBuild Include="mybutton.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="pickcard.h">
+    <CustomBuild Include="selectcard.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

@@ -28,6 +28,9 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 	option->setOffset(2, 2);
 	option->show();
 
+	backgroundImage = QPixmap(BACKGROUND_PATH);
+	backgroundImage = backgroundImage.scaled(QSize(1867, 800));
+
 	sunshineDisplay = new QLabel(parent);
 	sunshineDisplay->setGeometry(QRect(185, 60, 30, 15));
 	sunshineDisplay->setAlignment(Qt::AlignCenter);
@@ -37,17 +40,30 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 	sunshineDisplay->setFont(QFont("consolas", 9));
 	sunshineDisplay->show();
 
-	for (int i = 0; i < 6; i++)
+	/*for (int i = 0; i < 6; i++)
 	{
 		cardsShown.push_back(new MyLabel(parent, card, i));
 		cardsShown[i]->setGeometry(cardRect[i]);
 		cardsShown[i]->show();
+	}*/
+	SelectCard* selectCard = new SelectCard(this->parentWidget());
+	selectCard->show();
+	connect(selectCard, SIGNAL(selected(QVector<int>)), this, SLOT(setCards(QVector<int>)));
+	connect(selectCard, SIGNAL(selected(QVector<int>)), selectCard, SLOT(hide()));
+	connect(selectCard, SIGNAL(selected(QVector<int>)), info, SLOT(setCards(QVector<int>)));
+	//leadInAnimation();
+}
+void PlayingInterface::setCards(QVector<int> res)
+{
+	for (int i = 0; i < res.size(); i++)
+	{
+		cardsShown.push_back(new MyLabel(parentWidget(), card, res[i]));
+		cardsShown[i]->setGeometry(cardRect[i]);
+		cardsShown[i]->show();
+		connect(cardsShown[i], SIGNAL(cardClicked(int)), this, SLOT(dealCardClicked(int)));
 	}
-	PickCard* pickCard = new PickCard(this->parentWidget());
-	pickCard->show();
 	leadInAnimation();
 }
-
 void PlayingInterface::mousePressEvent(QMouseEvent* ev)
 {
 	//pay attention: 此时只需处理点地板（放置植物），其他有效鼠标事件均已被MyLabel捕获
@@ -77,23 +93,15 @@ void PlayingInterface::setCellRect()
 		yLinePos = 135;
 		for (int j = 0; j < 10; j++)
 		{
-			int width;
-			//if (j <= 8)
-				width = (j % 2) ? 105 : 110;
-			//else
-			//	width = 95;
+			int width = (j % 2) ? 105 : 110;
 			cellRect[i][j] = QRect(yLinePos, xLinePos, width, 130);
-			//qDebug() << yLinePos << ' ' << xLinePos << ' ' << width << ' ' << 130<<'\n';
 			yLinePos += width;
 		}
-		//qDebug() << "\n";
 		xLinePos += 130;
 	}
 }
 void PlayingInterface::leadInAnimation()
 {
-	backgroundImage = QPixmap(BACKGROUND_PATH);
-	backgroundImage = backgroundImage.scaled(QSize(1867,800));
 	QLabel* label = new QLabel(this);
 	label->setFixedSize(QSize(1867, 800));
 	label->setPixmap(backgroundImage);

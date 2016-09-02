@@ -22,6 +22,11 @@ MyButton::MyButton(QWidget*parent, QString str)
 
 void MyButton::setSize(QRect rect)
 {
+	*buttonImg = buttonImg->scaled(QSize(rect.width(), rect.height()));
+	*pressImg = pressImg->scaled(QSize(rect.width(), rect.height()));
+	*releaseImg = releaseImg->scaled(QSize(rect.width(), rect.height()));
+	this->setIcon(QIcon(*buttonImg));
+	//this->setFixedSize(QSize(rect.width(), rect.height()));
 	this->setIconSize(QSize(rect.width(), rect.height()));
 	this->setGeometry(rect);
 	this->rect = rect;
@@ -41,4 +46,8 @@ void MyButton::mouseReleaseEvent(QMouseEvent*)
 	this->setIcon(QIcon(*releaseImg));
 	this->setGeometry(rect);
 	emit clicked();
+}
+void MyButton::enterEvent(QEvent*)
+{
+	emit entered();
 }

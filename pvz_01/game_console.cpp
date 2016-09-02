@@ -31,14 +31,20 @@ GameConsole::GameConsole(QWidget* parent)
 	normalTimer->setInterval(10);
 	specialTimer->setInterval(1000);
 
-	cards.push_back(new Card(peashooter));
-	cards.push_back(new Card(sunflower));
-	cards.push_back(new Card(wallnut));
-
 	cardChosen = nullptr;
 
 	setCellRect();
 	connect();
+}
+
+void GameConsole::setCards(QVector<int> res)
+{
+	qDebug() << "reached\n";
+	for (int i = 0; i < res.size(); i++)
+	{
+		//qDebug() << res[i] << '\n';
+		cards.push_back(new Card(PLANT_TYPE(res[i])));
+	}
 }
 void GameConsole::setCellRect()
 {
@@ -48,16 +54,10 @@ void GameConsole::setCellRect()
 		yLinePos = 135;
 		for (int j = 0; j < 10; j++)
 		{
-			int width;
-			//if (j <= 8)
-				width = (j % 2) ? 105 : 110;
-			//else
-				//width = 95;
+			int width = (j % 2) ? 105 : 110;
 			cellRect[i][j] = QRect(yLinePos, xLinePos, width, 130);
-			//qDebug() << yLinePos << ' ' << xLinePos << ' ' << width << ' ' << 130<<'\n';
 			yLinePos += width;
 		}
-		//qDebug() << "\n";
 		xLinePos += 130;
 	}
 }
@@ -76,7 +76,7 @@ bool GameConsole::ifGameOver()
 {
 	for (int i = 0; i < zombies.size(); i++)
 	{
-		if (zombies[i]->rect.x() <= 100)
+		if (zombies[i]->rect.x() <= 10)
 		{
 			ifHumanWin = false;
 			return true;
@@ -142,10 +142,6 @@ void GameConsole::dealNormalLoop()
 	dealHpOfZombies();
 	dealBulletsMove();
 	dealZombiesMove();
-	//qDebug() << duration << '\n';
-	//sunshineLeft += 50;
-
-	//for()
 	emit timeToShow();
 }
 void GameConsole::dealSpecialLoop()
@@ -167,8 +163,11 @@ void GameConsole::dealSpecialLoop()
 
 void GameConsole::dealCardClicked(int n)
 {
-	if (cards[n]->getCost() <= sunshineLeft && duration - cards[n]->getLastUsed() >= cards[n]->getCd())
-		cardChosen = cards[n];
+	int x;
+	for (int i = 0; i < cards.size(); i++)
+		if (cards[i]->getType() == n)x = i;
+	if (cards[x]->getCost() <= sunshineLeft && duration - cards[x]->getLastUsed() >= cards[x]->getCd())
+		cardChosen = cards[x];
 	else
 		cardChosen = nullptr;
 }
