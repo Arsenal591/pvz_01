@@ -3,6 +3,7 @@
 #include <qlabel>
 #include <mylabel.h>
 #include "mybutton.h"
+#include "pathname.h"
 
 class QMouseEvent;
 class GameConsole;
@@ -24,7 +25,7 @@ public slots:
 	void refresh();
 	void gameOver(bool);
 
-	void setCards(int choice[]);
+	//void setCards(int choice[]);
 
 	void dealCardClicked(int);
 	void dealSunshineClicked(MyLabel*);
@@ -50,9 +51,9 @@ signals:
 private:
 	GameConsole* info;
 	QPixmap backgroundImage, cardBoxImage;
-	static const QString backgroundPath, cardBoxPath;
-	static const QString cardPathName[3];
-	static const QString plantPathName[3];
+	//static const QString backgroundPath, cardBoxPath;
+	//static const QString cardPathName[3];
+	//static const QString plantPathName[3];
 	QRect cardRect[6];
 	QRect cellRect[5][10];
 	bool ifPlantExist[5][9];

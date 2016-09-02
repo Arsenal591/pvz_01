@@ -10,10 +10,10 @@
 #include "qmovie"
 #include "qmovie.h"
 
-const QString PlayingInterface::backgroundPath = "../pvz-material/images/interface/background1.jpg";
-const QString PlayingInterface::cardBoxPath = "../pvz-material/cardbox.png";
-const QString PlayingInterface::cardPathName[] = { "../pvz-material/card_peashooter", "../pvz-material/card_sunflower", "../pvz-material/card_wallnut" };
-const QString PlayingInterface::plantPathName[] = {"../pvz-material/images/Plants/Peashooter", "../pvz-material/images/Plants/SunFlower", "../pvz-material/images/Plants/Wallnut"};
+//const QString PlayingInterface::backgroundPath = "../pvz-material/images/interface/background1.jpg";
+//const QString PlayingInterface::cardBoxPath = "../pvz-material/cardbox.png";
+//const QString PlayingInterface::cardPathName[] = { "../pvz-material/card_peashooter", "../pvz-material/card_sunflower", "../pvz-material/card_wallnut" };
+//const QString PlayingInterface::plantPathName[] = {"../pvz-material/images/Plants/Peashooter", "../pvz-material/images/Plants/SunFlower", "../pvz-material/images/Plants/Wallnut"};
 
 PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 {
@@ -28,7 +28,7 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 
 	memset(ifPlantExist, 0, sizeof(ifPlantExist));
 	
-	option = new MyButton(parent, "../pvz-material/button/option.png");
+	option = new MyButton(parent, OPTION_BUTTON_PATH);
 	option->setSize(QRect(1000, -3, 113, 41));
 	option->setOffset(2, 2);
 	option->show();
@@ -57,13 +57,11 @@ void PlayingInterface::mousePressEvent(QMouseEvent* ev)
 	//pay attention: 此时只需处理点地板（放置植物），其他有效鼠标事件均已被MyLabel捕获
 	if (ev->x() >= 135 && ev->x() <= 1105 && ev->y() >= 110 && ev->y() <= 760)
 	{
-		//do some stuff
 		qDebug() << ev->x() << ' ' << ev->y() << '\n';
 		this->info->dealPutPlant(ev->x(), ev->y());
 		return;
 	}
 	QWidget::mousePressEvent(ev);
-	//delete cardsShown[0];
 }
 
 void PlayingInterface::setCardRect()
@@ -98,7 +96,7 @@ void PlayingInterface::setCellRect()
 }
 void PlayingInterface::leadInAnimation()
 {
-	backgroundImage = QPixmap(backgroundPath);
+	backgroundImage = QPixmap(BACKGROUND_PATH);
 	backgroundImage = backgroundImage.scaled(QSize(1867,800));
 	QLabel* label = new QLabel(this);
 	label->setFixedSize(QSize(1867, 800));
@@ -115,7 +113,7 @@ void PlayingInterface::leadInAnimation()
 }
 void PlayingInterface::cardAnimation()
 {
-	cardBoxImage = QPixmap(cardBoxPath);
+	cardBoxImage = QPixmap(CARDBOX_PATH);
 	QLabel* label = new QLabel(this);
 	label->setFixedSize(QSize(435, 84));
 	label->setPixmap(cardBoxImage);
@@ -153,8 +151,8 @@ void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
 	newLabel->cellx = x, newLabel->celly = y;
 	newLabel->QLabel::setGeometry(cellRect[x][y]);
 	plantsShown.push_back(newLabel);
-	newLabel->setPath(plantPathName[tp]);
-	QMovie* movie = new QMovie(newLabel->getPath() + "/1.gif");
+	newLabel->setPath(PLANT_FOLDER[tp]);
+	QMovie* movie = new QMovie(newLabel->getPath() + "1.gif");
 	newLabel->setMovie(movie);
 	movie->start();
 	newLabel->show();
@@ -183,17 +181,17 @@ void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 	newLabel->cellx = x, newLabel->celly = y;
 	newLabel->rect = cellRect[x][y];
 
-	QString str = "../pvz-material/images/Zombies/";
+	QString str = ZOMBIE_FOLDER[tp];
 	switch (tp)
 	{
 	case normal:
-		str += "Zombie/";
+		//str = ZOMBIE_FOLDER[tp];
 		break;
 	case bucket:
-		str += "BucketheadZombie/";
+		//str = 
 		break;
 	case pole:
-		str += "PoleVaultingZombie/";
+		//str += "PoleVaultingZombie/";
 		newLabel->rect.setWidth(newLabel->width() + 70);
 		newLabel->rect.moveLeft(newLabel->rect.x() - 30);
 		break;
@@ -203,7 +201,7 @@ void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 	newLabel->setGeometry(newLabel->rect);
 	newLabel->setPath(str);
 
-	QMovie* newMovie = new QMovie(str+"1.gif");
+	QMovie* newMovie = new QMovie(str + "1.gif");
 	newLabel->setMovie(newMovie);
 	newMovie->start();
 
@@ -215,11 +213,11 @@ void PlayingInterface::addBullet(enum BULLET_TYPE tp, int x, int y)
 	MyLabel* newLabel = new MyLabel(parentWidget(), bullet);
 	newLabel->rect = QRect(cellRect[x][y].x() + 60, cellRect[x][y].y() + 30, 25, 25);
 	newLabel->setGeometry(newLabel->rect);
-	QString str;
+	QString str = BULLET_FOLDER[tp];
 	switch (tp)
 	{
 	case normal:
-		str = "../pvz-material/images/Plants/PB00.gif";
+		//str = "../pvz-material/images/Plants/PB00.gif";
 		break;
 	case fire:
 		break;
@@ -284,11 +282,11 @@ void PlayingInterface::refresh()
 	for (int i = 0; i < currentConsole.cards.size(); i++)
 	{
 		Card* chosen = currentConsole.cards[i];
-		str = cardPathName[chosen->getType()];
+		str = CARD_PATH[chosen->getType()];
 		if (currentConsole.duration - chosen->getLastUsed() >= chosen->getCd()
 			&& currentConsole.sunshineLeft >= chosen->getCost())
-			str += "_1.jpg";
-		else str += "_2.jpg";
+			str += "1.jpg";
+		else str += "2.jpg";
 		//qDebug() << str << '\n';
 		cardsShown[i]->setPixmap(str);
 	}
@@ -313,7 +311,7 @@ void PlayingInterface::refresh()
 			if (currentConsole.zombies[i]->hp <= 270)
 			{
 				currentConsole.zombies[i]->type = normal;
-				zombiesShown[i]->path = "../pvz-material/images/Zombies/Zombie/";
+				zombiesShown[i]->path = ZOMBIE_FOLDER[normal];
 			}
 		}   
 

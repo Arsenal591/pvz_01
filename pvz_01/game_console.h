@@ -21,7 +21,7 @@ class GameConsole:public QWidget
 public:
 	explicit GameConsole(QWidget* parent = nullptr);
 public slots:
-	void chooseCards();
+	//void chooseCards();
 	void gameStart();
 	void dealNormalLoop();
 	void dealSpecialLoop();

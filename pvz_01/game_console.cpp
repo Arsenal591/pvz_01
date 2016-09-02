@@ -31,9 +31,9 @@ GameConsole::GameConsole(QWidget* parent)
 	normalTimer->setInterval(10);
 	specialTimer->setInterval(1000);
 
-	//cards.push_back(new Card(peashooter));
-	//cards.push_back(new Card(sunflower));
-	//cards.push_back(new Card(wallnut));
+	cards.push_back(new Card(peashooter));
+	cards.push_back(new Card(sunflower));
+	cards.push_back(new Card(wallnut));
 
 	cardChosen = nullptr;
 
