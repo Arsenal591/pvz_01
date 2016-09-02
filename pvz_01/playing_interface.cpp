@@ -2,6 +2,7 @@
 #include "qpropertyanimation.h"
 #include "qlabel.h"
 #include "qmessagebox.h"
+#include "qpushbutton.h"
 #include "qpalette.h"
 #include "pvz_01.h"
 #include "qdebug"
@@ -26,6 +27,11 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 	setCellRect();
 
 	memset(ifPlantExist, 0, sizeof(ifPlantExist));
+	
+	option = new MyButton(parent, "../pvz-material/button/option.png");
+	option->setSize(QRect(1000, -3, 113, 41));
+	option->setOffset(2, 2);
+	option->show();
 
 	sunshineDisplay = new QLabel(parent);
 	sunshineDisplay->setGeometry(QRect(185, 60, 30, 15));
@@ -175,11 +181,9 @@ void PlayingInterface::addSunshine(int x, int y)
 
 void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 {
-	//qDebug() << "PlayingInterface::addZombie\n";
 	MyLabel* newLabel = new MyLabel(this->parentWidget(), zombie);
 	newLabel->cellx = x, newLabel->celly = y;
 	newLabel->rect = cellRect[x][y];
-	//newLabel->setGeometry(cellRect[x][y]);
 
 	QString str = "../pvz-material/images/Zombies/";
 	switch (tp)

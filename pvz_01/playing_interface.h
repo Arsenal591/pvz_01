@@ -2,6 +2,7 @@
 #include <qwidget>
 #include <qlabel>
 #include <mylabel.h>
+#include "mybutton.h"
 
 class QMouseEvent;
 class GameConsole;
@@ -52,8 +53,10 @@ private:
 	QRect cardRect[6];
 	QRect cellRect[5][10];
 	bool ifPlantExist[5][9];
-	QLabel* sunshineDisplay;
 
+	MyButton* option;
+
+	QLabel* sunshineDisplay;
 	QVector<MyLabel*>plantsShown;
 	QVector<MyLabel*>zombiesShown;
 	QVector<MyLabel*>cardsShown;
