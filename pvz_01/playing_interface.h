@@ -24,6 +24,8 @@ public slots:
 	void refresh();
 	void gameOver(bool);
 
+	void setCards(int choice[]);
+
 	void dealCardClicked(int);
 	void dealSunshineClicked(MyLabel*);
 

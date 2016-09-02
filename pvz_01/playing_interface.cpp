@@ -43,11 +43,10 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 	sunshineDisplay->setFont(QFont("consolas", 9));
 	sunshineDisplay->show();
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		cardsShown.push_back(new MyLabel(parent, card, i));
 		cardsShown[i]->setGeometry(cardRect[i]);
-		//cardsShown[i]->setPalette(pal);
 		cardsShown[i]->show();
 	}
 	leadInAnimation();
@@ -148,7 +147,6 @@ void PlayingInterface::dealSunshineClicked(MyLabel* label)
 {
 	emit doneSunshineClicked(label);
 }
-
 void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
 {
 	MyLabel* newLabel = new MyLabel(this->parentWidget(), plant);
@@ -161,7 +159,6 @@ void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
 	movie->start();
 	newLabel->show();
 }
-
 void PlayingInterface::addSunshine(int x, int y)
 {
 	MyLabel* newLabel = new MyLabel(this->parentWidget(), sunshine);
@@ -180,7 +177,6 @@ void PlayingInterface::addSunshine(int x, int y)
 	sunshineShown.push_back(newLabel);
 	newLabel->show();
 }
-
 void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 {
 	MyLabel* newLabel = new MyLabel(this->parentWidget(), zombie);
@@ -214,7 +210,6 @@ void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 	zombiesShown.push_back(newLabel);
 	newLabel->show();
 }
-
 void PlayingInterface::addBullet(enum BULLET_TYPE tp, int x, int y)
 {
 	MyLabel* newLabel = new MyLabel(parentWidget(), bullet);
@@ -265,7 +260,6 @@ void PlayingInterface::deletePlant(int rank)
 	delete plantsShown[rank];
 	plantsShown.remove(rank);
 }
-
 void PlayingInterface::zombieMove(int rank, int tx, int ty)
 {
 	zombiesShown[rank]->rect.moveLeft(zombiesShown[rank]->rect.x() - 1);

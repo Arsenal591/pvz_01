@@ -5,10 +5,10 @@
 #include "sunshine.h"
 #include "bullet.h"
 #include "card.h"
-#include "qvector"
-#include "qwidget"
+#include <qvector>
+#include <qwidget>
 #include "mylabel.h"
-#include "qdebug.h"
+#include <qdebug>
 #include <cstdlib>
 #include <ctime>
 
@@ -21,6 +21,7 @@ class GameConsole:public QWidget
 public:
 	explicit GameConsole(QWidget* parent = nullptr);
 public slots:
+	void chooseCards();
 	void gameStart();
 	void dealNormalLoop();
 	void dealSpecialLoop();

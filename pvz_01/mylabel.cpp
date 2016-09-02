@@ -34,7 +34,6 @@ void MyLabel::mousePressEvent(QMouseEvent* ev)
 		emit cardClicked(cardNum);
 		return;
 	case sunshine:
-		//qDebug() << " i am clicked!\n";
 		emit sunshineClicked(this);
 		return;
 	case zombie:
