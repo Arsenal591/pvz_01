@@ -1,6 +1,7 @@
 #pragma once
 #include <qstring>
 
+const QString WELCOME_PATH = "../pvz-material/images/interface/surface.jpg";
 const QString BACKGROUND_PATH = "../pvz-material/images/interface/background1.jpg";
 const QString CARDBOX_PATH = "../pvz-material/cardbox.png";
 const QString CARD_PATH[] =
@@ -44,3 +45,4 @@ const QString BULLET_FOLDER[] =
 
 
 const QString OPTION_BUTTON_PATH = "../pvz-material/button/option.png";
+const QString PICKCARD_PATH = "../pvz-material/images/interface/SeedChooser_Background.png";

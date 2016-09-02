@@ -43,6 +43,8 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 		cardsShown[i]->setGeometry(cardRect[i]);
 		cardsShown[i]->show();
 	}
+	PickCard* pickCard = new PickCard(this->parentWidget());
+	pickCard->show();
 	leadInAnimation();
 }
 

@@ -119,6 +119,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_mybutton.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_pickcard.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_pickcard.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="pickcard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pvz_01.h">
@@ -151,6 +160,9 @@
     <CustomBuild Include="mybutton.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="pickcard.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_pvz_01.h">
@@ -163,9 +175,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="card.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pickcard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pathname.h">

@@ -1,12 +1,12 @@
 #pragma once
 #include <qwidget>
+#include <pathname.h>
 
 class WelcomeInterface:public QWidget
 {
 	Q_OBJECT
 private:
 	QPixmap backgroundImage;
-	static const QString path;
 	void mousePressEvent(QMouseEvent*);
 private:
 	void drawBackground();

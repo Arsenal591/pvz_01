@@ -2,7 +2,6 @@
 #include "qpalette.h"
 #include "qevent.h"
 
-const QString WelcomeInterface::path = "../pvz-material/images/interface/surface.jpg";
 WelcomeInterface::WelcomeInterface(QWidget* parent)
 {
 	this->setParent(parent);
@@ -13,7 +12,7 @@ WelcomeInterface::WelcomeInterface(QWidget* parent)
 
 void WelcomeInterface::drawBackground()
 {
-	backgroundImage = QPixmap(path);
+	backgroundImage = QPixmap(WELCOME_PATH);
 	this->setAutoFillBackground(true);
 	QPalette* palette = new QPalette;
 	backgroundImage = backgroundImage.scaled(this->size(), Qt::IgnoreAspectRatio);

@@ -4,6 +4,7 @@
 #include <mylabel.h>
 #include "mybutton.h"
 #include "pathname.h"
+#include "pickcard.h"
 
 class QMouseEvent;
 class GameConsole;
