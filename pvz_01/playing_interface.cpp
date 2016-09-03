@@ -290,6 +290,14 @@ void PlayingInterface::refresh()
 			str += "1.jpg";
 		else str += "2.jpg";
 		cardsShown[i]->setPixmap(str);
+
+		if (currentConsole.duration == chosen->getLastUsed())
+		{
+			QLabel* mask = new QLabel(this->parentWidget());
+			QPalette* pal = new QPalette;
+			//pal->setColor(QPalette::Background, QColor())
+
+		}
 	}
 
 	//display   plants

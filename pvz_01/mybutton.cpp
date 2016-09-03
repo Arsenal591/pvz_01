@@ -48,5 +48,6 @@ void MyButton::mouseReleaseEvent(QMouseEvent*)
 }
 void MyButton::enterEvent(QEvent*)
 {
+	this->setCursor(Qt::PointingHandCursor);
 	emit entered();
 }
