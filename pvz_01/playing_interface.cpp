@@ -166,11 +166,11 @@ void PlayingInterface::addSunshine(int x, int y, bool ifDrop)
 	connect(newLabel, SIGNAL(sunshineClicked(MyLabel*)), this, SLOT(dealSunshineClicked(MyLabel*)));
 
 	QRect rect = cellRect[x][y];
-	newLabel->setGeometry(QRect(rect.x() + 0.5*rect.width(), rect.y() + 0.5*rect.height(), 0.5*rect.width(), 0.5*rect.height()));
+	newLabel->setGeometry(QRect(rect.x() + 0.5*rect.width(), rect.y() + 0.5*rect.height(), 60, 60));
 	
 	newLabel->setPath("../pvz-material/images/interface/Sun.gif");
 	QMovie* movie = new QMovie(newLabel->getPath());
-	movie->setScaledSize(QSize(0.5 * rect.width(), 0.5 * rect.height()));
+	movie->setScaledSize(QSize(60, 60));
 	newLabel->setMovie(movie);
 	movie->start();
 
@@ -180,10 +180,10 @@ void PlayingInterface::addSunshine(int x, int y, bool ifDrop)
 	if (ifDrop)
 	{
 		QPropertyAnimation* animation = new QPropertyAnimation(newLabel, "geometry");
-		QRect startPos(rect.x() + 0.5 * rect.width(), 0, 0.5 * rect.width(), 0.5 * rect.height());
+		QRect startPos(rect.x() + 0.5 * rect.width(), 0, 60, 60);
 		if (y < 4)startPos.moveTop(84);
 		animation->setStartValue(startPos);
-		animation->setEndValue(QRect(rect.x() + 0.5*rect.width(), rect.y() + 0.5*rect.height(), 0.5*rect.width(), 0.5*rect.height()));
+		animation->setEndValue(QRect(rect.x() + 0.5*rect.width(), rect.y() + 0.5*rect.height(), 60, 60));
 		int dt = (rect.y() + 0.5*rect.height()) * 10;
 		animation->setDuration(dt);
 		animation->start();
