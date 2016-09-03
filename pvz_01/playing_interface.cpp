@@ -149,6 +149,7 @@ void PlayingInterface::dealSunshineClicked(MyLabel* label)
 }
 void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
 {
+	qDebug() << "type is " << tp << '\n';
 	MyLabel* newLabel = new MyLabel(this->parentWidget(), plant);
 	newLabel->cellx = x, newLabel->celly = y;
 	newLabel->QLabel::setGeometry(cellRect[x][y]);
@@ -158,6 +159,7 @@ void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
 	newLabel->setMovie(movie);
 	movie->start();
 	newLabel->show();
+	qDebug() << "size is " << plantsShown.size() << '\n';
 }
 void PlayingInterface::addSunshine(int x, int y, bool ifDrop)
 {
