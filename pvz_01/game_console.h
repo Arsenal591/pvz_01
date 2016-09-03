@@ -20,6 +20,7 @@ class GameConsole:public QWidget
 	friend class PlayingInterface;
 public:
 	explicit GameConsole(QWidget* parent = nullptr);
+	void reset();
 public slots:
 	void setCards(QVector<int>);
 	void gameStart();
@@ -63,7 +64,7 @@ private:
 	void dealHpOfZombies();
 	void dealBulletsMove();
 	void dealZombiesMove();
-	//void sunshinesProduce();
+	void sunshinesProduce();
 	void zombiesProduce();
 signals:
 	void gameOver(bool);
@@ -73,7 +74,7 @@ signals:
 	void deletePlant(int);
 	void deleteBullet(int);
 
-	void addSunshine(int, int);
+	void addSunshine(int, int, bool);
 	void addZombie(enum ZOMBIE_TYPE, int, int);
 	void addPlant(PLANT_TYPE,int, int);
 	void addBullet(enum BULLET_TYPE, int, int);

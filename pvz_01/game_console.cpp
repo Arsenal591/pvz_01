@@ -36,7 +36,12 @@ GameConsole::GameConsole(QWidget* parent)
 	setCellRect();
 	connect();
 }
-
+void GameConsole::reset()
+{
+	duration = 0;
+	sunshineLeft = 2000;
+	ifHumanWin = false;
+}
 void GameConsole::setCards(QVector<int> res)
 {
 	qDebug() << "reached\n";
@@ -91,6 +96,28 @@ bool GameConsole::ifGameOver()
 	return false;
 }
 
+void GameConsole::sunshinesProduce()
+{
+	for (int i = 0; i < plants.size(); i++)
+	{
+		if (plants[i]->type == sunshine && duration - plants[i]->lastAttack >= plants[i]->recharge
+			&& plants[i]->ifPicked)
+		{
+			Sunshine* newSunshine = new Sunshine(plants[i]->cellx, plants[i]->celly);
+			sunshines.push_back(newSunshine);
+			plants[i]->lastAttack = duration;
+			plants[i]->ifPicked = false;
+			emit addSunshine(plants[i]->cellx, plants[i]->celly, false);
+		}
+	}
+	int randx = rand() % 5, randy = rand() % 9;
+	if (!(rand() % 8))
+	{
+		Sunshine* newSunshine = new Sunshine(randx, randy);
+		sunshines.push_back(newSunshine);
+		emit addSunshine(randx, randy, true);
+	}
+}
 void GameConsole::zombiesProduce()
 {
 	if (duration < 1000)return;//还没到第一回合
@@ -147,18 +174,7 @@ void GameConsole::dealNormalLoop()
 void GameConsole::dealSpecialLoop()
 {
 	zombiesProduce();
-	for (int i = 0; i < plants.size(); i++)
-	{
-		if (plants[i]->type == sunshine && duration - plants[i]->lastAttack >= plants[i]->recharge 
-				&& plants[i]->ifPicked)
-		{
-			Sunshine* newSunshine = new Sunshine(plants[i]->cellx, plants[i]->celly);
-			sunshines.push_back(newSunshine);
-			plants[i]->lastAttack = duration;
-			plants[i]->ifPicked = false;
-			emit addSunshine(plants[i]->cellx, plants[i]->celly);
-		}
-	}
+	sunshinesProduce();
 }
 
 void GameConsole::dealCardClicked(int n)

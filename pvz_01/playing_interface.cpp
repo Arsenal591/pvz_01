@@ -159,7 +159,7 @@ void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
 	movie->start();
 	newLabel->show();
 }
-void PlayingInterface::addSunshine(int x, int y)
+void PlayingInterface::addSunshine(int x, int y, bool ifDrop)
 {
 	MyLabel* newLabel = new MyLabel(this->parentWidget(), sunshine);
 	newLabel->cellx = x, newLabel->celly = y;
@@ -170,12 +170,24 @@ void PlayingInterface::addSunshine(int x, int y)
 	
 	newLabel->setPath("../pvz-material/images/interface/Sun.gif");
 	QMovie* movie = new QMovie(newLabel->getPath());
-	movie->setScaledSize(QSize(0.5*rect.width(), 0.5*rect.height()));
+	movie->setScaledSize(QSize(0.5 * rect.width(), 0.5 * rect.height()));
 	newLabel->setMovie(movie);
 	movie->start();
 
 	sunshineShown.push_back(newLabel);
 	newLabel->show();
+
+	if (ifDrop)
+	{
+		QPropertyAnimation* animation = new QPropertyAnimation(newLabel, "geometry");
+		QRect startPos(rect.x() + 0.5 * rect.width(), 0, 0.5 * rect.width(), 0.5 * rect.height());
+		if (y < 4)startPos.moveTop(84);
+		animation->setStartValue(startPos);
+		animation->setEndValue(QRect(rect.x() + 0.5*rect.width(), rect.y() + 0.5*rect.height(), 0.5*rect.width(), 0.5*rect.height()));
+		int dt = (rect.y() + 0.5*rect.height()) * 10;
+		animation->setDuration(dt);
+		animation->start();
+	}
 }
 void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 {

@@ -37,7 +37,7 @@ public slots:
 
 	void addZombie(enum ZOMBIE_TYPE, int, int);
 	void addPlant(enum PLANT_TYPE,int, int);
-	void addSunshine(int, int);
+	void addSunshine(int, int, bool);
 	void addBullet(enum BULLET_TYPE, int, int);
 
 	void bulletMove(int);
