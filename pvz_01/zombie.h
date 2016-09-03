@@ -27,4 +27,7 @@ public:
 
 	bool ifFrozen;
 	int frozenTime;
+
+	bool ifBurned;
+	int burnedTime;
 };

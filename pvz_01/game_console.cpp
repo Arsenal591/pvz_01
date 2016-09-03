@@ -1,6 +1,5 @@
 #include "game_console.h"
 #include "qtimer"
-//#include "qvector.h"
 #include "qdebug.h"
 
 bool inRect(int x, int y, QRect rect)
@@ -232,6 +231,7 @@ void GameConsole::dealPutPlant(int posx, int posy)
 	}
 
 	Plant* newPlant = new Plant(cardChosen->getType(), x, y);
+	newPlant->putTime = duration;
 	plants.push_back(newPlant);
 
 	sunshineLeft -= cardChosen->getCost();
@@ -277,9 +277,6 @@ void GameConsole::dealZombiesMove()
 		}
 
 		zombies[i]->rect.moveLeft(zombies[i]->rect.x() - 1);
-
-		//qDebug() << "now is " << duration << '\n';
-		//qDebug() << "my pos x is " << zombies[i]->rect.x() << '\n';
 
 		if (zombies[i]->rect.x() + 40 < cellRect[zombies[i]->cellx][zombies[i]->celly].x())
 		{
@@ -339,10 +336,58 @@ void GameConsole::dealAttackOfPlants()
 			break; 
 		}
 		case chomper:
+		{
+			if (duration - plants[i]->lastAttack < plants[i]->recharge)
+				break;
+			for (int j = 0; j < zombies.size(); j++)
+			{
+				if((plants[i]->cellx == zombies[j]->cellx)
+					&& ((plants[i]->celly + 1 == zombies[j]->celly)
+						|| (plants[i]->celly == zombies[j]->celly)))
+				{
+					plants[i]->lastAttack = duration;
+					zombies[j]->hp -= plants[i]->atk;
+				}
+			}
 			break;
+		}
 		case cherrybomb:
+		{
+			if (duration - plants[i]->lastAttack < plants[i]->recharge)
+				break;
+			if (duration - plants[i]->putTime < plants[i]->prepare)
+				break;
+			for (int j = 0; j < zombies.size(); j++)
+			{
+				if (abs(zombies[j]->cellx - plants[i]->cellx) <= 1
+					&& abs(zombies[j]->celly - plants[i]->celly) <= 1)
+				{
+					plants[i]->lastAttack = duration;
+					zombies[j]->hp -= plants[i]->atk;
+					zombies[j]->ifBurned = true;
+					zombies[j]->burnedTime = duration;
+				}
+			}
 			break;
+		}
 		case potatomine:
+		{
+			if (duration - plants[i]->lastAttack < plants[i]->recharge)
+				break;
+			if (duration - plants[i]->putTime < plants[i]->prepare)
+				break;
+			for (int j = 0; j < zombies.size(); j++)
+			{
+				if (plants[i]->cellx == zombies[j]->cellx
+					&& plants[i]->celly == zombies[j]->celly)
+				{
+					plants[i]->lastAttack = duration;
+					zombies[j]->hp -= plants[i]->atk;
+					zombies[j]->ifBurned = true;
+					zombies[j]->burnedTime = duration;
+				}
+			}
+		}
 			break;
 		case repeater:
 			break;
@@ -422,6 +467,9 @@ void GameConsole::dealHpOfPlants()
 	while (i < plants.size())
 	{
 		bool ifDead = (plants[i]->hp <= 0);
+		if ((plants[i]->type == cherrybomb || plants[i]->type == potatomine)
+			&& (duration - plants[i]->lastAttack > 2000) && plants[i]->lastAttack > 0)
+			ifDead = true;
 		if (ifDead)
 		{
 			delete plants[i];
@@ -437,7 +485,7 @@ void GameConsole::dealHpOfZombies()
 	int i = 0;
 	while (i < zombies.size())
 	{
-		if (zombies[i]->status == 3)
+		if (zombies[i]->status == 3)//ÒÑ¾­³¹µ×ÏûÊ§
 		{
 			delete zombies[i];
 			zombies.remove(i);

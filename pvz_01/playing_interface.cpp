@@ -149,17 +149,18 @@ void PlayingInterface::dealSunshineClicked(MyLabel* label)
 }
 void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
 {
-	qDebug() << "type is " << tp << '\n';
+	//qDebug() << "type is " << tp << '\n';
 	MyLabel* newLabel = new MyLabel(this->parentWidget(), plant);
 	newLabel->cellx = x, newLabel->celly = y;
 	newLabel->QLabel::setGeometry(cellRect[x][y]);
 	plantsShown.push_back(newLabel);
 	newLabel->setPath(PLANT_FOLDER[tp]);
+	qDebug() << PLANT_FOLDER[tp] << '\n';
 	QMovie* movie = new QMovie(newLabel->getPath() + "1.gif");
 	newLabel->setMovie(movie);
 	movie->start();
 	newLabel->show();
-	qDebug() << "size is " << plantsShown.size() << '\n';
+	//qDebug() << "size is " << plantsShown.size() << '\n';
 }
 void PlayingInterface::addSunshine(int x, int y, bool ifDrop)
 {
@@ -305,78 +306,108 @@ void PlayingInterface::refresh()
 			str += "1.jpg";
 		else str += "2.jpg";
 		cardsShown[i]->setPixmap(str);
-
-		if (currentConsole.duration == chosen->getLastUsed())
-		{
-			QLabel* mask = new QLabel(this->parentWidget());
-			QPalette* pal = new QPalette;
-			//pal->setColor(QPalette::Background, QColor())
-
-		}
 	}
 
 	//display   plants
 	for (int i = 0; i < currentConsole.plants.size(); i++)
 	{
 		Plant* chosen = currentConsole.plants[i];
+		QMovie* newMovie = new QMovie;
+		QMovie* oldMovie = plantsShown[i]->movie();
 		switch (chosen->type)
 		{
-		default:
+		case peashooter:case sunflower:case repeater:case snowpea:case torchwood:
+			break;
+		case wallnut:
+			if (chosen->hp < 1333)newMovie->setFileName(plantsShown[i]->path + "3.gif");
+			else if (chosen->hp < 2667)newMovie->setFileName(plantsShown[i]->path + "2.gif");
+			else newMovie->setFileName(plantsShown[i]->path + "1.gif");
+			break;
+		case potatomine:
+			if (currentConsole.duration - chosen->putTime >= chosen->prepare)
+				newMovie->setFileName(plantsShown[i]->path + "2.gif");
+			else newMovie->setFileName(plantsShown[i]->path + "1.gif");
+			if (chosen->lastAttack > 0)
+				newMovie->setFileName(plantsShown[i]->path + "3.gif");
+			break;
+		case chomper:
+			if (currentConsole.duration - chosen->lastAttack <= 2000)
+				newMovie->setFileName(plantsShown[i]->path + "2.gif");
+			else if (currentConsole.duration - chosen->lastAttack < chosen->recharge)
+				newMovie->setFileName(plantsShown[i]->path + "3.gif");
+			else newMovie->setFileName(plantsShown[i]->path + "1.gif");
+			break;
+		case cherrybomb:
+			if (chosen->lastAttack > 0)
+				newMovie->setFileName(plantsShown[i]->path + "2.gif");
+			else
+				newMovie->setFileName(plantsShown[i]->path + "1.gif");
 			break;
 		}
+		if (oldMovie->fileName() != newMovie->fileName())
+		{
+			delete plantsShown[i]->movie();
+			plantsShown[i]->setMovie(newMovie);
+			newMovie->start();
+		}
+		else delete newMovie;
 	}
 
 	//display   zombies
 	for (int i = 0; i < currentConsole.zombies.size(); i++)
 	{
+		Zombie* chosen = currentConsole.zombies[i];
 		QMovie* newMovie = new QMovie;
 		QMovie* oldMovie = zombiesShown[i]->movie();
-		if (currentConsole.zombies[i]->type == bucket)
+		if (chosen->type == bucket || chosen->type == pole)
 		{
-			if (currentConsole.zombies[i]->hp <= 270)
+			if (chosen->hp <= 270)
 			{
-				currentConsole.zombies[i]->type = normal;
+				chosen->type = normal;
 				zombiesShown[i]->path = ZOMBIE_FOLDER[normal];
 			}
-		}   
+		}
 
-		if (currentConsole.zombies[i]->status == 1)//µôÄÔ´ü
+		if (chosen->status == 1)//µôÄÔ´ü
 		{
-			if (currentConsole.zombies[i]->ifAttacking)
+			if (chosen->ifAttacking)
 				newMovie->setFileName(zombiesShown[i]->path + "4.gif");
 			else
 				newMovie->setFileName(zombiesShown[i]->path + "3.gif");
 		}
-		else if (currentConsole.zombies[i]->status == 0)
+		else if (chosen->status == 0)//Ò»ÇÐÕý³£
 		{
-			if (currentConsole.zombies[i]->ifAttacking)
+			if (chosen->ifAttacking)
 				newMovie->setFileName(zombiesShown[i]->path + "2.gif");
 			else
 			{
-				if(currentConsole.zombies[i]->type == pole && currentConsole.zombies[i]->step == 0)
+				if(chosen->type == pole && chosen->step == 0)
 					newMovie->setFileName(zombiesShown[i]->path + "8.gif");
 				else
 					newMovie->setFileName(zombiesShown[i]->path + "1.gif");
 			}
 		}
-		else if (currentConsole.zombies[i]->status == 2)
+		else if (chosen->status == 2)
 		{
-			newMovie->setFileName(zombiesShown[i]->path + "5.gif");
+			if (chosen->ifBurned)
+				newMovie->setFileName(zombiesShown[i]->path + "10.gif");
+			else
+				newMovie->setFileName(zombiesShown[i]->path + "5.gif");
 		}
 
-		if (currentConsole.zombies[i]->type == pole && currentConsole.zombies[i]->step != 0)
+		if (chosen->type == pole && chosen->step != 0)
 		{
-			if (currentConsole.zombies[i]->step == 1)
+			if (chosen->step == 1)
 				newMovie->setFileName(zombiesShown[i]->path + "6.gif");
-			else if (currentConsole.zombies[i]->step == 2)
+			else if (chosen->step == 2)
 			{
 				newMovie->setFileName(zombiesShown[i]->path + "7.gif");
-				if(currentConsole.duration == currentConsole.zombies[i]->lastStepTime)
+				if(currentConsole.duration == chosen->lastStepTime)
 					zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 50);
 			}
 			else 
 			{
-				if (currentConsole.duration == currentConsole.zombies[i]->lastStepTime)
+				if (currentConsole.duration == chosen->lastStepTime)
 					zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 20);
 			}
 		}
@@ -386,8 +417,9 @@ void PlayingInterface::refresh()
 			zombiesShown[i]->setMovie(newMovie);
 			newMovie->start();
 		}
+		else delete newMovie;
 
-		if(currentConsole.zombies[i]->status != 2)
+		if(chosen->status != 2)
 			zombiesShown[i]->setGeometry(zombiesShown[i]->rect);
 		else
 		{

@@ -12,6 +12,8 @@ public:
 	PLANT_TYPE type;
 	QString path;
 	int cellx, celly;//Иёзг
+	int putTime;
+	int usedTime;
 public:
 	Plant(PLANT_TYPE tp, int tx, int ty) ;
 };
