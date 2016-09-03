@@ -1,6 +1,5 @@
 #include "mylabel.h"
 #include <qevent.h>
-//#include "playing_interface.h"
 #include "pvz_01.h"
 #include "qdebug.h"
 

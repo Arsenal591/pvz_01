@@ -26,7 +26,6 @@ void MyButton::setSize(QRect rect)
 	*pressImg = pressImg->scaled(QSize(rect.width(), rect.height()));
 	*releaseImg = releaseImg->scaled(QSize(rect.width(), rect.height()));
 	this->setIcon(QIcon(*buttonImg));
-	//this->setFixedSize(QSize(rect.width(), rect.height()));
 	this->setIconSize(QSize(rect.width(), rect.height()));
 	this->setGeometry(rect);
 	this->rect = rect;

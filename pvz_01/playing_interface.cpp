@@ -30,6 +30,10 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 
 	backgroundImage = QPixmap(BACKGROUND_PATH);
 	backgroundImage = backgroundImage.scaled(QSize(1867, 800));
+	QLabel* label = new QLabel(this);
+	label->setFixedSize(QSize(1867, 800));
+	label->setPixmap(backgroundImage);
+	label->show();
 
 	sunshineDisplay = new QLabel(parent);
 	sunshineDisplay->setGeometry(QRect(185, 60, 30, 15));
@@ -40,12 +44,6 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 	sunshineDisplay->setFont(QFont("consolas", 9));
 	sunshineDisplay->show();
 
-	/*for (int i = 0; i < 6; i++)
-	{
-		cardsShown.push_back(new MyLabel(parent, card, i));
-		cardsShown[i]->setGeometry(cardRect[i]);
-		cardsShown[i]->show();
-	}*/
 	SelectCard* selectCard = new SelectCard(this->parentWidget());
 	selectCard->show();
 	connect(selectCard, SIGNAL(selected(QVector<int>)), this, SLOT(setCards(QVector<int>)));
@@ -291,7 +289,6 @@ void PlayingInterface::refresh()
 			&& currentConsole.sunshineLeft >= chosen->getCost())
 			str += "1.jpg";
 		else str += "2.jpg";
-		//qDebug() << str << '\n';
 		cardsShown[i]->setPixmap(str);
 	}
 
@@ -299,9 +296,10 @@ void PlayingInterface::refresh()
 	for (int i = 0; i < currentConsole.plants.size(); i++)
 	{
 		Plant* chosen = currentConsole.plants[i];
-		if (chosen->type == sunflower)
+		switch (chosen->type)
 		{
-			//do sth
+		default:
+			break;
 		}
 	}
 

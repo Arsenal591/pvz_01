@@ -1,9 +1,6 @@
 #include "pvz_01.h"
-#include <qdialog>
 #include <qurl>
 #include <qmediaplayer>
-#include <qmediaplaylist>
-#include <qsound>
 #include <qmessagebox>
 
 MainWindow::MainWindow(QWidget* parent)
@@ -59,12 +56,6 @@ void MainWindow::startPlaying()
 	QObject::connect(&console, SIGNAL(gameOver(bool)), currentWidget, SLOT(gameOver(bool)));
 	QObject::connect(currentWidget, SIGNAL(gameReturn()), this, SLOT(gameReturn()));
 	QObject::connect(&console, SIGNAL(timeToShow()), currentWidget, SLOT(refresh()));
-
-	//PlayingInterface* f = static_cast<PlayingInterface*>(currentWidget);
-	//for (int i = 0; i < f->getCardSum(); i++)
-	//{
-	//	QObject::connect(f->getCardShown(i), SIGNAL(cardClicked(int)), f, SLOT(dealCardClicked(int)));
-	//}
 
 	QObject::connect(currentWidget, SIGNAL(doneCardClicked(int)), &console, SLOT(dealCardClicked(int)));
 	QObject::connect(currentWidget, SIGNAL(doneSunshineClicked(MyLabel*)), &console, SLOT(dealSunshineClicked(MyLabel*)));
