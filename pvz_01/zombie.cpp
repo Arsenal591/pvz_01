@@ -1,7 +1,7 @@
 #include"zombie.h"
 
 Zombie::Zombie(ZOMBIE_TYPE tp, int tx, int ty, QRect trect, int t)
-	:type(tp), cellx(tx), celly(ty), rect(trect), bornTime(t), step(0), lastStepTime(t), ifAttacking(false), status(0)
+	:type(tp), cellx(tx), celly(ty), rect(trect), bornTime(t), step(0), lastStepTime(t), ifAttacking(false), status(0), ifFrozen(false),frozenTime(0)
 {
 	switch (tp)
 	{

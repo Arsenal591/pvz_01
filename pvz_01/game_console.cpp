@@ -255,6 +255,13 @@ void GameConsole::dealZombiesMove()
 		if (zombies[i]->ifAttacking)continue;
 		if (zombies[i]->status > 1)continue;
 
+		if (zombies[i]->ifFrozen && duration - zombies[i]->frozenTime >= 10000)
+		{
+			zombies[i]->ifFrozen = false;
+			zombies[i]->moveInterval /= 2;
+			qDebug() << "i am not frozen\n";
+		}
+
 		if (zombies[i]->type == pole)
 		{
 			if ((zombies[i]->step == 1 || zombies[i]->step == 2) && duration - zombies[i]->lastStepTime >= 2500)
@@ -262,9 +269,10 @@ void GameConsole::dealZombiesMove()
 				zombies[i]->step++;
 				zombies[i]->lastStepTime = duration;
 			}
-			else if (zombies[i]->step == 3)
+			if (zombies[i]->step == 3 && zombies[i]->lastStepTime == duration)
 			{
-				zombies[i]->moveInterval = 50;
+				zombies[i]->moveInterval *= 2;
+				zombies[i]->celly--;
 			}
 		}
 
@@ -288,6 +296,23 @@ void GameConsole::dealBulletsMove()
 		if ((duration - bullets[i]->bornTime) % bullets[i]->moveInterval)
 			continue;
 		bullets[i]->rect.moveLeft(bullets[i]->rect.x() + 1);
+
+		for (int j = 0; j < plants.size(); j++)
+		{
+			QRect trect = cellRect[plants[j]->cellx][plants[j]->celly];
+			if ((plants[j]->type == torchwood)
+				&& (bullets[i]->rect.x() > trect.x())
+				&& (bullets[i]->rect.x() + bullets[i]->rect.width() < trect.x() + trect.width())
+				&& (bullets[i]->cellx == plants[j]->cellx)
+				&& (plants[j]->celly != bullets[i]->lastChangePosy))
+			{
+				if (bullets[i]->type == green)
+					bullets[i]->changeType(fire);
+				else if (bullets[i]->type == ice)
+					bullets[i]->changeType(green);
+				bullets[i]->lastChangePosy = plants[j]->celly;
+			}
+		}
 		emit bulletMove(i);
 	}
 }
@@ -298,21 +323,29 @@ void GameConsole::dealAttackOfPlants()
 		QRect rect = cellRect[plants[i]->cellx][plants[i]->celly];
 		switch (plants[i]->type)
 		{
-		case wallnut:
+		case wallnut:case sunflower:case torchwood:
 			break;
-		case sunflower:
-			break;
-		case peashooter:
+		case peashooter:case snowpea:
 		{
-			if (duration - plants[i]->lastAttack < plants[i]->recharge)break;
-			Bullet* newBullet = new Bullet(green, QRect(rect.x() + 60, rect.y() + 30, 25, 25));
+			if (duration - plants[i]->lastAttack < plants[i]->recharge)
+				break;
+			BULLET_TYPE tp = (plants[i]->type == peashooter) ? green : ice;
+			Bullet* newBullet = new Bullet(tp, QRect(rect.x() + 60, rect.y() + 30, 25, 25));
 			newBullet->bornTime = duration;
 			newBullet->cellx = plants[i]->cellx;
 			plants[i]->lastAttack = duration;
 			bullets.push_back(newBullet);
-			emit addBullet(green, plants[i]->cellx, plants[i]->celly);
+			emit addBullet(tp, plants[i]->cellx, plants[i]->celly);
 			break; 
 		}
+		case chomper:
+			break;
+		case cherrybomb:
+			break;
+		case potatomine:
+			break;
+		case repeater:
+			break;
 		default:
 			break;
 		}
@@ -324,7 +357,7 @@ void GameConsole::dealAttackOfBullets()
 	while (i < bullets.size())
 	{
 		bool ifAttack = false;
-		//qDebug() << "this bullet posx is" << bullets[i]->rect.x() << '\n';
+
 		for (int j = 0; j < zombies.size(); j++)
 		{
 			if ((bullets[i]->rect.x() + bullets[i]->rect.width() - 25 > zombies[j]->rect.x())
@@ -332,7 +365,14 @@ void GameConsole::dealAttackOfBullets()
 				&& (bullets[i]->cellx == zombies[j]->cellx))
 			{
 				zombies[j]->hp -= bullets[i]->atk;
-				//qDebug() << "i am attacked and my hp is now " << zombies[j]->hp << '\n';
+				if (zombies[j]->ifFrozen == false && bullets[i]->type == ice)
+				{
+					//qDebug() << "i am frozen\n";
+					zombies[j]->ifFrozen = true;
+					zombies[j]->moveInterval *= 2;
+					zombies[j]->frozenTime = duration;
+				}
+
 				delete bullets[i];
 				bullets.remove(i);
 				emit deleteBullet(i);

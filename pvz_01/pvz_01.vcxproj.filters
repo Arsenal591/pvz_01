@@ -180,6 +180,9 @@
     <ClInclude Include="pathname.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="undone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="C:\Qt\Qt5.7.0\5.7\msvc2015_64\lib\libEGL.lib" />

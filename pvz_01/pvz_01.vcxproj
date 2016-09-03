@@ -279,6 +279,7 @@
   <ItemGroup>
     <ClInclude Include="bullet.h" />
     <ClInclude Include="card.h" />
+    <ClInclude Include="undone.h" />
     <CustomBuild Include="game_console.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing game_console.h...</Message>

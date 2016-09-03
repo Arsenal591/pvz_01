@@ -227,13 +227,12 @@ void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 void PlayingInterface::addBullet(enum BULLET_TYPE tp, int x, int y)
 {
 	MyLabel* newLabel = new MyLabel(parentWidget(), bullet);
-	newLabel->rect = QRect(cellRect[x][y].x() + 60, cellRect[x][y].y() + 30, 25, 25);
+	newLabel->rect = QRect(cellRect[x][y].x() + 60, cellRect[x][y].y() + 30, 60, 25);
 	newLabel->setGeometry(newLabel->rect);
 	QString str = BULLET_FOLDER[tp];
 	switch (tp)
 	{
 	case normal:
-		//str = "../pvz-material/images/Plants/PB00.gif";
 		break;
 	case fire:
 		break;
@@ -242,7 +241,9 @@ void PlayingInterface::addBullet(enum BULLET_TYPE tp, int x, int y)
 	default:
 		break;
 	}
+	qDebug() << str <<'\n';
 	newLabel->setPath(str);
+	//newLabel->setPixmap(newLabel->getPath());
 	QMovie* newMovie = new QMovie(newLabel->getPath());
 	newLabel->setMovie(newMovie);
 	newMovie->start();
@@ -381,6 +382,7 @@ void PlayingInterface::refresh()
 		}
 		if (oldMovie->fileName() != newMovie->fileName())
 		{
+			delete zombiesShown[i]->movie();
 			zombiesShown[i]->setMovie(newMovie);
 			newMovie->start();
 		}
@@ -397,6 +399,13 @@ void PlayingInterface::refresh()
 	//display bullets
 	for (int i = 0; i < currentConsole.bullets.size(); i++)
 	{
+		if (bulletsShown[i]->movie()->fileName() != BULLET_FOLDER[currentConsole.bullets[i]->type])
+		{
+			delete bulletsShown[i]->movie();
+			QMovie* movie = new QMovie(BULLET_FOLDER[currentConsole.bullets[i]->type]);
+			movie->start();
+			bulletsShown[i]->setMovie(movie);
+		}
 		bulletsShown[i]->setGeometry(bulletsShown[i]->rect);
 	}
 }

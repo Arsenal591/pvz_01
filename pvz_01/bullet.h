@@ -6,6 +6,8 @@ class Bullet
 {
 public:
 	Bullet(BULLET_TYPE, QRect);
+	void changeType(BULLET_TYPE);
+	int lastChangePosy;
 	QRect rect;
 	int bornTime;
 	int atk;

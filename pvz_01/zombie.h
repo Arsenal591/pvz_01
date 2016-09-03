@@ -24,4 +24,7 @@ public:
 	int cellx, celly;
 	int bornTime;
 	QRect rect;
+
+	bool ifFrozen;
+	int frozenTime;
 };
