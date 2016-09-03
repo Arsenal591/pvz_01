@@ -8,7 +8,6 @@
 
 class QMouseEvent;
 class GameConsole;
-//class MainWindow;
 
 class PlayingInterface :public QWidget
 {

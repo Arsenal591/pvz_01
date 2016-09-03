@@ -21,7 +21,6 @@ SelectCard::SelectCard(QWidget* parent)
 		for (int j = 0; j < 3; j++)
 		{
 			buttons[3 * i + j] = new MyButton(this, CARD_PATH[3 * i + j] + "2.jpg");
-			//buttons[3 * i + j]->hide();
 			buttons[3 * i + j]->setSize(QRect(60 + j * 65, 100 + i * 100, 45, 63));
 			buttons[3 * i + j]->setOffset(2, 2);
 			buttons[3 * i + j]->show();
