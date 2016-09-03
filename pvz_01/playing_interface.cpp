@@ -168,7 +168,7 @@ void PlayingInterface::addSunshine(int x, int y, bool ifDrop)
 	QRect rect = cellRect[x][y];
 	newLabel->setGeometry(QRect(rect.x() + 0.5*rect.width(), rect.y() + 0.5*rect.height(), 60, 60));
 	
-	newLabel->setPath("../pvz-material/images/interface/Sun.gif");
+	newLabel->setPath(SUNSHINE_PATH);
 	QMovie* movie = new QMovie(newLabel->getPath());
 	movie->setScaledSize(QSize(60, 60));
 	newLabel->setMovie(movie);

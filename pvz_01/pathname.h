@@ -4,6 +4,8 @@
 const QString WELCOME_PATH = "../pvz-material/images/interface/surface.jpg";
 const QString BACKGROUND_PATH = "../pvz-material/images/interface/background1.jpg";
 const QString CARDBOX_PATH = "../pvz-material/cardbox.png";
+
+const QString SUNSHINE_PATH = "../pvz-material/images/interface/Sun.gif";
 const QString CARD_PATH[] =
 {
 	"../pvz-material/card_peashooter_",
