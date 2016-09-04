@@ -29,6 +29,7 @@ GameConsole::GameConsole(QWidget* parent)
 	specialTimer->setInterval(1000);
 
 	cardChosen = nullptr;
+	ifShovelPicked = false;
 
 	setCellRect();
 	connect();
@@ -119,6 +120,21 @@ void GameConsole::dealSunshineClicked(MyLabel* label)
 		}
 	}
 	emit deleteSunshine(label);
+}
+void GameConsole::dealPlantClicked(MyLabel* label)
+{
+	if (!ifShovelPicked)return;
+	for (int i = 0; i < plants.size(); i++)
+	{
+		if (plants[i]->cellx == label->cellx && plants[i]->celly == label->celly)
+		{
+			delete plants[i];
+			plants.remove(i);
+			emit deletePlant(i);
+			break;
+		}
+	}
+	ifShovelPicked = false;
 }
 void GameConsole::dealCardClicked(int n)
 {
@@ -248,6 +264,12 @@ void GameConsole::dealAttackOfPlants()
 		case peashooter:case snowpea:
 		{
 			if (duration - plants[i]->lastAttack < plants[i]->recharge)
+				break;
+			bool ifFound = false;
+			for (int j = 0; j < zombies.size(); j++)
+				if (zombies[j]->cellx == plants[i]->cellx && zombies[j]->celly >= plants[i]->celly)
+					ifFound = true;
+			if (!ifFound)
 				break;
 			BULLET_TYPE tp = (plants[i]->type == peashooter) ? green : ice;
 			Bullet* newBullet = new Bullet(tp, QRect(rect.x() + 60, rect.y() + 30, 25, 25));

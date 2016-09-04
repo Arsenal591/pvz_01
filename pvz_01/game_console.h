@@ -30,7 +30,10 @@ public slots:
 	void dealSpecialLoop();
 
 	void dealSunshineClicked(MyLabel*);
+	void dealPlantClicked(MyLabel*);
 	void dealCardClicked(int);
+	void dealShovelClicked() { ifShovelPicked = true;}
+	void dealShovelCanceled() { ifShovelPicked = false; }
 
 	void dealPutPlant(int, int);
 private:
@@ -95,5 +98,6 @@ private:
 	QVector<Card*>cards;
 
 	Card* cardChosen;
+	bool ifShovelPicked;
 	QRect cellRect[5][10];
 };

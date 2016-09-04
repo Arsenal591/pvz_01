@@ -17,12 +17,10 @@ protected:
 	void mousePressEvent(QMouseEvent*);
 signals:
 	void sunshineClicked(MyLabel*);
+	void plantClicked(MyLabel*);
 	void cardClicked(int);
-	//void resetCardChosen();
-	void mayPutPlant(int, int);
 public:
 	MyLabel(QWidget* parent, ELEM_TYPE t, int n = -1);
 	void setPath(QString str) { path = str; }
 	QString getPath() { return path; }
-	//void setGeometry(QRect geo) {};
 };

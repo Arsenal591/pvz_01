@@ -14,6 +14,8 @@ class PlayingInterface :public QWidget
 	Q_OBJECT
 protected:
 	void mousePressEvent(QMouseEvent*);
+	void keyPressEvent(QKeyEvent*);
+	void paintEvent(QPaintEvent*);
 public:
 	explicit PlayingInterface(QWidget* parent = nullptr, GameConsole* = nullptr);
 	virtual ~PlayingInterface();
@@ -30,6 +32,7 @@ public slots:
 
 	void dealCardClicked(int);
 	void dealSunshineClicked(MyLabel*);
+	void dealPlantClicked(MyLabel*);
 
 	void deleteZombie(int);
 	void deletePlant(int);
@@ -45,8 +48,11 @@ public slots:
 	void zombieMove(int, int, int);
 
 signals:
+	void shovelClicked();
+	void shovelCanceled();
 	void doneCardClicked(int);
 	void doneSunshineClicked(MyLabel*);
+	void donePlantClicked(MyLabel*);
 	void gameReturn();
 private:
 	GameConsole* info;

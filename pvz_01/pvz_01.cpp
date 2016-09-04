@@ -26,7 +26,6 @@ void MainWindow::playMusic()
 void MainWindow::connect()
 {
 	WelcomeInterface* f = static_cast<WelcomeInterface*>(currentWidget);
-	//currentWidget = static_cast<WelcomeInterface*>(currentWidget);
 	QObject::connect(f->getButton(), SIGNAL(clicked()), this, SLOT(startPlaying()));
 	QObject::connect(currentWidget, SIGNAL(switchToEnd()), this, SLOT(close()));
 	QObject::connect(currentWidget, SIGNAL(switchToPlay()), this, SLOT(startPlaying()));
@@ -52,12 +51,20 @@ void MainWindow::startPlaying()
 	}
 	console.reset();
 	delete currentWidget;
+	if (historyWidget)
+	{
+		delete historyWidget;
+		historyWidget = nullptr;
+	}
 	currentWidget = new PlayingInterface(nullptr, &console);
 	currentWidget->show();
 	QObject::connect(&console, SIGNAL(gameOver(bool)), currentWidget, SLOT(gameOver(bool)));
 	QObject::connect(currentWidget, SIGNAL(gameReturn()), this, SLOT(gameReturn()));
 	QObject::connect(&console, SIGNAL(timeToShow()), currentWidget, SLOT(refresh()));
 
+	QObject::connect(currentWidget, SIGNAL(shovelClicked()), &console, SLOT(dealShovelClicked()));
+	QObject::connect(currentWidget, SIGNAL(shovelCanceled()), &console, SLOT(dealShovelCanceled()));
+	QObject::connect(currentWidget, SIGNAL(donePlantClicked(MyLabel*)), &console, SLOT(dealPlantClicked(MyLabel*)));
 	QObject::connect(currentWidget, SIGNAL(doneCardClicked(int)), &console, SLOT(dealCardClicked(int)));
 	QObject::connect(currentWidget, SIGNAL(doneSunshineClicked(MyLabel*)), &console, SLOT(dealSunshineClicked(MyLabel*)));
 
@@ -83,9 +90,10 @@ void MainWindow::gameStart()
 void MainWindow::gameReturn()
 {
 	status = Begin;
-	currentWidget->hide();
+	//currentWidget->hide();
 	historyWidget = currentWidget;
 	currentWidget = new WelcomeInterface;
+	historyWidget->hide();
 	currentWidget->show();
 	connect();
 }

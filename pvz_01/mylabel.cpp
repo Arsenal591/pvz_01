@@ -10,21 +10,21 @@ MyLabel::MyLabel(QWidget* parent, ELEM_TYPE t, int n) :type(t), cardNum(n)
 
 void MyLabel::mousePressEvent(QMouseEvent* ev)
 {
-	qDebug() << "s2ignal\n";
+	qDebug() << "i am pressed\n";
 	switch (type)
 	{
 	case card:
 		emit cardClicked(cardNum);
-		qDebug() << "signal\n";
 		return;
 	case sunshine:
 		emit sunshineClicked(this);
 		return;
 	case zombie:
-		emit mayPutPlant(ev->x() + rect.x(), ev->y() + rect.y());//坐标变换
-		return;
+		break;
 	case bullet:
-		emit mayPutPlant(ev->x() + rect.x(), ev->y() + rect.y());//坐标变换
+		break;
+	case plant:
+		emit plantClicked(this);
 		return;
 	default:
 		break;
