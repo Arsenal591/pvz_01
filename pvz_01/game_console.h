@@ -23,65 +23,75 @@ public:
 	void reset();
 public slots:
 	void setCards(QVector<int>);
+
 	void gameStart();
 	void dealNormalLoop();
 	void dealSpecialLoop();
+
 	void dealSunshineClicked(MyLabel*);
 	void dealCardClicked(int);
+
 	void dealPutPlant(int, int);
 private:
-	bool ifHumanWin;
-
-	int level;//关卡
-	int zombieSum;//该关卡应当生产的僵尸总数
-	int roundSum;//该关卡的僵尸生产回合总数
-
-	int zombieProduced;//当前生产回合已经生产的僵尸总数
-	int zombieProduceList[100];
-	int round;//当前处在第几个僵尸生产回合中
-	int lastRoundFinish;//上一个生产回合结束的时间
-
-	int duration;//how long does this game lasts
-	int sunshineLeft;
-	QTimer *normalTimer, *specialTimer;
-	QVector<Zombie*>zombies;
-	QVector<Zombie*>unbornZombies;
-	QVector<Plant*>plants;
-	QVector<Sunshine*>sunshines;
-	QVector<Bullet*>bullets;
-	QVector<Card*>cards;
-	Card* cardChosen;
-private:
-	QRect cellRect[5][10];
 	void connect();
 	void setCellRect();
 
 	bool ifGameOver();
+	void zombieStrategy();
+
 	void dealAttackOfPlants();
 	void dealAttackOfBullets();
 	void dealAttackOfZombies();
+
 	void dealHpOfPlants();
 	void dealHpOfZombies();
+
 	void dealBulletsMove();
 	void dealZombiesMove();
+
 	void sunshinesProduce();
 	void zombiesProduce();
 signals:
 	void gameOver(bool);
 
 	void deleteSunshine(MyLabel*);
-	void deleteZombie(int);
 	void deletePlant(int);
 	void deleteBullet(int);
+	void deleteZombie(int);
 
 	void addSunshine(int, int, bool);
-	void addZombie(enum ZOMBIE_TYPE, int, int);
-	void addPlant(PLANT_TYPE,int, int);
+	void addPlant(PLANT_TYPE, int, int);
 	void addBullet(enum BULLET_TYPE, int, int);
+	void addZombie(enum ZOMBIE_TYPE, int, int);
 
-	//void bulletMove(QRect, int, int);
-	//void zombieMove(QRect, int, int);
-	void zombieMove(int, int, int);
 	void bulletMove(int);
+	void zombieMove(int, int, int);
+
 	void timeToShow();
+private:
+	bool ifHumanWin;
+
+	int level;//关卡
+	bool visible, infinite, protect;
+
+	int zombieSum;//该关卡应当生产的僵尸总数
+	int roundSum;//该关卡的僵尸生产回合总数
+	int zombieProduced;//当前生产回合已经生产的僵尸总数
+	int zombieProduceList[100];
+	int round;//当前处在第几个僵尸生产回合中
+	int lastRoundFinish;//上一个生产回合结束的时间
+
+	int duration;
+	int sunshineLeft;
+
+	QTimer *normalTimer, *specialTimer;
+
+	QVector<Sunshine*>sunshines;
+	QVector<Plant*>plants;
+	QVector<Bullet*>bullets;
+	QVector<Zombie*>zombies;
+	QVector<Card*>cards;
+
+	Card* cardChosen;
+	QRect cellRect[5][10];
 };

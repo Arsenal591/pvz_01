@@ -24,7 +24,6 @@ public slots:
 	void cardAnimation();
 	void refresh();
 	void gameOver(bool);
-	//void gameStart();
 
 	void setCards(QVector<int>);
 
