@@ -6,31 +6,16 @@
 MyLabel::MyLabel(QWidget* parent, ELEM_TYPE t, int n) :type(t), cardNum(n)
 { 
 	this->setParent(parent); 
-	MainWindow* f = static_cast<MainWindow*>(this->parentWidget());
-	switch (t)
-	{
-	case card:
-		break;
-	case sunshine:
-		break;
-	case plant:
-		break;
-	case zombie:
-		QObject::connect(this, SIGNAL(mayPutPlant(int, int)), &(f->getConsole()), SLOT(dealPutPlant(int, int)));
-	case bullet:
-		QObject::connect(this, SIGNAL(mayPutPlant(int, int)), &(f->getConsole()), SLOT(dealPutPlant(int, int)));
-		break;
-	default:
-		break;
-	}
 }
 
 void MyLabel::mousePressEvent(QMouseEvent* ev)
 {
+	qDebug() << "s2ignal\n";
 	switch (type)
 	{
 	case card:
 		emit cardClicked(cardNum);
+		qDebug() << "signal\n";
 		return;
 	case sunshine:
 		emit sunshineClicked(this);

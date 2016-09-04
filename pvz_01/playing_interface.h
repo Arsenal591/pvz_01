@@ -24,6 +24,7 @@ public slots:
 	void cardAnimation();
 	void refresh();
 	void gameOver(bool);
+	//void gameStart();
 
 	void setCards(QVector<int>);
 
@@ -50,6 +51,7 @@ signals:
 private:
 	GameConsole* info;
 	QPixmap backgroundImage, cardBoxImage;
+	QLabel *backgroundLabel, *cardBoxLabel;
 	QRect cardRect[6];
 	QRect cellRect[5][10];
 	bool ifPlantExist[5][9];

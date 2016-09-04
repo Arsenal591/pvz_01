@@ -17,9 +17,9 @@ GameConsole::GameConsole(QWidget* parent)
 
 	//下面决定僵尸生产方式
 	level = 0;
-	zombieSum = 1;
+	zombieSum = 5;
 	memset(zombieProduceList, 0, sizeof(zombieProduceList));
-	zombieProduceList[1] = 1;
+	zombieProduceList[1] = 5;
 	round = 1;
 	roundSum = 1;
 	zombieProduced = 0;
@@ -141,8 +141,8 @@ void GameConsole::zombiesProduce()
 	int randNum = rand() % 10;
 	qDebug() << "randdom is " << randNum << '\n';
 	ZOMBIE_TYPE produceType;
-	if (randNum <= 10)
-		produceType = pole;
+	if (randNum <= 3)
+		produceType = normal;
 	else if (randNum <= 7)
 		produceType = bucket;
 	else produceType = pole;
@@ -342,8 +342,7 @@ void GameConsole::dealAttackOfPlants()
 			for (int j = 0; j < zombies.size(); j++)
 			{
 				if((plants[i]->cellx == zombies[j]->cellx)
-					&& ((plants[i]->celly + 1 == zombies[j]->celly)
-						|| (plants[i]->celly == zombies[j]->celly)))
+					&& (plants[i]->celly == zombies[j]->celly))
 				{
 					plants[i]->lastAttack = duration;
 					zombies[j]->hp -= plants[i]->atk;
@@ -353,7 +352,7 @@ void GameConsole::dealAttackOfPlants()
 		}
 		case cherrybomb:
 		{
-			if (duration - plants[i]->lastAttack < plants[i]->recharge)
+			if (plants[i]->lastAttack > 0)
 				break;
 			if (duration - plants[i]->putTime < plants[i]->prepare)
 				break;
@@ -440,7 +439,6 @@ void GameConsole::dealAttackOfZombies()
 		{
 			if (zombies[i]->cellx == plants[j]->cellx && zombies[i]->celly == plants[j]->celly)
 			{
-				//qDebug() << "i am attacking a plant!\n";
 				ifFound = true;
 				if (zombies[i]->type == pole && zombies[i]->step == 0)
 				{

@@ -9,12 +9,12 @@ WelcomeInterface::WelcomeInterface(QWidget* parent)
 	this->setFixedHeight(800);
 	drawBackground();
 
-	button = new MyButton(parent, ADVENTURE_PATH_RELEASED, ADVENTURE_PATH_PRESSED, ADVENTURE_PATH_RELEASED);
+	button = new MyButton(this, ADVENTURE_PATH_RELEASED, ADVENTURE_PATH_PRESSED, ADVENTURE_PATH_RELEASED);
 	button->setSize(QRect(620, 100, 460, 196));
 	button->setOffset(2, 2);
 	button->show();
 
-	connect(button, SIGNAL(clicked()), parent, SLOT(startPlaying()));
+	//connect(button, SIGNAL(clicked()), parent, SLOT(startPlaying()));
 }
 
 void WelcomeInterface::drawBackground()

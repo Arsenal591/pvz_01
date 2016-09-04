@@ -6,7 +6,7 @@
 MainWindow::MainWindow(QWidget* parent)
 {
 	status = Begin;
-	currentWidget = new WelcomeInterface(this);
+	currentWidget = new WelcomeInterface;
 	currentWidget->show();
 	historyWidget = nullptr;
 	connect();
@@ -24,6 +24,9 @@ void MainWindow::playMusic()
 }
 void MainWindow::connect()
 {
+	WelcomeInterface* f = static_cast<WelcomeInterface*>(currentWidget);
+	//currentWidget = static_cast<WelcomeInterface*>(currentWidget);
+	QObject::connect(f->getButton(), SIGNAL(clicked()), this, SLOT(startPlaying()));
 	QObject::connect(currentWidget, SIGNAL(switchToEnd()), this, SLOT(close()));
 	QObject::connect(currentWidget, SIGNAL(switchToPlay()), this, SLOT(startPlaying()));
 }
@@ -51,7 +54,7 @@ void MainWindow::startPlaying()
 		}
 	}
 	delete currentWidget;
-	currentWidget = new PlayingInterface(this, &console);
+	currentWidget = new PlayingInterface(nullptr, &console);
 	currentWidget->show();
 	QObject::connect(&console, SIGNAL(gameOver(bool)), currentWidget, SLOT(gameOver(bool)));
 	QObject::connect(currentWidget, SIGNAL(gameReturn()), this, SLOT(gameReturn()));
@@ -84,7 +87,7 @@ void MainWindow::gameReturn()
 	status = Begin;
 	currentWidget->hide();
 	historyWidget = currentWidget;
-	currentWidget = new WelcomeInterface(this);
+	currentWidget = new WelcomeInterface;
 	currentWidget->show();
 	connect();
 }

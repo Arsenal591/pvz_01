@@ -13,7 +13,8 @@ private:
 private:
 	void drawBackground();
 public:
-	WelcomeInterface(QWidget* parent = nullptr);
+	explicit WelcomeInterface(QWidget* parent = nullptr);
+	const MyButton* getButton() { return button; }
 signals:
 	void switchToOptions();
 	void switchToPlay();

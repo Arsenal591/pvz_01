@@ -23,19 +23,26 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 
 	memset(ifPlantExist, 0, sizeof(ifPlantExist));
 	
-	option = new MyButton(parent, OPTION_BUTTON_PATH);
+	option = new MyButton(this, OPTION_BUTTON_PATH);
 	option->setSize(QRect(1000, -3, 113, 41));
 	option->setOffset(2, 2);
 	option->show();
 
 	backgroundImage = QPixmap(BACKGROUND_PATH);
 	backgroundImage = backgroundImage.scaled(QSize(1867, 800));
-	QLabel* label = new QLabel(this);
-	label->setFixedSize(QSize(1867, 800));
-	label->setPixmap(backgroundImage);
-	label->show();
+	backgroundLabel = new QLabel(this);
+	backgroundLabel->setFixedSize(QSize(1867, 800));
+	backgroundLabel->setPixmap(backgroundImage);
+	backgroundLabel->show();
 
-	sunshineDisplay = new QLabel(parent);
+	cardBoxImage = QPixmap(CARDBOX_PATH);
+	cardBoxLabel = new QLabel(this);
+	cardBoxLabel->setFixedSize(QSize(435, 84));
+	cardBoxLabel->setPixmap(cardBoxImage);
+	cardBoxLabel->hide();
+
+	sunshineDisplay = new QLabel(this);
+	//sunshineDisplay = new QLabel(parent);
 	sunshineDisplay->setGeometry(QRect(185, 60, 30, 15));
 	sunshineDisplay->setAlignment(Qt::AlignCenter);
 	QPalette pal;
@@ -44,7 +51,8 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 	sunshineDisplay->setFont(QFont("consolas", 9));
 	sunshineDisplay->show();
 
-	SelectCard* selectCard = new SelectCard(this->parentWidget());
+	SelectCard* selectCard = new SelectCard(this);
+	//SelectCard* selectCard = new SelectCard(this->parentWidget());
 	selectCard->show();
 	connect(selectCard, SIGNAL(selected(QVector<int>)), this, SLOT(setCards(QVector<int>)));
 	connect(selectCard, SIGNAL(selected(QVector<int>)), selectCard, SLOT(hide()));
@@ -53,9 +61,11 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 }
 void PlayingInterface::setCards(QVector<int> res)
 {
+	qDebug() << "cards set\n";
+	qDebug() << res.size() << '\n';
 	for (int i = 0; i < res.size(); i++)
 	{
-		cardsShown.push_back(new MyLabel(parentWidget(), card, res[i]));
+		cardsShown.push_back(new MyLabel(cardBoxLabel, card, res[i]));
 		cardsShown[i]->setGeometry(cardRect[i]);
 		cardsShown[i]->show();
 		connect(cardsShown[i], SIGNAL(cardClicked(int)), this, SLOT(dealCardClicked(int)));
@@ -76,7 +86,7 @@ void PlayingInterface::mousePressEvent(QMouseEvent* ev)
 
 void PlayingInterface::setCardRect()
 {
-	int yLinePos = 250;
+	int yLinePos = 85;
 	for (int i = 0; i < 6; i++)
 	{
 		cardRect[i] = QRect(yLinePos, 10, 45, 63);
@@ -100,11 +110,7 @@ void PlayingInterface::setCellRect()
 }
 void PlayingInterface::leadInAnimation()
 {
-	QLabel* label = new QLabel(this);
-	label->setFixedSize(QSize(1867, 800));
-	label->setPixmap(backgroundImage);
-	label->show();
-	QPropertyAnimation* animation = new QPropertyAnimation(label, "geometry");
+	QPropertyAnimation* animation = new QPropertyAnimation(backgroundLabel, "geometry");
 	animation->setDuration(1000);
 	animation->setStartValue(QRect(0, 0, 1200, 800));
 	animation->setKeyValueAt(0.50, QRect(-667, 0, 1200, 800));
@@ -115,18 +121,15 @@ void PlayingInterface::leadInAnimation()
 }
 void PlayingInterface::cardAnimation()
 {
-	cardBoxImage = QPixmap(CARDBOX_PATH);
-	QLabel* label = new QLabel(this);
-	label->setFixedSize(QSize(435, 84));
-	label->setPixmap(cardBoxImage);
-	label->show();
-	QPropertyAnimation* animation = new QPropertyAnimation(label, "geometry");
+	cardBoxLabel->show();
+	QPropertyAnimation* animation = new QPropertyAnimation(cardBoxLabel, "geometry");
 	animation->setDuration(1000);
 	animation->setStartValue(QRect(165, -84, 165, 84));
 	animation->setEndValue(QRect(165, 0, 165, 84));
-	QObject::connect(animation, SIGNAL(finished()), this->parentWidget(), SLOT(gameStart()));
+	QObject::connect(animation, SIGNAL(finished()), info, SLOT(gameStart()));
 	animation->start();
 }
+
 void PlayingInterface::gameOver(bool check)
 {
 	QString str;
@@ -150,7 +153,7 @@ void PlayingInterface::dealSunshineClicked(MyLabel* label)
 void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
 {
 	//qDebug() << "type is " << tp << '\n';
-	MyLabel* newLabel = new MyLabel(this->parentWidget(), plant);
+	MyLabel* newLabel = new MyLabel(this, plant);
 	newLabel->cellx = x, newLabel->celly = y;
 	newLabel->QLabel::setGeometry(cellRect[x][y]);
 	plantsShown.push_back(newLabel);
@@ -164,7 +167,7 @@ void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
 }
 void PlayingInterface::addSunshine(int x, int y, bool ifDrop)
 {
-	MyLabel* newLabel = new MyLabel(this->parentWidget(), sunshine);
+	MyLabel* newLabel = new MyLabel(this, sunshine);
 	newLabel->cellx = x, newLabel->celly = y;
 	connect(newLabel, SIGNAL(sunshineClicked(MyLabel*)), this, SLOT(dealSunshineClicked(MyLabel*)));
 
@@ -194,7 +197,9 @@ void PlayingInterface::addSunshine(int x, int y, bool ifDrop)
 }
 void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 {
-	MyLabel* newLabel = new MyLabel(this->parentWidget(), zombie);
+	qDebug() << tp << ' ' << x << ' ' << y << '\n';
+	MyLabel* newLabel = new MyLabel(this, zombie);
+	connect(newLabel, SIGNAL(mayPutPlant(int, int)), info, SLOT(dealPutPlant(int, int)));
 	newLabel->cellx = x, newLabel->celly = y;
 	newLabel->rect = cellRect[x][y];
 
@@ -227,7 +232,7 @@ void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 }
 void PlayingInterface::addBullet(enum BULLET_TYPE tp, int x, int y)
 {
-	MyLabel* newLabel = new MyLabel(parentWidget(), bullet);
+	MyLabel* newLabel = new MyLabel(this, bullet);
 	newLabel->rect = QRect(cellRect[x][y].x() + 60, cellRect[x][y].y() + 30, 60, 25);
 	newLabel->setGeometry(newLabel->rect);
 	QString str = BULLET_FOLDER[tp];
@@ -288,8 +293,7 @@ void PlayingInterface::bulletMove(int rank)
 }
 void PlayingInterface::refresh()
 {
-	MainWindow* temp = static_cast<MainWindow*>(this->parentWidget());
-	const GameConsole& currentConsole = temp->getConsole();
+	const GameConsole& currentConsole = *info;
 
 	//display  sunshine
 	QString str;
@@ -317,6 +321,7 @@ void PlayingInterface::refresh()
 		switch (chosen->type)
 		{
 		case peashooter:case sunflower:case repeater:case snowpea:case torchwood:
+			newMovie->setFileName(plantsShown[i]->path + "1.gif");
 			break;
 		case wallnut:
 			if (chosen->hp < 1333)newMovie->setFileName(plantsShown[i]->path + "3.gif");

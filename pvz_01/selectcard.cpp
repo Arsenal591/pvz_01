@@ -77,7 +77,7 @@ void SelectCard::dealCard(int n)
 	}
 	else
 	{
-		if (selectedSum >= 2)return;
+		if (selectedSum >= 3)return;
 		buttons[n]->setIcon(QIcon(CARD_PATH[n] + "1.jpg"));
 		ifSelected[n] = true;
 		selectedSum++;
@@ -90,7 +90,7 @@ void SelectCard::changeStatement(int n)
 }
 void SelectCard::submit()
 {
-	if (selectedSum < 2)return;
+	if (selectedSum < 3)return;
 	QVector<int>res;
 	int pos = 0;
 	for (int i = 0; i < 9; i++)
