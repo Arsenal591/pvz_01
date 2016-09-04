@@ -21,6 +21,7 @@ class GameConsole:public QWidget
 public:
 	explicit GameConsole(QWidget* parent = nullptr);
 	void reset();
+	int getLastGameStatus() { return lastGameStatus; }
 public slots:
 	void setCards(QVector<int>);
 
@@ -70,6 +71,7 @@ signals:
 	void timeToShow();
 private:
 	bool ifHumanWin;
+	int lastGameStatus;
 
 	int level;//关卡
 	bool visible, infinite, protect;
@@ -77,7 +79,7 @@ private:
 	int zombieSum;//该关卡应当生产的僵尸总数
 	int roundSum;//该关卡的僵尸生产回合总数
 	int zombieProduced;//当前生产回合已经生产的僵尸总数
-	int zombieProduceList[100];
+	int* zombieProduceList;
 	int round;//当前处在第几个僵尸生产回合中
 	int lastRoundFinish;//上一个生产回合结束的时间
 

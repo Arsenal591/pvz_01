@@ -13,8 +13,11 @@ WelcomeInterface::WelcomeInterface(QWidget* parent)
 	button->setSize(QRect(620, 100, 460, 196));
 	button->setOffset(2, 2);
 	button->show();
+}
 
-	//connect(button, SIGNAL(clicked()), parent, SLOT(startPlaying()));
+WelcomeInterface::~WelcomeInterface()
+{
+	delete button;
 }
 
 void WelcomeInterface::drawBackground()

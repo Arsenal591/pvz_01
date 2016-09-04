@@ -23,11 +23,6 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 
 	memset(ifPlantExist, 0, sizeof(ifPlantExist));
 	
-	option = new MyButton(this, OPTION_BUTTON_PATH);
-	option->setSize(QRect(1000, -3, 113, 41));
-	option->setOffset(2, 2);
-	option->show();
-
 	backgroundImage = QPixmap(BACKGROUND_PATH);
 	backgroundImage = backgroundImage.scaled(QSize(1867, 800));
 	backgroundLabel = new QLabel(this);
@@ -40,6 +35,11 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 	cardBoxLabel->setFixedSize(QSize(435, 84));
 	cardBoxLabel->setPixmap(cardBoxImage);
 	cardBoxLabel->hide();
+
+	option = new MyButton(this, OPTION_BUTTON_PATH);
+	option->setSize(QRect(1000, -3, 113, 41));
+	option->setOffset(2, 2);
+	option->show();
 
 	sunshineDisplay = new QLabel(this);
 	//sunshineDisplay = new QLabel(parent);
@@ -59,10 +59,28 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 	connect(selectCard, SIGNAL(selected(QVector<int>)), info, SLOT(setCards(QVector<int>)));
 	//leadInAnimation();
 }
+
+PlayingInterface::~PlayingInterface()
+{
+	delete backgroundLabel;
+	delete cardBoxLabel;
+	delete option;
+	delete sunshineDisplay;
+
+	for (int i = 0; i < sunshineShown.size(); i++)
+		delete sunshineShown[i];
+	for (int i = 0; i < plantsShown.size(); i++)
+		delete plantsShown[i];
+	for (int i = 0; i < bulletsShown.size(); i++)
+		delete bulletsShown[i];
+	for (int i = 0; i < zombiesShown.size(); i++)
+		delete zombiesShown[i];
+	for (int i = 0; i < cardsShown.size(); i++)
+		delete cardsShown[i];
+
+}
 void PlayingInterface::setCards(QVector<int> res)
 {
-	qDebug() << "cards set\n";
-	qDebug() << res.size() << '\n';
 	for (int i = 0; i < res.size(); i++)
 	{
 		cardsShown.push_back(new MyLabel(cardBoxLabel, card, res[i]));
@@ -205,13 +223,10 @@ void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 	switch (tp)
 	{
 	case normal:
-		//str = ZOMBIE_FOLDER[tp];
 		break;
 	case bucket:
-		//str = 
 		break;
 	case pole:
-		//str += "PoleVaultingZombie/";
 		newLabel->rect.setWidth(newLabel->width() + 70);
 		newLabel->rect.moveLeft(newLabel->rect.x() - 30);
 		break;

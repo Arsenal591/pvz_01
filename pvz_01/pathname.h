@@ -35,8 +35,8 @@ const QString ZOMBIE_FOLDER[] =
 	"../pvz-material/images/Zombies/Zombie/",
 	"../pvz-material/images/Zombies/BucketheadZombie/",
 	"../pvz-material/images/Zombies/PoleVaultingZombie/",
-	"../pvz-material/images/Zombies/ConeheadZombie",
-	"../pvz-material/images/Zombies/NewspaperZombie"
+	"../pvz-material/images/Zombies/ConeheadZombie/",
+	"../pvz-material/images/Zombies/NewspaperZombie/"
 };
 const QString BULLET_FOLDER[] =
 {

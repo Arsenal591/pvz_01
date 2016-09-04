@@ -14,9 +14,11 @@ GameConsole::GameConsole(QWidget* parent)
 	duration = 0;
 	sunshineLeft = 2000;
 	ifHumanWin = false;
+	lastGameStatus = 0;
 
 	//下面决定僵尸生产方式
 	level = 0;
+	zombieProduceList = nullptr;
 	zombieStrategy();
 
 	visible = infinite = protect = false;
@@ -33,9 +35,31 @@ GameConsole::GameConsole(QWidget* parent)
 }
 void GameConsole::reset()
 {
+	ifHumanWin = false;
+	lastGameStatus = 0;
+	visible = infinite = protect = false;
+	zombieStrategy();
 	duration = 0;
 	sunshineLeft = 2000;
-	ifHumanWin = false;
+
+	for (int i = 0; i < sunshines.size(); i++)
+		delete sunshines[i];
+	sunshines.clear();
+	for (int i = 0; i < plants.size(); i++)
+		delete plants[i];
+	plants.clear();
+	for (int i = 0; i < bullets.size(); i++)
+		delete bullets[i];
+	bullets.clear();
+	for (int i = 0; i < zombies.size(); i++)
+		delete zombies[i];
+	zombies.clear();
+	for (int i = 0; i < cards.size(); i++)
+		delete cards[i];
+	cards.clear();
+
+	delete cardChosen;
+	cardChosen = nullptr;
 }
 
 void GameConsole::setCards(QVector<int> res)
@@ -43,7 +67,6 @@ void GameConsole::setCards(QVector<int> res)
 	qDebug() << "reached\n";
 	for (int i = 0; i < res.size(); i++)
 	{
-		//qDebug() << res[i] << '\n';
 		cards.push_back(new Card(PLANT_TYPE(res[i])));
 	}
 }
@@ -79,7 +102,6 @@ void GameConsole::dealSpecialLoop()
 
 void GameConsole::dealSunshineClicked(MyLabel* label)
 {
-	//qDebug() << "GameConsole::dealSunshineClicked\n";
 	sunshineLeft += 25;
 	for (int i = 0; i < sunshines.size(); i++)
 		if (sunshines[i]->cellx == label->cellx && sunshines[i]->celly == label->celly)
@@ -88,14 +110,11 @@ void GameConsole::dealSunshineClicked(MyLabel* label)
 			sunshines.remove(i);
 			break;
 		}
-	qDebug() << label->cellx << ' ' << label->celly << '\n';
 	for (int i = 0; i < plants.size(); i++)
 	{
-		qDebug() << plants[i]->type << ' ' << plants[i]->cellx << ' ' << plants[i]->celly << '\n';
 		if (plants[i]->type == sunflower && plants[i]->cellx == label->cellx && plants[i]->celly == label->celly)
 		{
 			plants[i]->ifPicked = true;
-			qDebug() << "sunflower " << plants[i]->cellx << ' ' << plants[i]->celly << "is reset\n";
 			break;
 		}
 	}
@@ -166,7 +185,6 @@ void GameConsole::setCellRect()
 	}
 }
 
-
 bool GameConsole::ifGameOver()
 {
 	for (int i = 0; i < zombies.size(); i++)
@@ -174,12 +192,14 @@ bool GameConsole::ifGameOver()
 		if (zombies[i]->rect.x() <= 10)
 		{
 			ifHumanWin = false;
+			lastGameStatus = -1;
 			return true;
 		}
 	}
-	if (zombies.size() == 0 && round == roundSum && zombieProduced == zombieProduceList[round])
+	if (zombies.size() == 0 && round > roundSum)
 	{
 		ifHumanWin = true;
+		lastGameStatus = 1;
 		level++;
 		return true;
 	}
@@ -187,17 +207,24 @@ bool GameConsole::ifGameOver()
 }
 void GameConsole::zombieStrategy()
 {
-	memset(zombieProduceList, 0, sizeof(zombieProduceList));
+	if (zombieProduceList)
+	{
+		delete zombieProduceList;
+		zombieProduceList = nullptr;
+	}
+	qDebug() << level << '\n';
 	if(level == 0) 
 	{
 		roundSum = 1;
-		zombieSum = 5;
-		zombieProduceList[1] = 5;
+		zombieSum = 2;
+		zombieProduceList = new int[2];
+		zombieProduceList[1] = 2;
 	}
 	else
 	{
-		roundSum = 5 * roundSum + ((rand() % 2) ? 1 : -1) * (rand() % 5);
+		roundSum = 5 * level + ((rand() % 2) ? 1 : -1) * (rand() % 5);
 		zombieSum = 0;
+		zombieProduceList = new int[roundSum + 1];
 		for (int i = 1; i <= roundSum; i++)
 		{
 			zombieProduceList[i] = (rand() % 6) ? (rand() % 5 + 5) : (20 + rand() % 5);
@@ -355,7 +382,6 @@ void GameConsole::dealAttackOfZombies()
 	}
 }
 
-
 void GameConsole::dealHpOfPlants()
 {
 	int i = 0;
@@ -379,6 +405,7 @@ void GameConsole::dealHpOfZombies()
 	int i = 0;
 	while (i < zombies.size())
 	{
+		if (zombies[i]->hp < -100)zombies[i]->status = 3;
 		if (zombies[i]->status == 3)//已经彻底消失
 		{
 			delete zombies[i];
@@ -416,7 +443,6 @@ void GameConsole::dealHpOfZombies()
 		i++;
 	}
 }
-
 
 void GameConsole::dealBulletsMove()
 {
@@ -514,29 +540,28 @@ void GameConsole::zombiesProduce()
 	if (round > roundSum)return;//最后一回合已经结束
 	if (duration - lastRoundFinish < 10000)//回合间的休息时间不足10s
 		return;
-	if (zombieProduced == zombieProduceList[round])//该回合已经结束
+
+	if (zombieProduced == zombieProduceList[round] && zombies.size() == 0)//生产回合结束且屏幕上的僵尸全被消灭
 	{
 		lastRoundFinish = duration;
-		return;
-	}
-	if (duration == 1000 || duration - lastRoundFinish == 10000)//进入下一回合
-	{
 		zombieProduced = 0;
 		round++;
+		return;
 	}
+	else if (zombieProduced == zombieProduceList[round])//该生产回合已经结束
+		return;
 	zombieProduced++;
-	//qDebug() << "hey i am going to produce a zombie!\n";
 	int producePos = rand() % 5;//随机在第10列的某一行生产
 	
 	//此处随机挑选僵尸种类
 	int randNum = rand() % 10;
 	qDebug() << "random is " << randNum << '\n';
 	ZOMBIE_TYPE produceType;
-	if (randNum <= 10)
-		produceType = cone;
+	if (randNum <= 2)
+		produceType = pole;
 	else if (randNum <= 7)
-		produceType = bucket;
-	else produceType = pole;
+		produceType = normal;
+	else produceType = bucket;
 	Zombie* newZombie = new Zombie(produceType, producePos, 9, cellRect[producePos][9], duration);
 	zombies.push_back(newZombie);
 	emit addZombie(produceType, producePos, 9);

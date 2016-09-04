@@ -14,6 +14,7 @@ private:
 	void drawBackground();
 public:
 	explicit WelcomeInterface(QWidget* parent = nullptr);
+	virtual ~WelcomeInterface();
 	const MyButton* getButton() { return button; }
 signals:
 	void switchToOptions();

@@ -6,6 +6,7 @@
 MainWindow::MainWindow(QWidget* parent)
 {
 	status = Begin;
+	currentWidget = nullptr;
 	currentWidget = new WelcomeInterface;
 	currentWidget->show();
 	historyWidget = nullptr;
@@ -40,7 +41,7 @@ void MainWindow::startPlaying()
 {
 	status = Playing;
 
-	if (historyWidget != nullptr)
+	if (historyWidget != nullptr && console.getLastGameStatus() == 0)
 	{
 		QMessageBox box(QMessageBox::Question, QStringLiteral("提示"), QStringLiteral("是否想要继续从前的回合？\n"), QMessageBox::Ok| QMessageBox::No);
 		if (box.exec() == QMessageBox::Ok)
@@ -48,11 +49,8 @@ void MainWindow::startPlaying()
 			gameContinue();
 			return;
 		}
-		else
-		{
-			//reset the console and the interface
-		}
 	}
+	console.reset();
 	delete currentWidget;
 	currentWidget = new PlayingInterface(nullptr, &console);
 	currentWidget->show();

@@ -16,6 +16,7 @@ protected:
 	void mousePressEvent(QMouseEvent*);
 public:
 	explicit PlayingInterface(QWidget* parent = nullptr, GameConsole* = nullptr);
+	virtual ~PlayingInterface();
 	const QRect getCellRect(int x, int y) { return cellRect[x][y]; }
 	int getCardSum() { return cardsShown.size(); }
 	const MyLabel* getCardShown(int i) { return cardsShown[i]; }
