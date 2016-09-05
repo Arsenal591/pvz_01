@@ -9,6 +9,7 @@
 
 class QMouseEvent;
 class GameConsole;
+class QMediaPlayer;
 
 class PlayingInterface :public QWidget
 {
@@ -23,12 +24,14 @@ public:
 	const QRect getCellRect(int x, int y) { return cellRect[x][y]; }
 	int getCardSum() { return cardsShown.size(); }
 	const MyLabel* getCardShown(int i) { return cardsShown[i]; }
+	void setMusicAudioPlayers(QMediaPlayer* mp, QMediaPlayer* ap) { musicPlayer = mp, audioPlayer = ap; }
 public slots:
 	void leadInAnimation();
 	void cardAnimation();
 	void refresh();
 	void gameOver(bool);
 	void startOption();
+	void finishOption(int, int);
 
 	void setCards(QVector<int>);
 
@@ -56,8 +59,10 @@ signals:
 	void doneSunshineClicked(MyLabel*);
 	void donePlantClicked(MyLabel*);
 	void gameReturn();
+
 private:
 	GameConsole* info;
+	QMediaPlayer *musicPlayer, *audioPlayer;
 	QPixmap backgroundImage, cardBoxImage;
 	QLabel *backgroundLabel, *cardBoxLabel;
 	QRect cardRect[6];

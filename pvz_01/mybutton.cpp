@@ -1,4 +1,5 @@
 #include "mybutton.h"
+#include "qdebug.h"
 
 MyButton::MyButton(QWidget*parent, QString str1, QString str2, QString str3)
 {

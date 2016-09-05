@@ -16,12 +16,15 @@ MainWindow::MainWindow(QWidget* parent)
 
 void MainWindow::playMusic()
 {
-	player = new QMediaPlayer(this);
-	player->setAudioRole(QAudio::MusicRole);
-	player->setMedia(QUrl("../pvz-material/audio/awooga.mp3"));
-	player->setVolume(100);
-	QObject::connect(player, SIGNAL(stateChanged(QMediaPlayer::State)), player, SLOT(play()));
-	player->play();
+	audioPlayer = new QMediaPlayer(this);
+	audioPlayer->setVolume(100);
+
+	musicPlayer = new QMediaPlayer(this);
+	musicPlayer->setAudioRole(QAudio::MusicRole);
+	musicPlayer->setMedia(QUrl("../pvz-material/audio/2.75.mp3"));
+	musicPlayer->setVolume(100);
+	QObject::connect(musicPlayer, SIGNAL(stateChanged(QMediaPlayer::State)), musicPlayer, SLOT(play()));
+	musicPlayer->play();
 }
 void MainWindow::connect()
 {
@@ -80,6 +83,9 @@ void MainWindow::startPlaying()
 
 	QObject::connect(&console, SIGNAL(zombieMove(int, int, int)), currentWidget, SLOT(zombieMove(int, int, int)));
 	QObject::connect(&console, SIGNAL(bulletMove(int)), currentWidget, SLOT(bulletMove(int)));
+
+	PlayingInterface* f = static_cast<PlayingInterface*>(currentWidget);
+	f->setMusicAudioPlayers(this->musicPlayer, this->audioPlayer);
 }
 
 void MainWindow::gameStart()
@@ -90,7 +96,6 @@ void MainWindow::gameStart()
 void MainWindow::gameReturn()
 {
 	status = Begin;
-	//currentWidget->hide();
 	historyWidget = currentWidget;
 	currentWidget = new WelcomeInterface;
 	historyWidget->hide();

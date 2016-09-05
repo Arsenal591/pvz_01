@@ -22,13 +22,14 @@ public slots:
 	void gameStart();
 	void gameReturn();
 	void gameContinue();
+	void setVolume(int m, int a) { musicPlayer->setVolume(m); audioPlayer->setVolume(a); }
 signals:
 private:
 	enum GAME_STATUS { Begin, Playing, About, Thanks, Setting }status;
 	GameConsole console;
 	QWidget* currentWidget;
 	QWidget* historyWidget;
-	QMediaPlayer* player;
+	QMediaPlayer *musicPlayer, *audioPlayer;
 
 	void playMusic();
 	void connect();

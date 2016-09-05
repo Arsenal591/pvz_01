@@ -166,12 +166,20 @@ void PlayingInterface::gameOver(bool check)
 
 void PlayingInterface::startOption()
 {
-	qDebug() << "creating y menu\n";
 	menu = new OptionMenu(this);
 	menu->show();
+
+	menu->setInitial(musicPlayer->volume(), audioPlayer->volume());
+	QObject::connect(menu, SIGNAL(setVolume(int, int)), this, SLOT(finishOption(int, int)));
 	option->setEnabled(false);
 }
-
+void PlayingInterface::finishOption(int m, int a)
+{
+	musicPlayer->setVolume(m);
+	audioPlayer->setVolume(a);
+	menu->hide();
+	option->setEnabled(true);
+}
 void PlayingInterface::dealCardClicked(int n)
 {
 	qDebug() << "card " << n << "is picked\n";

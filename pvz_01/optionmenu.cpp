@@ -1,4 +1,5 @@
 #include "optionmenu.h"
+#include <qdebug.h>
 
 OptionMenu::OptionMenu(QWidget* parent)
 {
@@ -52,9 +53,17 @@ OptionMenu::OptionMenu(QWidget* parent)
 	ok = new MyButton(this, SETTING_BUTTON_PATH);
 	ok->setSize(QRect(25, 383, 360, 100));
 	ok->setOffset(2, 2);
+
+	connect();
 }
 
 void OptionMenu::connect()
 {
 	QObject::connect(ok, SIGNAL(clicked()), this, SLOT(finish()));
+}
+
+void OptionMenu::finish()
+{
+	qDebug() << "!!\n";
+	emit setVolume(musicSetting->value(), audioSetting->value());
 }

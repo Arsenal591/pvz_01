@@ -17,6 +17,8 @@ private:
 public:
 	OptionMenu(QWidget* parent = nullptr);
 	void connect();
+	void setInitial(int m, int a) { musicSetting->setValue(m), audioSetting->setValue(a); }
+public slots:
 	void finish();
 signals:
 	void setVolume(int, int);
