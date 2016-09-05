@@ -60,7 +60,7 @@ private:
 	QLabel *backgroundLabel, *cardBoxLabel;
 	QRect cardRect[6];
 	QRect cellRect[5][10];
-	bool ifPlantExist[5][9];
+	SelectCard* selectCard;
 
 	MyButton* option;
 

@@ -202,6 +202,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mybutton.cpp" />
     <ClCompile Include="mylabel.cpp" />
+    <ClCompile Include="optionmenu.cpp" />
     <ClCompile Include="selectcard.cpp" />
     <ClCompile Include="plant.cpp" />
     <ClCompile Include="playing_interface.cpp" />
@@ -252,6 +253,7 @@
   <ItemGroup>
     <ClInclude Include="bullet.h" />
     <ClInclude Include="card.h" />
+    <ClInclude Include="optionmenu.h" />
     <ClInclude Include="undone.h" />
     <CustomBuild Include="game_console.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

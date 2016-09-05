@@ -141,7 +141,9 @@ void GameConsole::dealCardClicked(int n)
 	int x;
 	for (int i = 0; i < cards.size(); i++)
 		if (cards[i]->getType() == n)x = i;
-	if (cards[x]->getCost() <= sunshineLeft && duration - cards[x]->getLastUsed() >= cards[x]->getCd())
+	if (cards[x]->getCost() <= sunshineLeft
+		&& duration - cards[x]->getLastUsed() >= cards[x]->getCd()
+		&& cards[x] != cardChosen)
 		cardChosen = cards[x];
 	else
 		cardChosen = nullptr;

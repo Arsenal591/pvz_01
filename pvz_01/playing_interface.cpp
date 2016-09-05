@@ -20,8 +20,6 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 
 	setCardRect();
 	setCellRect();
-
-	memset(ifPlantExist, 0, sizeof(ifPlantExist));
 	
 	backgroundImage = QPixmap(BACKGROUND_PATH);
 	backgroundImage = backgroundImage.scaled(QSize(1867, 800));
@@ -42,7 +40,6 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 	option->show();
 
 	sunshineDisplay = new QLabel(this);
-	//sunshineDisplay = new QLabel(parent);
 	sunshineDisplay->setGeometry(QRect(185, 60, 30, 15));
 	sunshineDisplay->setAlignment(Qt::AlignCenter);
 	QPalette pal;
@@ -51,13 +48,11 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 	sunshineDisplay->setFont(QFont("consolas", 9));
 	sunshineDisplay->show();
 
-	SelectCard* selectCard = new SelectCard(this);
-	//SelectCard* selectCard = new SelectCard(this->parentWidget());
+	selectCard = new SelectCard(this);
 	selectCard->show();
 	connect(selectCard, SIGNAL(selected(QVector<int>)), this, SLOT(setCards(QVector<int>)));
 	connect(selectCard, SIGNAL(selected(QVector<int>)), selectCard, SLOT(hide()));
 	connect(selectCard, SIGNAL(selected(QVector<int>)), info, SLOT(setCards(QVector<int>)));
-	//leadInAnimation();
 }
 
 PlayingInterface::~PlayingInterface()
@@ -66,6 +61,7 @@ PlayingInterface::~PlayingInterface()
 	delete cardBoxLabel;
 	delete option;
 	delete sunshineDisplay;
+	delete selectCard;
 
 	for (int i = 0; i < sunshineShown.size(); i++)
 		delete sunshineShown[i];
@@ -168,7 +164,13 @@ void PlayingInterface::gameOver(bool check)
 void PlayingInterface::dealCardClicked(int n)
 {
 	qDebug() << "card " << n << "is picked\n";
-	this->setCursor(QPixmap(PLANT_FOLDER[n] + "0.png"));
+	int x;
+	for (int i = 0; i < cardsShown.size(); i++)
+		if (cardsShown[i]->cardNum == n)x = i;
+	if(info->cardChosen && info->cardChosen->getType() == cardsShown[x]->cardNum)
+		this->unsetCursor();
+	else 
+		this->setCursor(QPixmap(PLANT_FOLDER[n] + "0.png"));
 	emit doneCardClicked(n);
 }
 void PlayingInterface::dealPlantClicked(MyLabel* label)
