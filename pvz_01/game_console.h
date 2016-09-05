@@ -32,7 +32,7 @@ public slots:
 	void dealSunshineClicked(MyLabel*);
 	void dealPlantClicked(MyLabel*);
 	void dealCardClicked(int);
-	void dealShovelClicked() { ifShovelPicked = true;}
+	void dealShovelClicked() { ifShovelPicked = !ifShovelPicked;}
 	void dealShovelCanceled() { ifShovelPicked = false; }
 
 	void dealPutPlant(int, int);

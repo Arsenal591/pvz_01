@@ -45,6 +45,7 @@ const QString BULLET_FOLDER[] =
 	"../pvz-material/images/bullets/ice.gif"
 };
 
+const QString SHOVEL_PATH = "../pvz-material/images/interface/Shovel.png";
 const QString OPTION_BUTTON_PATH = "../pvz-material/button/option.png";
 const QString PICKCARD_PATH = "../pvz-material/images/interface/SeedChooser_Background.png";
 const QString PICKCARD_BUTTON_PATH = "../pvz-material/images/interface/ShovelBack.png";

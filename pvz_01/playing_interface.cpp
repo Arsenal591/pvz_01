@@ -90,6 +90,7 @@ void PlayingInterface::setCards(QVector<int> res)
 void PlayingInterface::mousePressEvent(QMouseEvent* ev)
 {
 	emit shovelCanceled();
+	this->unsetCursor();
 	if (ev->x() >= 135 && ev->x() <= 1105 && ev->y() >= 110 && ev->y() <= 760)
 	{
 		qDebug() << ev->x() << ' ' << ev->y() << '\n';
@@ -102,6 +103,9 @@ void PlayingInterface::keyPressEvent(QKeyEvent* ev)
 {
 	if (ev->key() == Qt::Key_S)
 		emit shovelClicked();
+	if (this->cursor().shape() == Qt::ArrowCursor)
+		this->setCursor(QPixmap(SHOVEL_PATH));
+	else this->setCursor(Qt::ArrowCursor);
 }
 
 void PlayingInterface::setCardRect()
@@ -164,6 +168,7 @@ void PlayingInterface::gameOver(bool check)
 void PlayingInterface::dealCardClicked(int n)
 {
 	qDebug() << "card " << n << "is picked\n";
+	this->setCursor(QPixmap(PLANT_FOLDER[n] + "0.png"));
 	emit doneCardClicked(n);
 }
 void PlayingInterface::dealPlantClicked(MyLabel* label)
