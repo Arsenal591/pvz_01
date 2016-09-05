@@ -38,6 +38,7 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 	option->setSize(QRect(1000, -3, 113, 41));
 	option->setOffset(2, 2);
 	option->show();
+	connect(option, SIGNAL(clicked()), this, SLOT(startOption()));
 
 	sunshineDisplay = new QLabel(this);
 	sunshineDisplay->setGeometry(QRect(185, 60, 30, 15));
@@ -98,10 +99,12 @@ void PlayingInterface::mousePressEvent(QMouseEvent* ev)
 void PlayingInterface::keyPressEvent(QKeyEvent* ev)
 {
 	if (ev->key() == Qt::Key_S)
+	{
 		emit shovelClicked();
-	if (this->cursor().shape() == Qt::ArrowCursor)
-		this->setCursor(QPixmap(SHOVEL_PATH));
-	else this->setCursor(Qt::ArrowCursor);
+		if (this->cursor().shape() == Qt::ArrowCursor)
+			this->setCursor(QPixmap(SHOVEL_PATH));
+		else this->setCursor(Qt::ArrowCursor);
+	}
 }
 
 void PlayingInterface::setCardRect()
@@ -159,6 +162,14 @@ void PlayingInterface::gameOver(bool check)
 	QMessageBox box(QMessageBox::Information, QStringLiteral("ÌבÊ¾"), str, QMessageBox::Yes);
 	if (box.exec() == QMessageBox::Yes)
 		emit gameReturn();
+}
+
+void PlayingInterface::startOption()
+{
+	qDebug() << "creating y menu\n";
+	menu = new OptionMenu(this);
+	menu->show();
+	option->setEnabled(false);
 }
 
 void PlayingInterface::dealCardClicked(int n)

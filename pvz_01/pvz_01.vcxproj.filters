@@ -131,6 +131,12 @@
     <ClCompile Include="optionmenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_optionmenu.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_optionmenu.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pvz_01.h">
@@ -166,6 +172,9 @@
     <CustomBuild Include="selectcard.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="optionmenu.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_pvz_01.h">
@@ -184,9 +193,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="undone.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="optionmenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

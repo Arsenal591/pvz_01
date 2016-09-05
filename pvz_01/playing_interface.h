@@ -5,6 +5,7 @@
 #include "mybutton.h"
 #include "pathname.h"
 #include "selectcard.h"
+#include "optionmenu.h"
 
 class QMouseEvent;
 class GameConsole;
@@ -27,6 +28,7 @@ public slots:
 	void cardAnimation();
 	void refresh();
 	void gameOver(bool);
+	void startOption();
 
 	void setCards(QVector<int>);
 
@@ -64,6 +66,7 @@ private:
 
 	MyButton* option;
 
+	OptionMenu* menu;
 	QLabel* sunshineDisplay;
 	QVector<MyLabel*>plantsShown;
 	QVector<MyLabel*>zombiesShown;

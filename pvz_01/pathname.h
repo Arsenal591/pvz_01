@@ -49,5 +49,8 @@ const QString SHOVEL_PATH = "../pvz-material/images/interface/Shovel.png";
 const QString OPTION_BUTTON_PATH = "../pvz-material/button/option.png";
 const QString PICKCARD_PATH = "../pvz-material/images/interface/SeedChooser_Background.png";
 const QString PICKCARD_BUTTON_PATH = "../pvz-material/images/interface/ShovelBack.png";
+const QString SETTING_PATH = "../pvz-material/images/interface/OptionsMenuback32.png";
+const QString SETTING_BUTTON_PATH = "../pvz-material/button/setting.png";
+
 const QString ADVENTURE_PATH_PRESSED = "../pvz-material/button/adventure1.png";
 const QString ADVENTURE_PATH_RELEASED = "../pvz-material/button/adventure2.png";
