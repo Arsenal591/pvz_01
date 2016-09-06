@@ -26,6 +26,7 @@ public:
 	const MyLabel* getCardShown(int i) { return cardsShown[i]; }
 	void setMusicAudioPlayers(QMediaPlayer* mp, QMediaPlayer* ap) { musicPlayer = mp, audioPlayer = ap; }
 public slots:
+	void playingAudio(QString);
 	void leadInAnimation();
 	void cardAnimation();
 	void refresh();

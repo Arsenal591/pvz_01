@@ -56,3 +56,10 @@ const QString RETURN_BUTTON_PATH = "../pvz-material/button/return.png";
 
 const QString ADVENTURE_PATH_PRESSED = "../pvz-material/button/adventure1.png";
 const QString ADVENTURE_PATH_RELEASED = "../pvz-material/button/adventure2.png";
+
+const QString WELCOME_MUSIC_PATH = "../pvz-material/audio/welcome.mp3";
+const QString PLAYING_MUSIC_PATH = "../pvz-material/audio/playing.mp3";
+const QString CHOOSING_MUSIC_PATH = "../pvz-material/audio/choosing.mp3";
+
+const QString BUTTONCLICK_AUDIO_PATH = "../pvz-material/audio/buttononclick.mp3";
+//const QString 

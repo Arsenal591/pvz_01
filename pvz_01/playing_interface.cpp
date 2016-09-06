@@ -134,8 +134,15 @@ void PlayingInterface::setCellRect()
 		xLinePos += 130;
 	}
 }
+
+void PlayingInterface::playingAudio(QString str)
+{
+	audioPlayer->setMedia(QUrl(str));
+}
 void PlayingInterface::leadInAnimation()
 {
+	musicPlayer->setMedia(QUrl(PLAYING_MUSIC_PATH));
+
 	QPropertyAnimation* animation = new QPropertyAnimation(backgroundLabel, "geometry");
 	animation->setDuration(1000);
 	animation->setStartValue(QRect(0, 0, 1200, 800));

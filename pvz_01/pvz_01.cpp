@@ -25,7 +25,7 @@ void MainWindow::playMusic()
 
 	musicPlayer = new QMediaPlayer(this);
 	musicPlayer->setAudioRole(QAudio::MusicRole);
-	musicPlayer->setMedia(QUrl("../pvz-material/audio/2.75.mp3"));
+	musicPlayer->setMedia(QUrl(WELCOME_MUSIC_PATH));
 	musicPlayer->setVolume(100);
 	QObject::connect(musicPlayer, SIGNAL(stateChanged(QMediaPlayer::State)), musicPlayer, SLOT(play()));
 	musicPlayer->play();
@@ -60,6 +60,9 @@ void MainWindow::startPlaying()
 }
 void MainWindow::resetEverything()
 {
+	musicPlayer->stop();
+	musicPlayer->setMedia(QUrl(CHOOSING_MUSIC_PATH));
+
 	console.reset();
 
 	QWidget* temp = currentWidget;
@@ -114,6 +117,8 @@ void MainWindow::gameReturn()
 
 	WelcomeInterface* f = static_cast<WelcomeInterface*>(currentWidget);
 	f->setMusicAudioPlayers(this->musicPlayer, this->audioPlayer);
+
+	musicPlayer->setMedia(QUrl(WELCOME_MUSIC_PATH));
 }
 
 void MainWindow::gameContinue()
