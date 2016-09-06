@@ -69,6 +69,7 @@ const QString CHERRYBOMB_AUDIO_PATH = "../pvz-material/audio/cherrybomb.mp3";
 const QString POTATOMINE_AUDIO_PATH = "../pvz-material/audio/potato_mine.mp3";
 const QString CHOMPER_AUDIO_PATH = "../pvz-material/audio/chomp.mp3";
 const QString BULLET_AUDIO_PATH = "../pvz-material/audio/kernelpult.mp3";
+const QString POLE_AUDIO_PATH = "../pvz-material/audio/polevault.mp3";
 
 const QString WIN_AUDIO_PATH = "../pvz-material/audio/winmusic.mp3";
 const QString LOSE_AUDIO_PATH = "../pvz-material/audio/losemusic.mp3";

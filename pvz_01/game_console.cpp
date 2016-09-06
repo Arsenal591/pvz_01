@@ -372,7 +372,7 @@ void GameConsole::dealAttackOfBullets()
 				&& (bullets[i]->rect.x() < zombies[j]->rect.x() + zombies[j]->rect.width() - 25)
 				&& (bullets[i]->cellx == zombies[j]->cellx))
 			{
-				//emit playAudio(BULLET_AUDIO_PATH);
+				emit playAudio(BULLET_AUDIO_PATH);
 
 				zombies[j]->hp -= bullets[i]->atk;
 				if (zombies[j]->ifFrozen == false && bullets[i]->type == ice)
@@ -407,7 +407,7 @@ void GameConsole::dealAttackOfZombies()
 				ifFound = true;
 				if (zombies[i]->type == pole && zombies[i]->step == 0)
 				{
-					qDebug() << "i am jumping\n";
+					emit playAudio(POLE_AUDIO_PATH);
 					zombies[i]->step = 1;
 					zombies[i]->lastStepTime = duration;
 				}
@@ -415,7 +415,6 @@ void GameConsole::dealAttackOfZombies()
 				{
 					zombies[i]->ifAttacking = true;
 					plants[j]->hp -= zombies[i]->atk;
-					//qDebug() << "i am attacked and my hp is now " << plants[j]->hp << '\n';
 				}
 				break;
 			}
