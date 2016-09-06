@@ -78,6 +78,7 @@ PlayingInterface::~PlayingInterface()
 
 void PlayingInterface::setCards(QVector<int> res)
 {
+	playAudio(BUTTONCLICK_AUDIO_PATH);
 	for (int i = 0; i < res.size(); i++)
 	{
 		cardsShown.push_back(new MyLabel(cardBoxLabel, card, res[i]));
@@ -104,6 +105,7 @@ void PlayingInterface::keyPressEvent(QKeyEvent* ev)
 	if (ev->key() == Qt::Key_S)
 	{
 		emit shovelClicked();
+		playAudio(SHOVEL_AUDIO_PATH);
 		if (this->cursor().shape() == Qt::ArrowCursor)
 			this->setCursor(QPixmap(SHOVEL_PATH));
 		else this->setCursor(Qt::ArrowCursor);
@@ -137,7 +139,6 @@ void PlayingInterface::setCellRect()
 
 void PlayingInterface::playAudio(QString str)
 {
-	//audioPlayer->setMedia(QUrl(str));
 	QMediaPlayer* player = new QMediaPlayer(this); 
 	player->setMedia(QUrl(str));
 	player->setVolume(audioPlayer->volume());
@@ -179,11 +180,15 @@ void PlayingInterface::gameOver(bool check)
 }
 void PlayingInterface::gameRestart()
 {
+	emit playAudio(BUTTONCLICK_AUDIO_PATH);
+
 	info->stopTimer();
 	emit resetEverything();
 }
 void PlayingInterface::stopTimer()
 {
+	emit playAudio(BUTTONCLICK_AUDIO_PATH);
+
 	delete menu;
 	info->stopTimer();
 	emit gameReturn();
@@ -191,6 +196,8 @@ void PlayingInterface::stopTimer()
 
 void PlayingInterface::startOption()
 {
+	emit playAudio(BUTTONCLICK_AUDIO_PATH);
+
 	menu = new OptionMenuAdvanced(this);
 	menu->show();
 
@@ -204,6 +211,8 @@ void PlayingInterface::startOption()
 }
 void PlayingInterface::finishOption(int m, int a)
 {
+	emit playAudio(BUTTONCLICK_AUDIO_PATH);
+
 	musicPlayer->setVolume(m);
 	audioPlayer->setVolume(a);
 	menu->hide();
@@ -213,6 +222,7 @@ void PlayingInterface::finishOption(int m, int a)
 void PlayingInterface::dealCardClicked(int n)
 {
 	qDebug() << "card " << n << "is picked\n";
+	emit playAudio(CARD_PICKED_AUDIO_PATH);
 	int x;
 	for (int i = 0; i < cardsShown.size(); i++)
 		if (cardsShown[i]->cardNum == n)x = i;

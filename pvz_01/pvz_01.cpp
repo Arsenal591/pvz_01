@@ -26,7 +26,7 @@ void MainWindow::playMusic()
 	musicPlayer = new QMediaPlayer(this);
 	musicPlayer->setAudioRole(QAudio::MusicRole);
 	musicPlayer->setMedia(QUrl(WELCOME_MUSIC_PATH));
-	musicPlayer->setVolume(100);
+	musicPlayer->setVolume(0);
 	QObject::connect(musicPlayer, SIGNAL(stateChanged(QMediaPlayer::State)), musicPlayer, SLOT(play()));
 	musicPlayer->play();
 }

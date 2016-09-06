@@ -61,7 +61,7 @@ const QString WELCOME_MUSIC_PATH = "../pvz-material/audio/welcome.mp3";
 const QString PLAYING_MUSIC_PATH = "../pvz-material/audio/playing.mp3";
 const QString CHOOSING_MUSIC_PATH = "../pvz-material/audio/choosing.mp3";
 
-const QString BUTTONCLICK_AUDIO_PATH = "../pvz-material/audio/buttononclick.mp3";
+const QString BUTTONCLICK_AUDIO_PATH = "../pvz-material/audio/buttonclick.mp3";
 const QString SHOVEL_AUDIO_PATH = "../pvz-material/audio/shovel.mp3";
 const QString CARD_PICKED_AUDIO_PATH = "../pvz-material/audio/seedlift.mp3";
 
