@@ -2,6 +2,7 @@
 #include <qwidget>
 #include <mybutton.h>
 #include <pathname.h>
+#include <qmediaplayer.h>
 
 class WelcomeInterface:public QWidget
 {
@@ -10,12 +11,14 @@ private:
 	QPixmap backgroundImage;
 	void mousePressEvent(QMouseEvent*);
 	MyButton* button;
+	QMediaPlayer *musicPlayer, *audioPlayer;
 private:
 	void drawBackground();
 public:
 	explicit WelcomeInterface(QWidget* parent = nullptr);
 	virtual ~WelcomeInterface();
 	const MyButton* getButton() { return button; }
+	void setMusicAudioPlayers(QMediaPlayer* mp, QMediaPlayer* ap) { musicPlayer = mp; audioPlayer = ap; }
 signals:
 	void switchToOptions();
 	void switchToPlay();

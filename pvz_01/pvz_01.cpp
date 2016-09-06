@@ -8,10 +8,14 @@ MainWindow::MainWindow(QWidget* parent)
 	status = Begin;
 	currentWidget = nullptr;
 	currentWidget = new WelcomeInterface;
+
 	currentWidget->show();
 	historyWidget = nullptr;
 	connect();
 	playMusic();
+
+	WelcomeInterface* f = static_cast<WelcomeInterface*>(currentWidget);
+	f->setMusicAudioPlayers(this->musicPlayer, this->audioPlayer);
 }
 
 void MainWindow::playMusic()
@@ -45,15 +49,20 @@ void MainWindow::startPlaying()
 
 	if (historyWidget != nullptr && console.getLastGameStatus() == 0)
 	{
-		QMessageBox box(QMessageBox::Question, QStringLiteral("提示"), QStringLiteral("是否想要继续从前的回合？\n"), QMessageBox::Ok| QMessageBox::No);
+		QMessageBox box(QMessageBox::Question, QStringLiteral("提示"), QStringLiteral("是否想要继续此回合？\n"), QMessageBox::Ok| QMessageBox::No);
 		if (box.exec() == QMessageBox::Ok)
 		{
 			gameContinue();
 			return;
 		}
 	}
+	resetEverything();
+}
+void MainWindow::resetEverything()
+{
 	console.reset();
-	delete currentWidget;
+
+	QWidget* temp = currentWidget;
 	if (historyWidget)
 	{
 		delete historyWidget;
@@ -61,9 +70,11 @@ void MainWindow::startPlaying()
 	}
 	currentWidget = new PlayingInterface(nullptr, &console);
 	currentWidget->show();
+	delete temp;
 	QObject::connect(&console, SIGNAL(gameOver(bool)), currentWidget, SLOT(gameOver(bool)));
 	QObject::connect(currentWidget, SIGNAL(gameReturn()), this, SLOT(gameReturn()));
 	QObject::connect(&console, SIGNAL(timeToShow()), currentWidget, SLOT(refresh()));
+	QObject::connect(currentWidget, SIGNAL(resetEverything()), this, SLOT(resetEverything()));
 
 	QObject::connect(currentWidget, SIGNAL(shovelClicked()), &console, SLOT(dealShovelClicked()));
 	QObject::connect(currentWidget, SIGNAL(shovelCanceled()), &console, SLOT(dealShovelCanceled()));
@@ -79,7 +90,7 @@ void MainWindow::startPlaying()
 	QObject::connect(&console, SIGNAL(addZombie(ZOMBIE_TYPE, int, int)), currentWidget, SLOT(addZombie(ZOMBIE_TYPE, int, int)));
 	QObject::connect(&console, SIGNAL(addPlant(PLANT_TYPE, int, int)), currentWidget, SLOT(addPlant(PLANT_TYPE, int, int)));
 	QObject::connect(&console, SIGNAL(addSunshine(int, int, bool)), currentWidget, SLOT(addSunshine(int, int, bool)));
-	QObject::connect(&console, SIGNAL(addBullet(BULLET_TYPE, int, int)), currentWidget,SLOT(addBullet(BULLET_TYPE, int, int)));
+	QObject::connect(&console, SIGNAL(addBullet(BULLET_TYPE, int, int)), currentWidget, SLOT(addBullet(BULLET_TYPE, int, int)));
 
 	QObject::connect(&console, SIGNAL(zombieMove(int, int, int)), currentWidget, SLOT(zombieMove(int, int, int)));
 	QObject::connect(&console, SIGNAL(bulletMove(int)), currentWidget, SLOT(bulletMove(int)));
@@ -87,7 +98,6 @@ void MainWindow::startPlaying()
 	PlayingInterface* f = static_cast<PlayingInterface*>(currentWidget);
 	f->setMusicAudioPlayers(this->musicPlayer, this->audioPlayer);
 }
-
 void MainWindow::gameStart()
 {
 	console.gameStart();
@@ -101,6 +111,9 @@ void MainWindow::gameReturn()
 	historyWidget->hide();
 	currentWidget->show();
 	connect();
+
+	WelcomeInterface* f = static_cast<WelcomeInterface*>(currentWidget);
+	f->setMusicAudioPlayers(this->musicPlayer, this->audioPlayer);
 }
 
 void MainWindow::gameContinue()
@@ -110,4 +123,5 @@ void MainWindow::gameContinue()
 	currentWidget = historyWidget;
 	currentWidget->show();
 	console.gameStart();
+	historyWidget = nullptr;
 }

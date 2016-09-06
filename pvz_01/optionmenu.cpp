@@ -64,6 +64,36 @@ void OptionMenu::connect()
 
 void OptionMenu::finish()
 {
-	qDebug() << "!!\n";
 	emit setVolume(musicSetting->value(), audioSetting->value());
+}
+
+OptionMenuAdvanced::OptionMenuAdvanced(QWidget* parent)
+{
+	this->setParent(parent);
+	restart = new MyButton(this, RESTART_BUTTON_PATH);
+	restart->setSize(QRect(150, 260, 112, 40));
+	restart->setOffset(2, 2);
+
+	goback = new MyButton(this, RETURN_BUTTON_PATH);
+	goback->setSize(QRect(150, 310, 112, 40));
+	goback->setOffset(2, 2);
+
+	connect();
+}
+
+void OptionMenuAdvanced::connect()
+{
+	OptionMenu::connect();
+	QObject::connect(restart, SIGNAL(clicked()), this, SLOT(sendGameRestart()));
+	QObject::connect(goback, SIGNAL(clicked()), this, SLOT(sendGameReturn()));
+}
+
+void OptionMenuAdvanced::sendGameRestart()
+{
+	emit gameRestart();
+}
+
+void OptionMenuAdvanced::sendGameReturn()
+{
+	emit gameReturn();
 }

@@ -27,4 +27,15 @@ signals:
 class OptionMenuAdvanced :public OptionMenu
 {
 	Q_OBJECT
+private:
+	MyButton *restart, *goback;
+public:
+	OptionMenuAdvanced(QWidget* parent = nullptr);
+	void connect();
+public slots:
+	void sendGameRestart();
+	void sendGameReturn();
+signals:
+	void gameRestart();
+	void gameReturn();
 };

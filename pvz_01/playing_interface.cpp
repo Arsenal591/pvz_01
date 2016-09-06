@@ -64,6 +64,8 @@ PlayingInterface::~PlayingInterface()
 	delete sunshineDisplay;
 	delete selectCard;
 
+	//不要在此处detete menu
+
 	for (int i = 0; i < sunshineShown.size(); i++)
 		delete sunshineShown[i];
 	for (int i = 0; i < plantsShown.size(); i++)
@@ -73,6 +75,7 @@ PlayingInterface::~PlayingInterface()
 	for (int i = 0; i < zombiesShown.size(); i++)
 		delete zombiesShown[i];
 }
+
 void PlayingInterface::setCards(QVector<int> res)
 {
 	for (int i = 0; i < res.size(); i++)
@@ -163,15 +166,30 @@ void PlayingInterface::gameOver(bool check)
 	if (box.exec() == QMessageBox::Yes)
 		emit gameReturn();
 }
+void PlayingInterface::gameRestart()
+{
+	info->stopTimer();
+	emit resetEverything();
+}
+void PlayingInterface::stopTimer()
+{
+	delete menu;
+	info->stopTimer();
+	emit gameReturn();
+}
 
 void PlayingInterface::startOption()
 {
-	menu = new OptionMenu(this);
+	menu = new OptionMenuAdvanced(this);
 	menu->show();
 
 	menu->setInitial(musicPlayer->volume(), audioPlayer->volume());
 	QObject::connect(menu, SIGNAL(setVolume(int, int)), this, SLOT(finishOption(int, int)));
+	QObject::connect(menu, SIGNAL(gameRestart()), this, SLOT(gameRestart()));
+	QObject::connect(menu, SIGNAL(gameReturn()), this, SLOT(stopTimer()));
 	option->setEnabled(false);
+
+	info->stopTimer();
 }
 void PlayingInterface::finishOption(int m, int a)
 {
@@ -179,6 +197,7 @@ void PlayingInterface::finishOption(int m, int a)
 	audioPlayer->setVolume(a);
 	menu->hide();
 	option->setEnabled(true);
+	if(info->duration > 0)info->startTimer();
 }
 void PlayingInterface::dealCardClicked(int n)
 {

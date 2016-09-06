@@ -29,6 +29,9 @@ public slots:
 	void dealNormalLoop();
 	void dealSpecialLoop();
 
+	void stopTimer();
+	void startTimer();
+
 	void dealSunshineClicked(MyLabel*);
 	void dealPlantClicked(MyLabel*);
 	void dealCardClicked(int);

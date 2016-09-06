@@ -18,6 +18,7 @@ public:
 	const QWidget* getWidget() { return currentWidget; }
 public slots:
 	void close();
+	void resetEverything();
 	void startPlaying();
 	void gameStart();
 	void gameReturn();

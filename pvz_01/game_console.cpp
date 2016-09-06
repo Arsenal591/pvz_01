@@ -101,6 +101,17 @@ void GameConsole::dealSpecialLoop()
 	sunshinesProduce();
 }
 
+void GameConsole::stopTimer()
+{
+	specialTimer->stop();
+	normalTimer->stop();
+}
+void GameConsole::startTimer()
+{
+	specialTimer->start();
+	normalTimer->start();
+}
+
 void GameConsole::dealSunshineClicked(MyLabel* label)
 {
 	sunshineLeft += 25;

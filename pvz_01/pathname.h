@@ -51,6 +51,8 @@ const QString PICKCARD_PATH = "../pvz-material/images/interface/SeedChooser_Back
 const QString PICKCARD_BUTTON_PATH = "../pvz-material/images/interface/ShovelBack.png";
 const QString SETTING_PATH = "../pvz-material/images/interface/OptionsMenuback32.png";
 const QString SETTING_BUTTON_PATH = "../pvz-material/button/setting.png";
+const QString RESTART_BUTTON_PATH = "../pvz-material/button/restart.png";
+const QString RETURN_BUTTON_PATH = "../pvz-material/button/return.png";
 
 const QString ADVENTURE_PATH_PRESSED = "../pvz-material/button/adventure1.png";
 const QString ADVENTURE_PATH_RELEASED = "../pvz-material/button/adventure2.png";

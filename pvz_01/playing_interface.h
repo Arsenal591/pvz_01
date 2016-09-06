@@ -30,6 +30,8 @@ public slots:
 	void cardAnimation();
 	void refresh();
 	void gameOver(bool);
+	void gameRestart();
+	void stopTimer();
 	void startOption();
 	void finishOption(int, int);
 
@@ -59,6 +61,7 @@ signals:
 	void doneSunshineClicked(MyLabel*);
 	void donePlantClicked(MyLabel*);
 	void gameReturn();
+	void resetEverything();
 
 private:
 	GameConsole* info;
