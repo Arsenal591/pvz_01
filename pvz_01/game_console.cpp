@@ -302,6 +302,8 @@ void GameConsole::dealAttackOfPlants()
 				if ((plants[i]->cellx == zombies[j]->cellx)
 					&& (plants[i]->celly == zombies[j]->celly))
 				{
+					emit playAudio(CHOMPER_AUDIO_PATH);
+
 					plants[i]->lastAttack = duration;
 					zombies[j]->hp -= plants[i]->atk;
 				}
@@ -319,6 +321,8 @@ void GameConsole::dealAttackOfPlants()
 				if (abs(zombies[j]->cellx - plants[i]->cellx) <= 1
 					&& abs(zombies[j]->celly - plants[i]->celly) <= 1)
 				{
+					emit playAudio(CHERRYBOMB_AUDIO_PATH);
+
 					plants[i]->lastAttack = duration;
 					zombies[j]->hp -= plants[i]->atk;
 					zombies[j]->ifBurned = true;
@@ -338,6 +342,8 @@ void GameConsole::dealAttackOfPlants()
 				if (plants[i]->cellx == zombies[j]->cellx
 					&& plants[i]->celly == zombies[j]->celly)
 				{
+					emit playAudio(POTATOMINE_AUDIO_PATH);
+
 					plants[i]->lastAttack = duration;
 					zombies[j]->hp -= plants[i]->atk;
 					zombies[j]->ifBurned = true;
@@ -366,10 +372,11 @@ void GameConsole::dealAttackOfBullets()
 				&& (bullets[i]->rect.x() < zombies[j]->rect.x() + zombies[j]->rect.width() - 25)
 				&& (bullets[i]->cellx == zombies[j]->cellx))
 			{
+				//emit playAudio(BULLET_AUDIO_PATH);
+
 				zombies[j]->hp -= bullets[i]->atk;
 				if (zombies[j]->ifFrozen == false && bullets[i]->type == ice)
 				{
-					//qDebug() << "i am frozen\n";
 					zombies[j]->ifFrozen = true;
 					zombies[j]->moveInterval *= 2;
 					zombies[j]->frozenTime = duration;

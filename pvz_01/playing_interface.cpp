@@ -135,9 +135,13 @@ void PlayingInterface::setCellRect()
 	}
 }
 
-void PlayingInterface::playingAudio(QString str)
+void PlayingInterface::playAudio(QString str)
 {
-	audioPlayer->setMedia(QUrl(str));
+	//audioPlayer->setMedia(QUrl(str));
+	QMediaPlayer* player = new QMediaPlayer(this); 
+	player->setMedia(QUrl(str));
+	player->setVolume(audioPlayer->volume());
+	player->play();
 }
 void PlayingInterface::leadInAnimation()
 {

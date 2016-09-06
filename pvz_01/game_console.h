@@ -8,6 +8,7 @@
 #include <qvector>
 #include <qwidget>
 #include "mylabel.h"
+#include "pathname.h"
 #include <qdebug>
 #include <cstdlib>
 #include <ctime>
@@ -75,6 +76,8 @@ signals:
 	void zombieMove(int, int, int);
 
 	void timeToShow();
+
+	void playAudio(QString);
 private:
 	bool ifHumanWin;
 	int lastGameStatus;

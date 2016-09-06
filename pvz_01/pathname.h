@@ -62,4 +62,14 @@ const QString PLAYING_MUSIC_PATH = "../pvz-material/audio/playing.mp3";
 const QString CHOOSING_MUSIC_PATH = "../pvz-material/audio/choosing.mp3";
 
 const QString BUTTONCLICK_AUDIO_PATH = "../pvz-material/audio/buttononclick.mp3";
+const QString SHOVEL_AUDIO_PATH = "../pvz-material/audio/shovel.mp3";
+const QString CARD_PICKED_AUDIO_PATH = "../pvz-material/audio/seedlift.mp3";
+
+const QString CHERRYBOMB_AUDIO_PATH = "../pvz-material/audio/cherrybomb.mp3";
+const QString POTATOMINE_AUDIO_PATH = "../pvz-material/audio/potato_mine.mp3";
+const QString CHOMPER_AUDIO_PATH = "../pvz-material/audio/chomp.mp3";
+const QString BULLET_AUDIO_PATH = "../pvz-material/audio/kernelpult.mp3";
+
+const QString WIN_AUDIO_PATH = "../pvz-material/audio/winmusic.mp3";
+const QString LOSE_AUDIO_PATH = "../pvz-material/audio/losemusic.mp3";
 //const QString 

@@ -98,6 +98,8 @@ void MainWindow::resetEverything()
 	QObject::connect(&console, SIGNAL(zombieMove(int, int, int)), currentWidget, SLOT(zombieMove(int, int, int)));
 	QObject::connect(&console, SIGNAL(bulletMove(int)), currentWidget, SLOT(bulletMove(int)));
 
+	QObject::connect(&console, SIGNAL(playAudio(QString)), currentWidget, SLOT(playAudio(QString)));
+
 	PlayingInterface* f = static_cast<PlayingInterface*>(currentWidget);
 	f->setMusicAudioPlayers(this->musicPlayer, this->audioPlayer);
 }
