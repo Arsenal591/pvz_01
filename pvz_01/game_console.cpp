@@ -525,11 +525,14 @@ void GameConsole::dealZombiesMove()
 		{
 			zombies[i]->ifFrozen = false;
 			zombies[i]->moveInterval /= 2;
-			qDebug() << "i am not frozen\n";
 		}
 
 		if (zombies[i]->type == pole)
 		{
+			if (zombies[i]->step == 1 || zombies[i]->step == 2)
+			{
+
+			}
 			if ((zombies[i]->step == 1 || zombies[i]->step == 2) && duration - zombies[i]->lastStepTime >= 2500)
 			{
 				zombies[i]->step++;
@@ -542,7 +545,8 @@ void GameConsole::dealZombiesMove()
 			}
 		}
 
-		zombies[i]->rect.moveLeft(zombies[i]->rect.x() - 1);
+		if(!(zombies[i]->type == pole && (zombies[i]->step == 1 || zombies[i]->step == 2)))
+			zombies[i]->rect.moveLeft(zombies[i]->rect.x() - 1);
 
 		if (zombies[i]->rect.x() + 40 < cellRect[zombies[i]->cellx][zombies[i]->celly].x())
 		{
@@ -598,7 +602,7 @@ void GameConsole::zombiesProduce()
 	int randNum = rand() % 10;
 	qDebug() << "random is " << randNum << '\n';
 	ZOMBIE_TYPE produceType;
-	if (randNum <= 2)
+	if (randNum <= 10)
 		produceType = pole;
 	else if (randNum <= 7)
 		produceType = normal;

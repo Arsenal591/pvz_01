@@ -1,5 +1,6 @@
 #pragma once
 #include <qpushbutton.h>
+#include <qevent.h>
 
 class MyButton:public QPushButton
 {
@@ -17,6 +18,7 @@ protected:
 	void mousePressEvent(QMouseEvent*);
 	void mouseReleaseEvent(QMouseEvent*);
 	void enterEvent(QEvent*);
+	void changeEvent(QEvent*);
 signals:
 	void clicked();
 	void entered();

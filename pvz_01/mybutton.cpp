@@ -52,3 +52,8 @@ void MyButton::enterEvent(QEvent*)
 	this->setCursor(Qt::PointingHandCursor);
 	emit entered();
 }
+void MyButton::changeEvent(QEvent* ev)
+{
+	//if(ev->type() == QEvent::EnabledChange)
+		//this->set
+}

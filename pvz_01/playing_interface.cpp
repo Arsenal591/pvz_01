@@ -206,7 +206,7 @@ void PlayingInterface::startOption()
 	QObject::connect(menu, SIGNAL(gameRestart()), this, SLOT(gameRestart()));
 	QObject::connect(menu, SIGNAL(gameReturn()), this, SLOT(stopTimer()));
 	option->setEnabled(false);
-
+	selectCard->setEnabled(false);
 	info->stopTimer();
 }
 void PlayingInterface::finishOption(int m, int a)
@@ -217,6 +217,7 @@ void PlayingInterface::finishOption(int m, int a)
 	audioPlayer->setVolume(a);
 	menu->hide();
 	option->setEnabled(true);
+	selectCard->setEnabled(true);
 	if(info->duration > 0)info->startTimer();
 }
 void PlayingInterface::dealCardClicked(int n)
@@ -453,9 +454,7 @@ void PlayingInterface::paintEvent(QPaintEvent*)
 	for (int i = 0; i < currentConsole.zombies.size(); i++)
 	{
 		Zombie* chosen = currentConsole.zombies[i];
-		//QMovie* newMovie = new QMovie;
 		QString newFileName;
-		//QMovie* oldMovie = zombiesShown[i]->movie();
 		if (chosen->type == bucket || chosen->type == pole)
 		{
 			if (chosen->hp <= 270)
@@ -500,12 +499,16 @@ void PlayingInterface::paintEvent(QPaintEvent*)
 			{
 				newFileName = (zombiesShown[i]->path + "7.gif");
 				if (currentConsole.duration == chosen->lastStepTime)
-					zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 50);
+				{
+					zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 5);
+					if(chosen->ifFrozen)
+						zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 5);
+				}
 			}
 			else
 			{
-				if (currentConsole.duration == chosen->lastStepTime)
-					zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 20);
+				//if (currentConsole.duration == chosen->lastStepTime)
+					//zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 10);
 			}
 		}
 		if (zombiesShown[i]->movie()->fileName() != newFileName)
