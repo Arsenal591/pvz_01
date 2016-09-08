@@ -454,7 +454,6 @@ void GameConsole::dealHpOfZombies()
 	int i = 0;
 	while (i < zombies.size())
 	{
-		if (zombies[i]->hp < -100)zombies[i]->status = 3;
 		if (zombies[i]->status == 3)//ÒÑ¾­³¹µ×ÏûÊ§
 		{
 			delete zombies[i];
@@ -550,6 +549,14 @@ void GameConsole::dealZombiesMove()
 			{
 				zombies[i]->moveInterval *= 2;
 				zombies[i]->celly--;
+			}
+
+			if ((zombies[i]->step == 2 || zombies[i]->step == 3) && duration == zombies[i]->lastStepTime)
+			{
+				qDebug() << "hey\n";
+				zombies[i]->rect.moveLeft(zombies[i]->rect.x() - 40);
+				if (zombies[i]->ifFrozen)
+					zombies[i]->rect.moveLeft(zombies[i]->rect.x() - 10);
 			}
 		}
 

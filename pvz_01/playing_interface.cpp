@@ -495,22 +495,27 @@ void PlayingInterface::paintEvent(QPaintEvent*)
 
 		if (chosen->type == pole && chosen->step != 0)
 		{
-			if (chosen->step == 1)
-				newFileName = (zombiesShown[i]->path + "6.gif");
-			else if (chosen->step == 2)
-			{
-				newFileName = (zombiesShown[i]->path + "7.gif");
-				if (currentConsole.duration == chosen->lastStepTime)
-				{
-					zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 5);
-					if(chosen->ifFrozen)
-						zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 5);
-				}
-			}
+			if (chosen->ifBurned)
+				newFileName = (zombiesShown[i]->path + "10.gif");
 			else
 			{
-				if (currentConsole.duration == chosen->lastStepTime)
-					zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 5);
+				if (chosen->step == 1)
+					newFileName = (zombiesShown[i]->path + "6.gif");
+				else if (chosen->step == 2)
+				{
+					newFileName = (zombiesShown[i]->path + "7.gif");
+					if (currentConsole.duration == chosen->lastStepTime)
+					{
+						zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 5);
+						if (chosen->ifFrozen)
+							zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 5);
+					}
+				}
+				else
+				{
+					if (currentConsole.duration == chosen->lastStepTime)
+						zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 5);
+				}
 			}
 		}
 		if (zombiesShown[i]->movie()->fileName() != newFileName)
