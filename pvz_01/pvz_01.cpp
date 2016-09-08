@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget* parent)
 {
 	status = Begin;
 	currentWidget = nullptr;
-	currentWidget = new WelcomeInterface;
+	currentWidget = new WelcomeInterface(this);
 
 	currentWidget->show();
 	historyWidget = nullptr;
@@ -71,7 +71,7 @@ void MainWindow::resetEverything()
 		delete historyWidget;
 		historyWidget = nullptr;
 	}
-	currentWidget = new PlayingInterface(nullptr, &console);
+	currentWidget = new PlayingInterface(this, &console);
 	currentWidget->show();
 	delete temp;
 	QObject::connect(&console, SIGNAL(gameOver(bool)), currentWidget, SLOT(gameOver(bool)));
@@ -112,7 +112,7 @@ void MainWindow::gameReturn()
 {
 	status = Begin;
 	historyWidget = currentWidget;
-	currentWidget = new WelcomeInterface;
+	currentWidget = new WelcomeInterface(this);
 	historyWidget->hide();
 	currentWidget->show();
 	connect();

@@ -507,8 +507,8 @@ void PlayingInterface::paintEvent(QPaintEvent*)
 			}
 			else
 			{
-				//if (currentConsole.duration == chosen->lastStepTime)
-					//zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 10);
+				if (currentConsole.duration == chosen->lastStepTime)
+					zombiesShown[i]->rect.moveLeft(zombiesShown[i]->rect.x() - 5);
 			}
 		}
 		if (zombiesShown[i]->movie()->fileName() != newFileName)

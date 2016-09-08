@@ -27,7 +27,7 @@ SelectCard::SelectCard(QWidget* parent)
 		}
 	}
 	this->ok = new MyButton(this, PICKCARD_BUTTON_PATH);
-	this->ok->setSize(QRect(182, 450, 100, 60));
+	this->ok->setSize(QRect(182, 450, 120, 60));
 	this->ok->setOffset(2, 2);
 
 	statement = new QLabel(this);

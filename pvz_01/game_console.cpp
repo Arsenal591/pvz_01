@@ -533,7 +533,7 @@ void GameConsole::dealZombiesMove()
 			{
 
 			}
-			if ((zombies[i]->step == 1 || zombies[i]->step == 2) && duration - zombies[i]->lastStepTime >= 2500)
+			if ((zombies[i]->step == 1 || zombies[i]->step == 2) && duration - zombies[i]->lastStepTime >= 1500)
 			{
 				zombies[i]->step++;
 				zombies[i]->lastStepTime = duration;

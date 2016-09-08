@@ -8,6 +8,6 @@ int main(int argc, char *argv[])
 	QDir::setCurrent(QCoreApplication::applicationDirPath());
 	QApplication a(argc, argv);
 	MainWindow win;
-	//win.show();
+	win.show();
 	return a.exec();
 }
