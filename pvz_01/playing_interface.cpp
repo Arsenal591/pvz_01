@@ -193,8 +193,7 @@ void PlayingInterface::startOption()
 {
 	playAudio(BUTTONCLICK_AUDIO_PATH);
 
-	if(!menu)
-		menu = new OptionMenuAdvanced(this);
+	menu = new OptionMenuAdvanced(this);
 	menu->show();
 	menu->setInitial(musicPlayer->volume(), audioPlayer->volume());
 	QObject::connect(menu, SIGNAL(setVolume(int, int)), this, SLOT(finishOption(int, int)));
@@ -211,7 +210,7 @@ void PlayingInterface::finishOption(int m, int a)
 
 	musicPlayer->setVolume(m);
 	audioPlayer->setVolume(a);
-	menu->hide();
+	delete menu;
 
 	option->setEnabled(true);
 	selectCard->setEnabled(true);

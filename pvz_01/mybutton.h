@@ -18,7 +18,6 @@ protected:
 	void mousePressEvent(QMouseEvent*);
 	void mouseReleaseEvent(QMouseEvent*);
 	void enterEvent(QEvent*);
-	void changeEvent(QEvent*);
 signals:
 	void clicked();
 	void entered();

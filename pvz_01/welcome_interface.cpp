@@ -34,7 +34,7 @@ void WelcomeInterface::drawBackground()
 void WelcomeInterface::startOption()
 {
 	playAudio(BUTTONCLICK_AUDIO_PATH);
-	if (!menu)menu = new OptionMenu(this);
+	menu = new OptionMenu(this);
 	menu->show();
 
 	menu->setInitial(musicPlayer->volume(), audioPlayer->volume());
@@ -42,10 +42,11 @@ void WelcomeInterface::startOption()
 }
 void WelcomeInterface::finishOption(int m, int a)
 {
+	qDebug() << "played";
 	playAudio(BUTTONCLICK_AUDIO_PATH);
 	musicPlayer->setVolume(m);
 	audioPlayer->setVolume(a);
-	menu->hide();
+	delete menu;
 }
 void WelcomeInterface::playAudio(QString str)
 {
