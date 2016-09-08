@@ -5,6 +5,7 @@
 #include <qmovie>
 #include "playing_interface.h"
 #include "pvz_01.h"
+#include <qdebug>
 
 PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 {
