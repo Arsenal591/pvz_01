@@ -1,56 +1,53 @@
+#include <qpropertyanimation>
+#include <qmessagebox>
+#include <qpalette>
+#include <qevent>
+#include <qmovie>
 #include "playing_interface.h"
-#include "qpropertyanimation.h"
-#include "qlabel.h"
-#include "qmessagebox.h"
-#include "qpushbutton.h"
-#include "qpalette.h"
 #include "pvz_01.h"
-#include "qdebug"
-#include "qevent"
-#include "qmovie"
-#include "qmovie.h"
 
 PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 {
 	this->info = t;
 
 	this->setParent(parent);
-	this->setFixedWidth(1200);
-	this->setFixedHeight(800);
+	this->setFixedSize(QSize(1200, 800));
 
+	menu = nullptr;
+
+	//记录卡片和草坪格子在界面的位置
 	setCardRect();
 	setCellRect();
-	
-	backgroundImage = QPixmap(BACKGROUND_PATH);
-	backgroundImage = backgroundImage.scaled(QSize(1867, 800));
+
+	//加载背景图
+	backgroundImage = QPixmap(BACKGROUND_PATH).scaled(QSize(1867, 800));
 	backgroundLabel = new QLabel(this);
 	backgroundLabel->setFixedSize(QSize(1867, 800));
 	backgroundLabel->setPixmap(backgroundImage);
 	backgroundLabel->show();
 
+	//加载卡片盒子
 	cardBoxImage = QPixmap(CARDBOX_PATH);
 	cardBoxLabel = new QLabel(this);
 	cardBoxLabel->setFixedSize(QSize(435, 84));
 	cardBoxLabel->setPixmap(cardBoxImage);
 	cardBoxLabel->hide();
 
+	//加载选项按钮并绑定信号与槽
 	option = new MyButton(this, OPTION_BUTTON_PATH);
 	option->setSize(QRect(1000, -3, 113, 41));
 	option->setOffset(2, 2);
 	option->show();
 	connect(option, SIGNAL(clicked()), this, SLOT(startOption()));
 
+	//显示阳光值
 	sunshineDisplay = new QLabel(this);
 	sunshineDisplay->setGeometry(QRect(185, 60, 30, 15));
 	sunshineDisplay->setAlignment(Qt::AlignCenter);
-	QPalette pal;
-	pal.setColor(QPalette::Background, QColor(0xff, 0xff, 0xff, 0xff));
-	sunshineDisplay->setPalette(pal);
 	sunshineDisplay->setFont(QFont("consolas", 9));
 	sunshineDisplay->show();
 
-	menu = nullptr;
-
+	//显示卡片选择盒
 	selectCard = new SelectCard(this);
 	selectCard->show();
 	connect(selectCard, SIGNAL(selected(QVector<int>)), this, SLOT(setCards(QVector<int>)));
@@ -67,7 +64,6 @@ PlayingInterface::~PlayingInterface()
 	delete selectCard;
 
 	//不要在此处detete menu
-
 	for (int i = 0; i < sunshineShown.size(); i++)
 		delete sunshineShown[i];
 	for (int i = 0; i < plantsShown.size(); i++)
@@ -96,7 +92,6 @@ void PlayingInterface::mousePressEvent(QMouseEvent* ev)
 	this->unsetCursor();
 	if (ev->x() >= 135 && ev->x() <= 1105 && ev->y() >= 110 && ev->y() <= 760)
 	{
-		qDebug() << ev->x() << ' ' << ev->y() << '\n';
 		this->info->dealPutPlant(ev->x(), ev->y());
 		return;
 	}
@@ -170,27 +165,25 @@ void PlayingInterface::cardAnimation()
 	animation->start();
 }
 
-void PlayingInterface::gameOver(bool check)
+void PlayingInterface::gameOver(bool ifHumanWin)
 {
-	QString str;
-	if (check == true)
-		str = QStringLiteral("恭喜你通过本关！");
-	else str = QStringLiteral("僵尸吃掉了你的脑子");
-	QMessageBox box(QMessageBox::Information, QStringLiteral("提示"), str, QMessageBox::Yes);
+	QString message;
+	if (ifHumanWin == true)
+		message = QStringLiteral("恭喜你通过本关！");
+	else message = QStringLiteral("僵尸吃掉了你的脑子");
+	QMessageBox box(QMessageBox::Information, QStringLiteral("提示"), message, QMessageBox::Yes);
 	if (box.exec() == QMessageBox::Yes)
 		emit gameReturn();
 }
-void PlayingInterface::gameRestart()
+void PlayingInterface::restartGame()
 {
 	emit playAudio(BUTTONCLICK_AUDIO_PATH);
-
 	info->stopTimer();
 	emit resetEverything();
 }
-void PlayingInterface::stopTimer()
+void PlayingInterface::backToWelcome()
 {
 	emit playAudio(BUTTONCLICK_AUDIO_PATH);
-
 	delete menu;
 	info->stopTimer();
 	emit gameReturn();
@@ -200,13 +193,14 @@ void PlayingInterface::startOption()
 {
 	playAudio(BUTTONCLICK_AUDIO_PATH);
 
-	if(!menu)menu = new OptionMenuAdvanced(this);
+	if(!menu)
+		menu = new OptionMenuAdvanced(this);
 	menu->show();
-
 	menu->setInitial(musicPlayer->volume(), audioPlayer->volume());
 	QObject::connect(menu, SIGNAL(setVolume(int, int)), this, SLOT(finishOption(int, int)));
-	QObject::connect(menu, SIGNAL(gameRestart()), this, SLOT(gameRestart()));
-	QObject::connect(menu, SIGNAL(gameReturn()), this, SLOT(stopTimer()));
+	QObject::connect(menu, SIGNAL(gameRestart()), this, SLOT(restartGame()));
+	QObject::connect(menu, SIGNAL(gameReturn()), this, SLOT(backToWelcome()));
+
 	option->setEnabled(false);
 	selectCard->setEnabled(false);
 	info->stopTimer();
@@ -218,13 +212,15 @@ void PlayingInterface::finishOption(int m, int a)
 	musicPlayer->setVolume(m);
 	audioPlayer->setVolume(a);
 	menu->hide();
+
 	option->setEnabled(true);
 	selectCard->setEnabled(true);
-	if(info->duration > 0)info->startTimer();
+
+	if(info->duration > 0)
+		info->startTimer();
 }
 void PlayingInterface::dealCardClicked(int n)
 {
-	qDebug() << "card " << n << "is picked\n";
 	emit playAudio(CARD_PICKED_AUDIO_PATH);
 	int x;
 	for (int i = 0; i < cardsShown.size(); i++)
@@ -247,39 +243,39 @@ void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
 {
 	MyLabel* newLabel = new MyLabel(this, plant);
 	newLabel->cellx = x, newLabel->celly = y;
-	connect(newLabel, SIGNAL(plantClicked(MyLabel*)), this, SLOT(dealPlantClicked(MyLabel*)));
-	newLabel->QLabel::setGeometry(cellRect[x][y]);
-	plantsShown.push_back(newLabel);
+	newLabel->setGeometry(cellRect[x][y]);
 	newLabel->setPath(PLANT_FOLDER[tp]);
-	//qDebug() << PLANT_FOLDER[tp] << '\n';
+	connect(newLabel, SIGNAL(plantClicked(MyLabel*)), this, SLOT(dealPlantClicked(MyLabel*)));
+
 	QMovie* movie = new QMovie(newLabel->getPath() + "1.gif");
 	newLabel->setMovie(movie);
 	movie->start();
+
 	newLabel->show();
+	plantsShown.push_back(newLabel);
 }
 void PlayingInterface::addSunshine(int x, int y, bool ifDrop)
 {
 	MyLabel* newLabel = new MyLabel(this, sunshine);
 	newLabel->cellx = x, newLabel->celly = y;
-	connect(newLabel, SIGNAL(sunshineClicked(MyLabel*)), this, SLOT(dealSunshineClicked(MyLabel*)));
-
 	QRect rect = cellRect[x][y];
 	newLabel->setGeometry(QRect(rect.x() + 0.5*rect.width(), rect.y() + 0.5*rect.height(), 60, 60));
-	
 	newLabel->setPath(SUNSHINE_PATH);
+	connect(newLabel, SIGNAL(sunshineClicked(MyLabel*)), this, SLOT(dealSunshineClicked(MyLabel*)));
+
 	QMovie* movie = new QMovie(newLabel->getPath());
 	movie->setScaledSize(QSize(60, 60));
 	newLabel->setMovie(movie);
 	movie->start();
 
-	sunshineShown.push_back(newLabel);
 	newLabel->show();
+	sunshineShown.push_back(newLabel);
 
-	if (ifDrop)
+	if (ifDrop)//执行太阳由空中掉下的动画
 	{
 		QPropertyAnimation* animation = new QPropertyAnimation(newLabel, "geometry");
 		QRect startPos(rect.x() + 0.5 * rect.width(), 0, 60, 60);
-		if (y < 4)startPos.moveTop(84);
+		if (y < 4) startPos.moveTop(84);
 		animation->setStartValue(startPos);
 		animation->setEndValue(QRect(rect.x() + 0.5*rect.width(), rect.y() + 0.5*rect.height(), 60, 60));
 		int dt = (rect.y() + 0.5*rect.height()) * 10;
@@ -289,7 +285,6 @@ void PlayingInterface::addSunshine(int x, int y, bool ifDrop)
 }
 void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 {
-	qDebug() << tp << ' ' << x << ' ' << y << '\n';
 	MyLabel* newLabel = new MyLabel(this, zombie);
 	newLabel->cellx = x, newLabel->celly = y;
 	newLabel->rect = cellRect[x][y];
@@ -297,10 +292,6 @@ void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 	QString str = ZOMBIE_FOLDER[tp];
 	switch (tp)
 	{
-	case normal:
-		break;
-	case bucket:
-		break;
 	case pole:
 		newLabel->rect.setWidth(newLabel->width() + 70);
 		newLabel->rect.moveLeft(newLabel->rect.x() - 30);
@@ -326,24 +317,12 @@ void PlayingInterface::addBullet(enum BULLET_TYPE tp, int x, int y, bool ifSecon
 	else
 		newLabel->rect = QRect(cellRect[x][y].x() + 60, cellRect[x][y].y() + 30, 60, 25);
 	newLabel->setGeometry(newLabel->rect);
-	QString str = BULLET_FOLDER[tp];
-	switch (tp)
-	{
-	case normal:
-		break;
-	case fire:
-		break;
-	case ice:
-		break;
-	default:
-		break;
-	}
-	qDebug() << str <<'\n';
-	newLabel->setPath(str);
-	//newLabel->setPixmap(newLabel->getPath());
+	newLabel->setPath(BULLET_FOLDER[tp]);
+
 	QMovie* newMovie = new QMovie(newLabel->getPath());
 	newLabel->setMovie(newMovie);
 	newMovie->start();
+
 	bulletsShown.push_back(newLabel);
 	newLabel->show();
 }
@@ -406,7 +385,6 @@ void PlayingInterface::paintEvent(QPaintEvent*)
 		else str += "2.jpg";
 		cardsShown[i]->setPixmap(str);
 	}
-
 	//display   plants
 	for (int i = 0; i < currentConsole.plants.size(); i++)
 	{
@@ -451,7 +429,6 @@ void PlayingInterface::paintEvent(QPaintEvent*)
 			newMovie->start();
 		}
 	}
-
 	//display   zombies
 	for (int i = 0; i < currentConsole.zombies.size(); i++)
 	{
