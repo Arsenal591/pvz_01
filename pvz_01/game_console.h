@@ -1,19 +1,16 @@
 #pragma once
 
+#include <qvector>
+#include <qwidget>
+#include <qtimer>
+#include <ctime>
+#include "mylabel.h"
+#include "pathname.h"
+#include "card.h"
 #include "zombie.h"
 #include "plant.h"
 #include "sunshine.h"
 #include "bullet.h"
-#include "card.h"
-#include <qvector>
-#include <qwidget>
-#include "mylabel.h"
-#include "pathname.h"
-#include <qdebug>
-#include <cstdlib>
-#include <ctime>
-
-class QTimer;
 
 class GameConsole:public QWidget
 {
@@ -24,29 +21,30 @@ public:
 	void reset();
 	int getLastGameStatus() { return lastGameStatus; }
 public slots:
-	void setCards(QVector<int>);
+	void setCards(QVector<int>);//在逻辑端添加卡片信息
 
-	void gameStart();
-	void dealNormalLoop();
-	void dealSpecialLoop();
+	void gameStart();//游戏开始时启动逻辑端的计时器
+	void dealNormalLoop();//处理normalTimer
+	void dealSpecialLoop();//处理specialTimer
 
 	void stopTimer();
 	void startTimer();
 
-	void dealSunshineClicked(MyLabel*);
-	void dealPlantClicked(MyLabel*);
-	void dealCardClicked(int);
-	void dealShovelClicked() { ifShovelPicked = !ifShovelPicked;}
-	void dealShovelCanceled() { ifShovelPicked = false; }
+	void dealSunshineClicked(MyLabel*);//处理阳光点击事件
+	void dealPlantClicked(MyLabel*);//处理植物点击事件
+	void dealCardClicked(int);//处理卡片点击事件
+	void dealShovelClicked() { ifShovelPicked = !ifShovelPicked;}//处理铲子点击事件
+	void dealShovelCanceled() { ifShovelPicked = false; }//处理铲子取消事件
 
-	void dealPutPlant(int, int);
+	void dealPutPlant(int, int);//在指定坐标处放置植物
 private:
 	void connect();
 	void setCellRect();
 
-	bool ifGameOver();
-	void zombieStrategy();
+	bool ifGameOver();//判断游戏是否结束
+	void zombieStrategy();//设置僵尸生成策略
 
+	//***以下函数对攻击、血量或移动进行结算***
 	void dealAttackOfPlants();
 	void dealAttackOfBullets();
 	void dealAttackOfZombies();
@@ -56,12 +54,18 @@ private:
 
 	void dealBulletsMove();
 	void dealZombiesMove();
+	//*************************************
 
+	//*****以下函数处理对阳光或僵尸的生成*****
 	void sunshinesProduce();
 	void zombiesProduce();
+	//*************************************
 signals:
-	void gameOver(bool);
+	void gameOver(bool);//游戏结束时通知界面
 
+	void playAudio(QString);//通知界面播放指定地址的音频
+
+	//***以下函数均在单位的删除、添加、移动发生时，通知界面***
 	void deleteSunshine(MyLabel*);
 	void deletePlant(int);
 	void deleteBullet(int);
@@ -74,10 +78,8 @@ signals:
 
 	void bulletMove(int);
 	void zombieMove(int, int, int);
-
-	void timeToShow();
-
-	void playAudio(QString);
+	//****************************************************
+	void timeToShow();//通知界面进行重绘
 private:
 	bool ifHumanWin;
 	int lastGameStatus;

@@ -233,6 +233,7 @@ void PlayingInterface::dealCardClicked(int n)
 }
 void PlayingInterface::dealPlantClicked(MyLabel* label)
 {
+	this->unsetCursor();
 	emit donePlantClicked(label);
 }
 void PlayingInterface::dealSunshineClicked(MyLabel* label)

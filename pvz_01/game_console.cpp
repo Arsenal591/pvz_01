@@ -1,6 +1,4 @@
 #include "game_console.h"
-#include "qtimer"
-#include "qdebug.h"
 
 bool inRect(int x, int y, QRect rect)
 {
@@ -8,28 +6,21 @@ bool inRect(int x, int y, QRect rect)
 }
 
 GameConsole::GameConsole(QWidget* parent)
+	:duration(0),sunshineLeft(2000),ifHumanWin(false),lastGameStatus(0),visible(false),infinite(false),protect(false),
+	cardChosen(nullptr),ifShovelPicked(false)
 {
 	srand(time(NULL));
 	this->setParent(parent);
-	duration = 0;
-	sunshineLeft = 2000;
-	ifHumanWin = false;
-	lastGameStatus = 0;
 
 	//下面决定僵尸生产方式
 	level = 0;
 	zombieProduceList = nullptr;
 	zombieStrategy();
 
-	visible = infinite = protect = false;
-
 	normalTimer = new QTimer(this);
 	specialTimer = new QTimer(this);
 	normalTimer->setInterval(10);
 	specialTimer->setInterval(1000);
-
-	cardChosen = nullptr;
-	ifShovelPicked = false;
 
 	setCellRect();
 	connect();
@@ -65,11 +56,8 @@ void GameConsole::reset()
 
 void GameConsole::setCards(QVector<int> res)
 {
-	qDebug() << "reached\n";
 	for (int i = 0; i < res.size(); i++)
-	{
 		cards.push_back(new Card(PLANT_TYPE(res[i])));
-	}
 }
 void GameConsole::gameStart()
 {
@@ -115,6 +103,8 @@ void GameConsole::startTimer()
 void GameConsole::dealSunshineClicked(MyLabel* label)
 {
 	sunshineLeft += 25;
+
+	//删除对应的阳光
 	for (int i = 0; i < sunshines.size(); i++)
 		if (sunshines[i]->cellx == label->cellx && sunshines[i]->celly == label->celly)
 		{
@@ -122,6 +112,8 @@ void GameConsole::dealSunshineClicked(MyLabel* label)
 			sunshines.remove(i);
 			break;
 		}
+
+	//对其对应的向日葵进行标记
 	for (int i = 0; i < plants.size(); i++)
 	{
 		if (plants[i]->type == sunflower && plants[i]->cellx == label->cellx && plants[i]->celly == label->celly)
@@ -189,7 +181,6 @@ void GameConsole::dealPutPlant(int posx, int posy)
 	//发出信号，增加对应的label
 	PLANT_TYPE oldType = cardChosen->getType();
 	emit addPlant(oldType, x, y);
-
 	cardChosen = nullptr;
 }
 
@@ -241,7 +232,6 @@ void GameConsole::zombieStrategy()
 		delete zombieProduceList;
 		zombieProduceList = nullptr;
 	}
-	qDebug() << level << '\n';
 	if(level == 0) 
 	{
 		roundSum = 1;
@@ -483,10 +473,6 @@ void GameConsole::dealHpOfZombies()
 				if (zombies[i]->hp <= 70)
 					zombies[i]->status = 1;
 			}
-			if (zombies[i]->type == ZOMBIE_TYPE::bucket)
-			{
-
-			}
 		}
 		i++;
 	}
@@ -553,7 +539,6 @@ void GameConsole::dealZombiesMove()
 
 			if ((zombies[i]->step == 2 || zombies[i]->step == 3) && duration == zombies[i]->lastStepTime)
 			{
-				qDebug() << "hey\n";
 				zombies[i]->rect.moveLeft(zombies[i]->rect.x() - 40);
 				if (zombies[i]->ifFrozen)
 					zombies[i]->rect.moveLeft(zombies[i]->rect.x() - 10);
@@ -564,10 +549,7 @@ void GameConsole::dealZombiesMove()
 			zombies[i]->rect.moveLeft(zombies[i]->rect.x() - 1);
 
 		if (zombies[i]->rect.x() + 40 < cellRect[zombies[i]->cellx][zombies[i]->celly].x())
-		{
 			zombies[i]->celly--;
-			qDebug() << "i move to cell " << zombies[i]->cellx << ' ' << zombies[i]->celly << '\n';
-		}
 		emit zombieMove(i, zombies[i]->cellx, zombies[i]->celly);
 	}
 }
@@ -615,7 +597,6 @@ void GameConsole::zombiesProduce()
 	
 	//此处随机挑选僵尸种类
 	int randNum = rand() % 10;
-	qDebug() << "random is " << randNum << '\n';
 	ZOMBIE_TYPE produceType;
 	if (randNum <= 10)
 		produceType = pole;
