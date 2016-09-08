@@ -9,5 +9,6 @@ int main(int argc, char *argv[])
 	QApplication a(argc, argv);
 	MainWindow win;
 	win.show();
+	QObject::connect(&win, SIGNAL(endApp()), &a, SLOT(quit()));
 	return a.exec();
 }

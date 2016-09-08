@@ -6,11 +6,9 @@
 MainWindow::MainWindow(QWidget* parent)
 {
 	status = Begin;
-	currentWidget = nullptr;
-	currentWidget = new WelcomeInterface(this);
-
-	currentWidget->show();
 	historyWidget = nullptr;
+	currentWidget = new WelcomeInterface(this);
+	currentWidget->show();
 	connect();
 	playMusic();
 
@@ -26,7 +24,8 @@ void MainWindow::playMusic()
 	musicPlayer = new QMediaPlayer(this);
 	musicPlayer->setAudioRole(QAudio::MusicRole);
 	musicPlayer->setMedia(QUrl(WELCOME_MUSIC_PATH));
-	musicPlayer->setVolume(0);
+	musicPlayer->setVolume(100);
+
 	QObject::connect(musicPlayer, SIGNAL(stateChanged(QMediaPlayer::State)), musicPlayer, SLOT(play()));
 	musicPlayer->play();
 }
@@ -35,12 +34,14 @@ void MainWindow::connect()
 	WelcomeInterface* f = static_cast<WelcomeInterface*>(currentWidget);
 	QObject::connect(f->getButton(), SIGNAL(clicked()), this, SLOT(startPlaying()));
 	QObject::connect(currentWidget, SIGNAL(switchToEnd()), this, SLOT(close()));
-	QObject::connect(currentWidget, SIGNAL(switchToPlay()), this, SLOT(startPlaying()));
+	QObject::connect(currentWidget, SIGNAL(switchToHelp()), this, SLOT(loadHelpInterface()));
+	QObject::connect(currentWidget, SIGNAL(switchToThanks()), this, SLOT(loadThanksInterface()));
+	//QObject::connect(currentWidget, SIGNAL(switchToPlay()), this, SLOT(startPlaying()));
 }
 
 void MainWindow::close()
 {
-	currentWidget->close();
+	emit endApp();
 }
 
 void MainWindow::startPlaying()
@@ -112,15 +113,8 @@ void MainWindow::gameReturn()
 {
 	status = Begin;
 	historyWidget = currentWidget;
-	currentWidget = new WelcomeInterface(this);
 	historyWidget->hide();
-	currentWidget->show();
-	connect();
-
-	WelcomeInterface* f = static_cast<WelcomeInterface*>(currentWidget);
-	f->setMusicAudioPlayers(this->musicPlayer, this->audioPlayer);
-
-	musicPlayer->setMedia(QUrl(WELCOME_MUSIC_PATH));
+	loadWelcomeInterface();
 }
 
 void MainWindow::gameContinue()
@@ -131,4 +125,32 @@ void MainWindow::gameContinue()
 	currentWidget->show();
 	console.gameStart();
 	historyWidget = nullptr;
+}
+
+void MainWindow::loadWelcomeInterface()
+{
+	currentWidget = new WelcomeInterface(this);
+	currentWidget->show();
+	connect();
+
+	WelcomeInterface* f = static_cast<WelcomeInterface*>(currentWidget);
+	f->setMusicAudioPlayers(this->musicPlayer, this->audioPlayer);
+
+	if (musicPlayer->media().canonicalUrl() != QUrl(WELCOME_MUSIC_PATH))
+		musicPlayer->setMedia(QUrl(WELCOME_MUSIC_PATH));
+}
+void MainWindow::loadHelpInterface()
+{
+	delete currentWidget;
+	currentWidget = new GeneralInterface(this, HELP_PATH);
+	currentWidget->show();
+	QObject::connect(currentWidget, SIGNAL(switchToMain()), this, SLOT(loadWelcomeInterface()));
+}
+
+void MainWindow::loadThanksInterface()
+{
+	delete currentWidget;
+	currentWidget = new GeneralInterface(this, THANKS_PATH);
+	currentWidget->show();
+	QObject::connect(currentWidget, SIGNAL(switchToMain()), this, SLOT(loadWelcomeInterface()));
 }

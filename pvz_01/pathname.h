@@ -2,6 +2,9 @@
 #include <qstring>
 
 const QString WELCOME_PATH = "../pvz-material/images/interface/surface.jpg";
+const QString HELP_PATH = "../pvz-material/images/interface/help.jpg";
+const QString THANKS_PATH = "../pvz-material/images/interface/thanks.jpg";
+
 const QString BACKGROUND_PATH = "../pvz-material/images/interface/background1.jpg";
 const QString CARDBOX_PATH = "../pvz-material/cardbox.png";
 

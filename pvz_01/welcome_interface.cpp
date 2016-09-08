@@ -1,6 +1,4 @@
 #include "welcome_interface.h"
-#include "qpalette.h"
-#include "qevent.h"
 
 WelcomeInterface::WelcomeInterface(QWidget* parent)
 {
@@ -38,8 +36,9 @@ void WelcomeInterface::mousePressEvent(QMouseEvent* mouseEvent)
 		emit switchToOptions();
 	else if (mousex >= 720 && mousex <= 790 && mousey >= 500 && mousey <= 550)
 		emit switchToHelp();
-		//emit switchToPlay();
 	else if (mousex >= 800 && mousex <= 875 && mousey >= 490 && mousey <= 545)
 		emit switchToEnd();
+	else if (mousex >= 555 && mousex <= 625 && mousey >= 510 && mousey <= 550)
+		emit switchToThanks();
 	else return QWidget::mousePressEvent(mouseEvent);
 }

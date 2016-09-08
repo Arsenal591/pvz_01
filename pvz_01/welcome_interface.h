@@ -3,6 +3,8 @@
 #include <mybutton.h>
 #include <pathname.h>
 #include <qmediaplayer.h>
+#include "qpalette.h"
+#include "qevent.h"
 
 class WelcomeInterface:public QWidget
 {
@@ -23,7 +25,6 @@ signals:
 	void switchToOptions();
 	void switchToPlay();
 	void switchToHelp();
-	void switchToAbout();
 	void switchToThanks();
 	void switchToEnd();
 };

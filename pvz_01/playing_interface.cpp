@@ -399,7 +399,6 @@ void PlayingInterface::paintEvent(QPaintEvent*)
 			&& currentConsole.sunshineLeft >= chosen->getCost())
 			str += "1.jpg";
 		else str += "2.jpg";
-		//if(cardsShown[i]->pixmap())
 		cardsShown[i]->setPixmap(str);
 	}
 
@@ -408,8 +407,6 @@ void PlayingInterface::paintEvent(QPaintEvent*)
 	{
 		Plant* chosen = currentConsole.plants[i];
 		QString newFileName;
-		//QMovie* newMovie = new QMovie;
-		//QMovie* oldMovie = plantsShown[i]->movie();
 		switch (chosen->type)
 		{
 		case peashooter:case sunflower:case repeater:case snowpea:case torchwood:

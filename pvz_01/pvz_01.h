@@ -6,6 +6,7 @@
 #include "game_console.h"
 #include "welcome_interface.h"
 #include "playing_interface.h"
+#include "general_interface.h"
 #include "qmediaplayer.h"
 
 class QMediaPlayer;
@@ -20,11 +21,15 @@ public slots:
 	void close();
 	void resetEverything();
 	void startPlaying();
+	void loadWelcomeInterface();
+	void loadHelpInterface();
+	void loadThanksInterface();
 	void gameStart();
 	void gameReturn();
 	void gameContinue();
 	void setVolume(int m, int a) { musicPlayer->setVolume(m); audioPlayer->setVolume(a); }
 signals:
+	void endApp();
 private:
 	enum GAME_STATUS { Begin, Playing, About, Thanks, Setting }status;
 	GameConsole console;
