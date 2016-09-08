@@ -49,6 +49,8 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 	sunshineDisplay->setFont(QFont("consolas", 9));
 	sunshineDisplay->show();
 
+	menu = nullptr;
+
 	selectCard = new SelectCard(this);
 	selectCard->show();
 	connect(selectCard, SIGNAL(selected(QVector<int>)), this, SLOT(setCards(QVector<int>)));
@@ -196,9 +198,9 @@ void PlayingInterface::stopTimer()
 
 void PlayingInterface::startOption()
 {
-	emit playAudio(BUTTONCLICK_AUDIO_PATH);
+	playAudio(BUTTONCLICK_AUDIO_PATH);
 
-	menu = new OptionMenuAdvanced(this);
+	if(!menu)menu = new OptionMenuAdvanced(this);
 	menu->show();
 
 	menu->setInitial(musicPlayer->volume(), audioPlayer->volume());
@@ -211,7 +213,7 @@ void PlayingInterface::startOption()
 }
 void PlayingInterface::finishOption(int m, int a)
 {
-	emit playAudio(BUTTONCLICK_AUDIO_PATH);
+	playAudio(BUTTONCLICK_AUDIO_PATH);
 
 	musicPlayer->setVolume(m);
 	audioPlayer->setVolume(a);
@@ -316,10 +318,13 @@ void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 	zombiesShown.push_back(newLabel);
 	newLabel->show();
 }
-void PlayingInterface::addBullet(enum BULLET_TYPE tp, int x, int y)
+void PlayingInterface::addBullet(enum BULLET_TYPE tp, int x, int y, bool ifSecond)
 {
 	MyLabel* newLabel = new MyLabel(this, bullet);
-	newLabel->rect = QRect(cellRect[x][y].x() + 60, cellRect[x][y].y() + 30, 60, 25);
+	if(ifSecond)
+		newLabel->rect = QRect(cellRect[x][y].x() + 85, cellRect[x][y].y() + 30, 60, 25);
+	else
+		newLabel->rect = QRect(cellRect[x][y].x() + 60, cellRect[x][y].y() + 30, 60, 25);
 	newLabel->setGeometry(newLabel->rect);
 	QString str = BULLET_FOLDER[tp];
 	switch (tp)
@@ -452,7 +457,7 @@ void PlayingInterface::paintEvent(QPaintEvent*)
 	{
 		Zombie* chosen = currentConsole.zombies[i];
 		QString newFileName;
-		if (chosen->type == bucket || chosen->type == pole)
+		if (chosen->type == bucket)
 		{
 			if (chosen->hp <= 270)
 			{

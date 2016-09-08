@@ -218,7 +218,7 @@ bool GameConsole::ifGameOver()
 {
 	for (int i = 0; i < zombies.size(); i++)
 	{
-		if (zombies[i]->rect.x() <= 10)
+		if (zombies[i]->rect.x() <= 50)
 		{
 			ifHumanWin = false;
 			lastGameStatus = -1;
@@ -274,7 +274,7 @@ void GameConsole::dealAttackOfPlants()
 		{
 		case wallnut:case sunflower:case torchwood:
 			break;
-		case peashooter:case snowpea:
+		case peashooter:case snowpea:case repeater:
 		{
 			if (duration - plants[i]->lastAttack < plants[i]->recharge)
 				break;
@@ -284,13 +284,23 @@ void GameConsole::dealAttackOfPlants()
 					ifFound = true;
 			if (!ifFound)
 				break;
-			BULLET_TYPE tp = (plants[i]->type == peashooter) ? green : ice;
+			BULLET_TYPE tp = (plants[i]->type == snowpea) ? ice : green;
 			Bullet* newBullet = new Bullet(tp, QRect(rect.x() + 60, rect.y() + 30, 25, 25));
 			newBullet->bornTime = duration;
 			newBullet->cellx = plants[i]->cellx;
 			plants[i]->lastAttack = duration;
 			bullets.push_back(newBullet);
-			emit addBullet(tp, plants[i]->cellx, plants[i]->celly);
+			emit addBullet(tp, plants[i]->cellx, plants[i]->celly, false);
+
+			if (plants[i]->type == repeater)
+			{
+				Bullet* newBullet1 = new Bullet(tp, QRect(rect.x() + 85, rect.y() + 30, 25, 25));
+				newBullet1->bornTime = duration;
+				newBullet1->cellx = plants[i]->cellx;
+				plants[i]->lastAttack = duration;
+				bullets.push_back(newBullet1);
+				emit addBullet(tp, plants[i]->cellx, plants[i]->celly, true);
+			}
 			break;
 		}
 		case chomper:
@@ -352,8 +362,6 @@ void GameConsole::dealAttackOfPlants()
 			}
 		}
 		break;
-		case repeater:
-			break;
 		default:
 			break;
 		}

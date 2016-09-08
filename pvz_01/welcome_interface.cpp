@@ -7,6 +7,8 @@ WelcomeInterface::WelcomeInterface(QWidget* parent)
 	this->setFixedHeight(800);
 	drawBackground();
 
+	menu = nullptr;
+
 	button = new MyButton(this, ADVENTURE_PATH_RELEASED, ADVENTURE_PATH_PRESSED, ADVENTURE_PATH_RELEASED);
 	button->setSize(QRect(620, 100, 460, 196));
 	button->setOffset(2, 2);
@@ -29,11 +31,34 @@ void WelcomeInterface::drawBackground()
 	delete(palette);
 }
 
+void WelcomeInterface::startOption()
+{
+	playAudio(BUTTONCLICK_AUDIO_PATH);
+	if (!menu)menu = new OptionMenu(this);
+	menu->show();
+
+	menu->setInitial(musicPlayer->volume(), audioPlayer->volume());
+	QObject::connect(menu, SIGNAL(setVolume(int, int)), this, SLOT(finishOption(int, int)));
+}
+void WelcomeInterface::finishOption(int m, int a)
+{
+	playAudio(BUTTONCLICK_AUDIO_PATH);
+	musicPlayer->setVolume(m);
+	audioPlayer->setVolume(a);
+	menu->hide();
+}
+void WelcomeInterface::playAudio(QString str)
+{
+	QMediaPlayer* player = new QMediaPlayer(this);
+	player->setMedia(QUrl(str));
+	player->setVolume(audioPlayer->volume());
+	player->play();
+}
 void WelcomeInterface::mousePressEvent(QMouseEvent* mouseEvent)
 {
 	int mousex = mouseEvent->x() * 0.75, mousey = mouseEvent->y() * 0.75;//��ΪԭͼƬ
 	if (mousex >= 640 && mousex <= 720 && mousey >= 485 && mousey <= 520)
-		emit switchToOptions();
+		emit switchToOption();
 	else if (mousex >= 720 && mousex <= 790 && mousey >= 500 && mousey <= 550)
 		emit switchToHelp();
 	else if (mousex >= 800 && mousex <= 875 && mousey >= 490 && mousey <= 545)

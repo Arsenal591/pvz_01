@@ -36,7 +36,7 @@ void MainWindow::connect()
 	QObject::connect(currentWidget, SIGNAL(switchToEnd()), this, SLOT(close()));
 	QObject::connect(currentWidget, SIGNAL(switchToHelp()), this, SLOT(loadHelpInterface()));
 	QObject::connect(currentWidget, SIGNAL(switchToThanks()), this, SLOT(loadThanksInterface()));
-	//QObject::connect(currentWidget, SIGNAL(switchToPlay()), this, SLOT(startPlaying()));
+	QObject::connect(currentWidget, SIGNAL(switchToOption()), currentWidget, SLOT(startOption()));
 }
 
 void MainWindow::close()
@@ -94,7 +94,7 @@ void MainWindow::resetEverything()
 	QObject::connect(&console, SIGNAL(addZombie(ZOMBIE_TYPE, int, int)), currentWidget, SLOT(addZombie(ZOMBIE_TYPE, int, int)));
 	QObject::connect(&console, SIGNAL(addPlant(PLANT_TYPE, int, int)), currentWidget, SLOT(addPlant(PLANT_TYPE, int, int)));
 	QObject::connect(&console, SIGNAL(addSunshine(int, int, bool)), currentWidget, SLOT(addSunshine(int, int, bool)));
-	QObject::connect(&console, SIGNAL(addBullet(BULLET_TYPE, int, int)), currentWidget, SLOT(addBullet(BULLET_TYPE, int, int)));
+	QObject::connect(&console, SIGNAL(addBullet(BULLET_TYPE, int, int, bool)), currentWidget, SLOT(addBullet(BULLET_TYPE, int, int, bool)));
 
 	QObject::connect(&console, SIGNAL(zombieMove(int, int, int)), currentWidget, SLOT(zombieMove(int, int, int)));
 	QObject::connect(&console, SIGNAL(bulletMove(int)), currentWidget, SLOT(bulletMove(int)));

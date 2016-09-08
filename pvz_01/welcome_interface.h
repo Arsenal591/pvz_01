@@ -5,6 +5,7 @@
 #include <qmediaplayer.h>
 #include "qpalette.h"
 #include "qevent.h"
+#include "optionmenu.h"
 
 class WelcomeInterface:public QWidget
 {
@@ -14,6 +15,7 @@ private:
 	void mousePressEvent(QMouseEvent*);
 	MyButton* button;
 	QMediaPlayer *musicPlayer, *audioPlayer;
+	OptionMenu* menu;
 private:
 	void drawBackground();
 public:
@@ -21,8 +23,12 @@ public:
 	virtual ~WelcomeInterface();
 	const MyButton* getButton() { return button; }
 	void setMusicAudioPlayers(QMediaPlayer* mp, QMediaPlayer* ap) { musicPlayer = mp; audioPlayer = ap; }
+	void playAudio(QString);
+public slots:
+	void startOption();
+	void finishOption(int, int);
 signals:
-	void switchToOptions();
+	void switchToOption();
 	void switchToPlay();
 	void switchToHelp();
 	void switchToThanks();

@@ -69,7 +69,7 @@ signals:
 
 	void addSunshine(int, int, bool);
 	void addPlant(PLANT_TYPE, int, int);
-	void addBullet(enum BULLET_TYPE, int, int);
+	void addBullet(enum BULLET_TYPE, int, int, bool);
 	void addZombie(enum ZOMBIE_TYPE, int, int);
 
 	void bulletMove(int);
