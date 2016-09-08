@@ -57,6 +57,8 @@ void MainWindow::startPlaying()
 			return;
 		}
 	}
+	delete historyWidget;
+	historyWidget = nullptr;
 	resetEverything();
 }
 void MainWindow::gameStart()

@@ -146,7 +146,8 @@ void PlayingInterface::leadInAnimation()
 	musicPlayer->setMedia(QUrl(PLAYING_MUSIC_PATH));
 
 	QPropertyAnimation* animation = new QPropertyAnimation(backgroundLabel, "geometry");
-	animation->setDuration(1000);
+	animation->setParent(this);
+	animation->setDuration(10000);
 	animation->setStartValue(QRect(0, 0, 1200, 800));
 	animation->setKeyValueAt(0.50, QRect(-667, 0, 1200, 800));
 	animation->setKeyValueAt(0.60, QRect(-667, 0, 1200, 800));
@@ -158,7 +159,8 @@ void PlayingInterface::cardAnimation()
 {
 	cardBoxLabel->show();
 	QPropertyAnimation* animation = new QPropertyAnimation(cardBoxLabel, "geometry");
-	animation->setDuration(1000);
+	animation->setParent(this);
+	animation->setDuration(2000);
 	animation->setStartValue(QRect(165, -84, 165, 84));
 	animation->setEndValue(QRect(165, 0, 165, 84));
 	QObject::connect(animation, SIGNAL(finished()), info, SLOT(gameStart()));
@@ -248,6 +250,7 @@ void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
 	connect(newLabel, SIGNAL(plantClicked(MyLabel*)), this, SLOT(dealPlantClicked(MyLabel*)));
 
 	QMovie* movie = new QMovie(newLabel->getPath() + "1.gif");
+	movie->setParent(newLabel);
 	newLabel->setMovie(movie);
 	movie->start();
 
@@ -264,6 +267,7 @@ void PlayingInterface::addSunshine(int x, int y, bool ifDrop)
 	connect(newLabel, SIGNAL(sunshineClicked(MyLabel*)), this, SLOT(dealSunshineClicked(MyLabel*)));
 
 	QMovie* movie = new QMovie(newLabel->getPath());
+	movie->setParent(newLabel);
 	movie->setScaledSize(QSize(60, 60));
 	newLabel->setMovie(movie);
 	movie->start();
@@ -274,6 +278,7 @@ void PlayingInterface::addSunshine(int x, int y, bool ifDrop)
 	if (ifDrop)//执行太阳由空中掉下的动画
 	{
 		QPropertyAnimation* animation = new QPropertyAnimation(newLabel, "geometry");
+		animation->setParent(newLabel);
 		QRect startPos(rect.x() + 0.5 * rect.width(), 0, 60, 60);
 		if (y < 4) startPos.moveTop(84);
 		animation->setStartValue(startPos);
@@ -303,6 +308,7 @@ void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
 	newLabel->setPath(str);
 
 	QMovie* newMovie = new QMovie(str + "1.gif");
+	newMovie->setParent(newLabel);
 	newLabel->setMovie(newMovie);
 	newMovie->start();
 
@@ -320,6 +326,7 @@ void PlayingInterface::addBullet(enum BULLET_TYPE tp, int x, int y, bool ifSecon
 	newLabel->setPath(BULLET_FOLDER[tp]);
 
 	QMovie* newMovie = new QMovie(newLabel->getPath());
+	newMovie->setParent(newLabel);
 	newLabel->setMovie(newMovie);
 	newMovie->start();
 
@@ -425,6 +432,7 @@ void PlayingInterface::paintEvent(QPaintEvent*)
 		{
 			delete plantsShown[i]->movie();
 			QMovie* newMovie = new QMovie(newFileName);
+			newMovie->setParent(plantsShown[i]);
 			plantsShown[i]->setMovie(newMovie);
 			newMovie->start();
 		}
@@ -499,6 +507,7 @@ void PlayingInterface::paintEvent(QPaintEvent*)
 		{
 			delete zombiesShown[i]->movie();
 			QMovie* newMovie = new QMovie(newFileName);
+			newMovie->setParent(zombiesShown[i]);
 			zombiesShown[i]->setMovie(newMovie);
 			newMovie->start();
 		}
@@ -519,6 +528,7 @@ void PlayingInterface::paintEvent(QPaintEvent*)
 		{
 			delete bulletsShown[i]->movie();
 			QMovie* movie = new QMovie(BULLET_FOLDER[currentConsole.bullets[i]->type]);
+			movie->setParent(bulletsShown[i]);
 			movie->start();
 			bulletsShown[i]->setMovie(movie);
 		}

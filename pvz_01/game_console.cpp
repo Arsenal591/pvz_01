@@ -1,4 +1,5 @@
 #include "game_console.h"
+#include <qdebug>
 
 bool inRect(int x, int y, QRect rect)
 {
@@ -244,11 +245,15 @@ void GameConsole::zombieStrategy()
 		roundSum = 5 * level + ((rand() % 2) ? 1 : -1) * (rand() % 5);
 		zombieSum = 0;
 		zombieProduceList = new int[roundSum + 1];
+		qDebug() << "roundsum:" << roundSum << '\n';
 		for (int i = 1; i <= roundSum; i++)
 		{
 			zombieProduceList[i] = (rand() % 6) ? (rand() % 5 + 5) : (20 + rand() % 5);
+			zombieProduceList[i] += i * 2;
 			zombieSum += zombieProduceList[i];
+			qDebug() << zombieProduceList[i] << ' ';
 		}
+		qDebug() << '\n';
 	}
 	round = 1;
 	zombieProduced = 0;
@@ -578,7 +583,8 @@ void GameConsole::sunshinesProduce()
 }
 void GameConsole::zombiesProduce()
 {
-	if (duration < 1000)return;//还没到第一回合
+	if (duration < 5000 && level == 0)return;
+	if (duration < 30000 && level >= 1)return;//还没到第一回合
 	if (round > roundSum)return;//最后一回合已经结束
 	if (duration - lastRoundFinish < 10000)//回合间的休息时间不足10s
 		return;
@@ -598,7 +604,7 @@ void GameConsole::zombiesProduce()
 	//此处随机挑选僵尸种类
 	int randNum = rand() % 10;
 	ZOMBIE_TYPE produceType;
-	if (randNum <= 10)
+	if (randNum <= 1)
 		produceType = pole;
 	else if (randNum <= 7)
 		produceType = normal;
