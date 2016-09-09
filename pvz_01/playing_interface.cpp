@@ -42,8 +42,8 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 	connect(option, SIGNAL(clicked()), this, SLOT(startOption()));
 
 	//显示阳光值
-	sunshineDisplay = new QLabel(this);
-	sunshineDisplay->setGeometry(QRect(185, 60, 30, 15));
+	sunshineDisplay = new QLabel(cardBoxLabel);
+	sunshineDisplay->setGeometry(QRect(20, 60, 30, 15));
 	sunshineDisplay->setAlignment(Qt::AlignCenter);
 	sunshineDisplay->setFont(QFont("consolas", 9));
 	sunshineDisplay->show();
@@ -61,7 +61,6 @@ PlayingInterface::~PlayingInterface()
 	delete backgroundLabel;
 	delete cardBoxLabel;
 	delete option;
-	delete sunshineDisplay;
 	delete selectCard;
 
 	//不要在此处detete menu
