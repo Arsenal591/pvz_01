@@ -1,6 +1,5 @@
 #include "card.h"
-#include "qstring.h"
-//class QString;
+
 Card::Card(PLANT_TYPE type):cardType(type),lastUsed(-999999)
 {
 	switch (type)

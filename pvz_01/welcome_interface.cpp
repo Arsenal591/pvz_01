@@ -3,8 +3,7 @@
 WelcomeInterface::WelcomeInterface(QWidget* parent)
 {
 	this->setParent(parent);
-	this->setFixedWidth(1200);
-	this->setFixedHeight(800);
+	this->setFixedSize(QSize(1200, 800));
 	drawBackground();
 
 	menu = nullptr;
@@ -31,23 +30,6 @@ void WelcomeInterface::drawBackground()
 	delete(palette);
 }
 
-void WelcomeInterface::startOption()
-{
-	playAudio(BUTTONCLICK_AUDIO_PATH);
-	menu = new OptionMenu(this);
-	menu->show();
-
-	menu->setInitial(musicPlayer->volume(), audioPlayer->volume());
-	QObject::connect(menu, SIGNAL(setVolume(int, int)), this, SLOT(finishOption(int, int)));
-}
-void WelcomeInterface::finishOption(int m, int a)
-{
-	qDebug() << "played";
-	playAudio(BUTTONCLICK_AUDIO_PATH);
-	musicPlayer->setVolume(m);
-	audioPlayer->setVolume(a);
-	delete menu;
-}
 void WelcomeInterface::playAudio(QString str)
 {
 	QMediaPlayer* player = new QMediaPlayer(this);
@@ -55,9 +37,27 @@ void WelcomeInterface::playAudio(QString str)
 	player->setVolume(audioPlayer->volume());
 	player->play();
 }
+
+void WelcomeInterface::startOption()
+{
+	playAudio(BUTTONCLICK_AUDIO_PATH);
+	menu = new OptionMenu(this);
+	menu->show();
+
+	menu->setInitial(musicPlayer->volume(), audioPlayer->volume());//设置选项卡上的初始值为当前播放器的音量值时
+	QObject::connect(menu, SIGNAL(setVolume(int, int)), this, SLOT(finishOption(int, int)));
+}
+void WelcomeInterface::finishOption(int m, int a)
+{
+	playAudio(BUTTONCLICK_AUDIO_PATH);
+	musicPlayer->setVolume(m);
+	audioPlayer->setVolume(a);
+	delete menu;
+}
+
 void WelcomeInterface::mousePressEvent(QMouseEvent* mouseEvent)
 {
-	int mousex = mouseEvent->x() * 0.75, mousey = mouseEvent->y() * 0.75;//化为原图片
+	int mousex = mouseEvent->x() * 0.75, mousey = mouseEvent->y() * 0.75;//化为原图片尺寸
 	if (mousex >= 640 && mousex <= 720 && mousey >= 485 && mousey <= 520)
 		emit switchToOption();
 	else if (mousex >= 720 && mousex <= 790 && mousey >= 500 && mousey <= 550)

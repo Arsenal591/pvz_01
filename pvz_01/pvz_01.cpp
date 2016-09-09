@@ -109,6 +109,7 @@ void MainWindow::loadThanksInterface()
 	delete currentWidget;
 	currentWidget = new GeneralInterface(this, THANKS_PATH);
 	currentWidget->show();
+	connectWithThanksInterface();
 }
 void MainWindow::playMusic()
 {
