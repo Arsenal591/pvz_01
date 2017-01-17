@@ -55,7 +55,6 @@ PlayingInterface::PlayingInterface(QWidget* parent, GameConsole* t)
 	connect(selectCard, SIGNAL(selected(QVector<int>)), selectCard, SLOT(hide()));
 	connect(selectCard, SIGNAL(selected(QVector<int>)), info, SLOT(setCards(QVector<int>)));
 }
-
 PlayingInterface::~PlayingInterface()
 {
 	delete backgroundLabel;
@@ -74,99 +73,18 @@ PlayingInterface::~PlayingInterface()
 		delete zombiesShown[i];
 }
 
-void PlayingInterface::setCards(QVector<int> res)
-{
-	playAudio(BUTTONCLICK_AUDIO_PATH);
-	for (int i = 0; i < res.size(); i++)
-	{
-		cardsShown.push_back(new MyLabel(cardBoxLabel, card, res[i]));
-		cardsShown[i]->setGeometry(cardRect[i]);
-		cardsShown[i]->show();
-		connect(cardsShown[i], SIGNAL(cardClicked(int)), this, SLOT(dealCardClicked(int)));
-	}
-	leadInAnimation();
-}
-void PlayingInterface::mousePressEvent(QMouseEvent* ev)
-{
-	emit shovelCanceled();
-	this->unsetCursor();
-	if (ev->x() >= 135 && ev->x() <= 1105 && ev->y() >= 110 && ev->y() <= 760)
-	{
-		this->info->dealPutPlant(ev->x(), ev->y());
-		return;
-	}
-	QWidget::mousePressEvent(ev);
-}
-void PlayingInterface::keyPressEvent(QKeyEvent* ev)
-{
-	if (ev->key() == Qt::Key_S)
-	{
-		emit shovelClicked();
-		playAudio(SHOVEL_AUDIO_PATH);
-		if (this->cursor().shape() == Qt::ArrowCursor)
-			this->setCursor(QPixmap(SHOVEL_PATH));
-		else this->setCursor(Qt::ArrowCursor);
-	}
-}
-
-void PlayingInterface::setCardRect()
-{
-	int yLinePos = 85;
-	for (int i = 0; i < 6; i++)
-	{
-		cardRect[i] = QRect(yLinePos, 10, 45, 63);
-		yLinePos += 57;
-	}
-}
-void PlayingInterface::setCellRect()
-{
-	int xLinePos = 110, yLinePos = 135;
-	for (int i = 0; i < 5; i++)
-	{
-		yLinePos = 135;
-		for (int j = 0; j < 10; j++)
-		{
-			int width = (j % 2) ? 105 : 110;
-			cellRect[i][j] = QRect(yLinePos, xLinePos, width, 130);
-			yLinePos += width;
-		}
-		xLinePos += 130;
-	}
-}
-
 void PlayingInterface::playAudio(QString str)
 {
-	QMediaPlayer* player = new QMediaPlayer(this); 
+	QMediaPlayer* player = new QMediaPlayer(this);
 	player->setMedia(QUrl(str));
 	player->setVolume(audioPlayer->volume());
 	player->play();
 }
-void PlayingInterface::leadInAnimation()
-{
-	musicPlayer->setMedia(QUrl(PLAYING_MUSIC_PATH));
 
-	QPropertyAnimation* animation = new QPropertyAnimation(backgroundLabel, "geometry");
-	animation->setParent(this);
-	animation->setDuration(10000);
-	animation->setStartValue(QRect(0, 0, 1200, 800));
-	animation->setKeyValueAt(0.50, QRect(-667, 0, 1200, 800));
-	animation->setKeyValueAt(0.60, QRect(-667, 0, 1200, 800));
-	animation->setEndValue(QRect(-200, 0, 1200, 800));
-	animation->start();
-	QObject::connect(animation, SIGNAL(finished()), this, SLOT(cardAnimation()));
-}
-void PlayingInterface::cardAnimation()
+void PlayingInterface::refresh()
 {
-	cardBoxLabel->show();
-	QPropertyAnimation* animation = new QPropertyAnimation(cardBoxLabel, "geometry");
-	animation->setParent(this);
-	animation->setDuration(2000);
-	animation->setStartValue(QRect(165, -84, 165, 84));
-	animation->setEndValue(QRect(165, 0, 165, 84));
-	QObject::connect(animation, SIGNAL(finished()), info, SLOT(gameStart()));
-	animation->start();
+	update();
 }
-
 void PlayingInterface::gameOver(bool ifHumanWin)
 {
 	QString message;
@@ -217,29 +135,97 @@ void PlayingInterface::finishOption(int m, int a)
 	option->setEnabled(true);
 	selectCard->setEnabled(true);
 
-	if(info->duration > 0)
+	if (info->duration > 0)
 		info->startTimer();
 }
+
+void PlayingInterface::setCards(QVector<int> res)
+{
+	playAudio(BUTTONCLICK_AUDIO_PATH);
+	for (int i = 0; i < res.size(); i++)
+	{
+		cardsShown.push_back(new MyLabel(cardBoxLabel, card, res[i]));
+		cardsShown[i]->setGeometry(cardRect[i]);
+		cardsShown[i]->show();
+		connect(cardsShown[i], SIGNAL(cardClicked(int)), this, SLOT(dealCardClicked(int)));
+	}
+	leadInAnimation();
+}
+
 void PlayingInterface::dealCardClicked(int n)
 {
 	emit playAudio(CARD_PICKED_AUDIO_PATH);
 	int x;
 	for (int i = 0; i < cardsShown.size(); i++)
 		if (cardsShown[i]->cardNum == n)x = i;
-	if(info->cardChosen && info->cardChosen->getType() == cardsShown[x]->cardNum)
+	if (info->cardChosen && info->cardChosen->getType() == cardsShown[x]->cardNum)
 		this->unsetCursor();
-	else 
+	else
 		this->setCursor(QPixmap(PLANT_FOLDER[n] + "0.png"));
 	emit doneCardClicked(n);
+}
+void PlayingInterface::dealSunshineClicked(MyLabel* label)
+{
+	emit doneSunshineClicked(label);
 }
 void PlayingInterface::dealPlantClicked(MyLabel* label)
 {
 	this->unsetCursor();
 	emit donePlantClicked(label);
 }
-void PlayingInterface::dealSunshineClicked(MyLabel* label)
+
+void PlayingInterface::deleteZombie(int rank)
 {
-	emit doneSunshineClicked(label);
+	delete zombiesShown[rank];
+	zombiesShown.remove(rank);
+}
+void PlayingInterface::deletePlant(int rank)
+{
+	delete plantsShown[rank];
+	plantsShown.remove(rank);
+}
+void PlayingInterface::deleteSunshine(MyLabel* label)
+{
+	for (int i = 0; i < sunshineShown.size(); i++)
+		if (label == sunshineShown[i])
+		{
+			delete sunshineShown[i];
+			sunshineShown.remove(i);
+			break;
+		}
+}
+void PlayingInterface::deleteBullet(int rank)
+{
+	delete bulletsShown[rank];
+	bulletsShown.remove(rank);
+}
+
+void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
+{
+	MyLabel* newLabel = new MyLabel(this, zombie);
+	newLabel->cellx = x, newLabel->celly = y;
+	newLabel->rect = cellRect[x][y];
+
+	QString str = ZOMBIE_FOLDER[tp];
+	switch (tp)
+	{
+	case pole:
+		newLabel->rect.setWidth(newLabel->width() + 70);
+		newLabel->rect.moveLeft(newLabel->rect.x() - 30);
+		break;
+	default:
+		break;
+	}
+	newLabel->setGeometry(newLabel->rect);
+	newLabel->setPath(str);
+
+	QMovie* newMovie = new QMovie(str + "1.gif");
+	newMovie->setParent(newLabel);
+	newLabel->setMovie(newMovie);
+	newMovie->start();
+
+	zombiesShown.push_back(newLabel);
+	newLabel->show();
 }
 void PlayingInterface::addPlant(PLANT_TYPE tp, int x, int y)
 {
@@ -288,37 +274,10 @@ void PlayingInterface::addSunshine(int x, int y, bool ifDrop)
 		animation->start();
 	}
 }
-void PlayingInterface::addZombie(enum ZOMBIE_TYPE tp, int x, int y)
-{
-	MyLabel* newLabel = new MyLabel(this, zombie);
-	newLabel->cellx = x, newLabel->celly = y;
-	newLabel->rect = cellRect[x][y];
-
-	QString str = ZOMBIE_FOLDER[tp];
-	switch (tp)
-	{
-	case pole:
-		newLabel->rect.setWidth(newLabel->width() + 70);
-		newLabel->rect.moveLeft(newLabel->rect.x() - 30);
-		break;
-	default:
-		break;
-	}
-	newLabel->setGeometry(newLabel->rect);
-	newLabel->setPath(str);
-
-	QMovie* newMovie = new QMovie(str + "1.gif");
-	newMovie->setParent(newLabel);
-	newLabel->setMovie(newMovie);
-	newMovie->start();
-
-	zombiesShown.push_back(newLabel);
-	newLabel->show();
-}
 void PlayingInterface::addBullet(enum BULLET_TYPE tp, int x, int y, bool ifSecond)
 {
 	MyLabel* newLabel = new MyLabel(this, bullet);
-	if(ifSecond)
+	if (ifSecond)
 		newLabel->rect = QRect(cellRect[x][y].x() + 85, cellRect[x][y].y() + 30, 60, 25);
 	else
 		newLabel->rect = QRect(cellRect[x][y].x() + 60, cellRect[x][y].y() + 30, 60, 25);
@@ -333,31 +292,7 @@ void PlayingInterface::addBullet(enum BULLET_TYPE tp, int x, int y, bool ifSecon
 	bulletsShown.push_back(newLabel);
 	newLabel->show();
 }
-void PlayingInterface::deleteSunshine(MyLabel* label)
-{
-	for(int i = 0; i < sunshineShown.size(); i++)
-		if (label == sunshineShown[i])
-		{
-			delete sunshineShown[i];
-			sunshineShown.remove(i);
-			break;
-		}
-}
-void PlayingInterface::deleteBullet(int rank)
-{
-	delete bulletsShown[rank];
-	bulletsShown.remove(rank);
-}
-void PlayingInterface::deleteZombie(int rank)
-{
-	delete zombiesShown[rank];
-	zombiesShown.remove(rank);
-}
-void PlayingInterface::deletePlant(int rank)
-{
-	delete plantsShown[rank];
-	plantsShown.remove(rank);
-}
+
 void PlayingInterface::zombieMove(int rank, int tx, int ty)
 {
 	zombiesShown[rank]->rect.moveLeft(zombiesShown[rank]->rect.x() - 1);
@@ -368,10 +303,81 @@ void PlayingInterface::bulletMove(int rank)
 {
 	bulletsShown[rank]->rect.moveLeft(bulletsShown[rank]->x() + 1);
 }
-void PlayingInterface::refresh()
+
+void PlayingInterface::mousePressEvent(QMouseEvent* ev)
 {
-	update();
+	emit shovelCanceled();
+	this->unsetCursor();
+	if (ev->x() >= 135 && ev->x() <= 1105 && ev->y() >= 110 && ev->y() <= 760)
+	{
+		this->info->dealPutPlant(ev->x(), ev->y());
+		return;
+	}
+	QWidget::mousePressEvent(ev);
 }
+void PlayingInterface::keyPressEvent(QKeyEvent* ev)
+{
+	if (ev->key() == Qt::Key_S)
+	{
+		emit shovelClicked();
+		playAudio(SHOVEL_AUDIO_PATH);
+		if (this->cursor().shape() == Qt::ArrowCursor)
+			this->setCursor(QPixmap(SHOVEL_PATH));
+		else this->setCursor(Qt::ArrowCursor);
+	}
+}
+
+void PlayingInterface::setCardRect()
+{
+	int yLinePos = 85;
+	for (int i = 0; i < 6; i++)
+	{
+		cardRect[i] = QRect(yLinePos, 10, 45, 63);
+		yLinePos += 57;
+	}
+}
+void PlayingInterface::setCellRect()
+{
+	int xLinePos = 110, yLinePos = 135;
+	for (int i = 0; i < 5; i++)
+	{
+		yLinePos = 135;
+		for (int j = 0; j < 10; j++)
+		{
+			int width = (j % 2) ? 105 : 110;
+			cellRect[i][j] = QRect(yLinePos, xLinePos, width, 130);
+			yLinePos += width;
+		}
+		xLinePos += 130;
+	}
+}
+
+void PlayingInterface::leadInAnimation()
+{
+	musicPlayer->setMedia(QUrl(PLAYING_MUSIC_PATH));
+
+	QPropertyAnimation* animation = new QPropertyAnimation(backgroundLabel, "geometry");
+	animation->setParent(this);
+	animation->setDuration(10000);
+	animation->setStartValue(QRect(0, 0, 1200, 800));
+	animation->setKeyValueAt(0.50, QRect(-667, 0, 1200, 800));
+	animation->setKeyValueAt(0.60, QRect(-667, 0, 1200, 800));
+	animation->setEndValue(QRect(-200, 0, 1200, 800));
+	animation->start();
+	QObject::connect(animation, SIGNAL(finished()), this, SLOT(cardAnimation()));
+}
+void PlayingInterface::cardAnimation()
+{
+	cardBoxLabel->show();
+	QPropertyAnimation* animation = new QPropertyAnimation(cardBoxLabel, "geometry");
+	animation->setParent(this);
+	animation->setDuration(2000);
+	animation->setStartValue(QRect(165, -84, 165, 84));
+	animation->setEndValue(QRect(165, 0, 165, 84));
+	QObject::connect(animation, SIGNAL(finished()), info, SLOT(gameStart()));
+	animation->start();
+}
+
 void PlayingInterface::paintEvent(QPaintEvent*)
 {
 	const GameConsole& currentConsole = *info;

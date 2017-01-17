@@ -25,12 +25,12 @@ class SelectCard:public QWidget
 {
 	Q_OBJECT
 private:
-	bool ifSelected[9];
-	int selectedSum;
+	bool ifSelected[9];//此9张卡片是否已经被拾起
 	QRect choiceRect[10];
-	MyButton* buttons[9];
-	MyButton* ok;
-	QLabel *statement, *title;
+	int selectedSum;//已经被拾起的卡片的总数
+	MyButton* buttons[9];//九张卡片对应的按钮
+	MyButton* ok;//确认键
+	QLabel *statement, *title;//卡片选择盒的卡片描述与标题
 public:
 	SelectCard(QWidget* parent = nullptr);
 	void connect();
